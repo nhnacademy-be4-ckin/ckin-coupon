@@ -19,8 +19,8 @@ public class CreateCouponPolicyRequestDto {
     @NotNull(message = "쿠폰 코드를 입력해주세요")
     private Long couponCodeId;
     @NotNull(message = "쿠폰의 최소 가격을 입력해주세요")
-    private int minOrderPrice;
-    private int discountPrice;
-    private int discountRate;
-    private int maxDiscountPrice;
+    private Integer minOrderPrice;
+    private Integer discountPrice;
+    private Integer discountRate;
+    private Integer maxDiscountPrice;
 }

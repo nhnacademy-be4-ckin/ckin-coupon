@@ -30,20 +30,20 @@ public class CouponPolicy {
 
     @NotNull
     @Column(name = "couponpolicy_min_order_price")
-    private int minOrderPrice;
+    private Integer minOrderPrice;
 
     @Column(name = "couponpolicy_discount_price")
-    private int discountPrice;
+    private Integer discountPrice;
 
     @Column(name = "couponpolicy_discount_rate")
-    private int discountRate;
+    private Integer discountRate;
 
     @Column(name = "couponpolicy_max_discount_price")
-    private int maxDiscountPrice;
+    private Integer maxDiscountPrice;
 
     @NotNull
     @Column(name = "couponpolicy_state")
-    private boolean state;
+    private Boolean state;
 
 
 }

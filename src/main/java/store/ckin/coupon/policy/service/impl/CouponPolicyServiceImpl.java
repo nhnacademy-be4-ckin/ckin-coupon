@@ -1,9 +1,12 @@
 package store.ckin.coupon.policy.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.policy.dto.request.CreateCouponPolicyRequestDto;
+import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.exception.CouponCodeNotFoundException;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
@@ -37,5 +40,10 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
                 .state(true)
                 .build());
 
+    }
+
+    @Override
+    public Page<GetCouponPolicyResponseDto> getCouponPolicyList(Pageable pageable) {
+        return couponPolicyRepository.getCouponPolicy(pageable);
     }
 }

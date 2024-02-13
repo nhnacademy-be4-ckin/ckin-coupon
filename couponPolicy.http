@@ -3,9 +3,15 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-    "couponCodeId": 1,
-    "minOrderPrice": 10000,
-    "discountPrice": 5000,
-    "discountRate": 0,
+    "couponCodeId": 2,
+    "minOrderPrice": 20000,
+    "discountPrice": null,
+    "discountRate": 20,
     "maxDiscountPrice": 10000
 }
+
+###
+
+GET /couponPolicy
+Host: localhost:8080
+Content-Type: application/json
