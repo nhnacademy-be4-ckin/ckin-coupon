@@ -13,5 +13,5 @@ import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
  */
 @NoRepositoryBean
 public interface CouponRepositoryCustom {
-    Page<GetCouponResponseDto> getCouponPolicy(Pageable pageable);
+    Page<GetCouponResponseDto> getCouponList(Pageable pageable);
 }

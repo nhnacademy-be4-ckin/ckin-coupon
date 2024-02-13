@@ -15,5 +15,5 @@ public interface CouponService {
 
     void createCouponPolicy(CreateCouponRequestDto couponRequestDto);
 
-//    Page<GetCouponResponseDto> getCouponPolicyList(Pageable pageable);
+    Page<GetCouponResponseDto> getCouponList(Pageable pageable);
 }

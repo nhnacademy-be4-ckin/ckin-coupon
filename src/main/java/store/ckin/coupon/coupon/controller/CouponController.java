@@ -23,19 +23,19 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RequestMapping("/coupon")
 public class CouponController {
-    private final CouponService couponPolicyService;
+    private final CouponService couponService;
 
 
-//    @GetMapping
-//    public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponPolicy(@PageableDefault(page = 0, size = 5) Pageable pageable) {
-//        Page<GetCouponResponseDto> content = couponPolicyService.getCouponPolicyList(pageable);
-//        return ResponseEntity.ok().body(content);
-//    }
+    @GetMapping("/coupons")
+    public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponPolicy(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+        Page<GetCouponResponseDto> content = couponService.getCouponList(pageable);
+        return ResponseEntity.ok().body(content);
+    }
 
 
     @PostMapping
     public ResponseEntity<Void> createCouponPolicy(@Valid @RequestBody CreateCouponRequestDto policyRequestDto) {
-        couponPolicyService.createCouponPolicy(policyRequestDto);
+        couponService.createCouponPolicy(policyRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();

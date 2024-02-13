@@ -38,8 +38,8 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
-//    @Override
-//    public Page<GetCouponResponseDto> getCouponPolicyList(Pageable pageable) {
-//        return couponPolicyRepository.getCouponPolicy(pageable);
-//    }
+    @Override
+    public Page<GetCouponResponseDto> getCouponList(Pageable pageable) {
+        return couponRepository.getCouponList(pageable);
+    }
 }

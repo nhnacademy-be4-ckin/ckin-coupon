@@ -12,3 +12,9 @@ Content-Type: application/json
   "issueDate": null,
   "usedDate": null
 }
+
+###
+
+GET /coupon/coupons
+Host: localhost:8080
+Content-Type: application/json
