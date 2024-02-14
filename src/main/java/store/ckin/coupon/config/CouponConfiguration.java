@@ -16,11 +16,4 @@ import javax.persistence.PersistenceContext;
 
 @Configuration
 public class CouponConfiguration {
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    @Bean
-    public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(entityManager);
-    }
 }
