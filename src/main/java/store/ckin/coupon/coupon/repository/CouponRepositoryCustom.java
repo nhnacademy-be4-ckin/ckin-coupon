@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 
+import java.util.Optional;
+
 /**
  * CouponPolicyRepositoryCustom
  *
@@ -14,4 +16,6 @@ import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 @NoRepositoryBean
 public interface CouponRepositoryCustom {
     Page<GetCouponResponseDto> getCouponList(Pageable pageable);
+
+    Optional<GetCouponResponseDto> getCoupon(Long couponId);
 }

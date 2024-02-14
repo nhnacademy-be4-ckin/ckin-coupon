@@ -16,4 +16,10 @@ public interface CouponService {
     void createCoupon(CreateCouponRequestDto couponRequestDto);
 
     Page<GetCouponResponseDto> getCouponList(Pageable pageable);
+
+    GetCouponResponseDto getCoupon(Long couponId);
+
+    void updateCoupon(Long couponId, CreateCouponRequestDto couponRequestDto);
+
+    void deleteCoupon(Long couponId);
 }

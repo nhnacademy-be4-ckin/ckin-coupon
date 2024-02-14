@@ -3,6 +3,7 @@ package store.ckin.coupon.coupon.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -22,10 +23,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class GetCouponResponseDto {
     private Long id;
-    private Long policyId;
     private Long memberId;
     private Long bookId;
     private Long categoryId;
+    private Long policyId;
     private String name;
     private LocalDateTime expirationDate;
     private LocalDateTime issueDate;

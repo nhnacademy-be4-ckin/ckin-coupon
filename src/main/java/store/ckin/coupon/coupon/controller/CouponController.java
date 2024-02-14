@@ -32,17 +32,33 @@ public class CouponController {
         return ResponseEntity.ok().body(content);
     }
 
-//    @GetMapping("/{couponId}")
-//    public ResponseEntity<GetCouponResponseDto> getCouponById(@PathVariable("couponId") Long couponId) {
-//
-//    }
+    @GetMapping("/{couponId}")
+    public ResponseEntity<GetCouponResponseDto> getCouponById(@PathVariable("couponId") Long couponId) {
+        GetCouponResponseDto content = couponService.getCoupon(couponId);
+        return ResponseEntity.ok().body(content);
+    }
 
 
     @PostMapping
-    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CreateCouponRequestDto policyRequestDto) {
-        couponService.createCoupon(policyRequestDto);
+    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CreateCouponRequestDto couponRequestDto) {
+        couponService.createCoupon(couponRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
+    }
+
+    @PutMapping("/{couponId}")
+    public ResponseEntity<Void> updateCoupon(@PathVariable("couponId") Long couponId,
+                                             @Valid @RequestBody CreateCouponRequestDto couponRequestDto) {
+        couponService.updateCoupon(couponId, couponRequestDto);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{couponId}")
+    public ResponseEntity<Void> deleteCoupon(@PathVariable("couponId") Long couponId) {
+        couponService.deleteCoupon(couponId);
+
+        return ResponseEntity.ok().build();
     }
 }

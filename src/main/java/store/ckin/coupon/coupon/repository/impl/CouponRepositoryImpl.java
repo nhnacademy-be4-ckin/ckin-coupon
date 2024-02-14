@@ -16,6 +16,7 @@ import store.ckin.coupon.policy.model.QCouponCode;
 import store.ckin.coupon.policy.model.QCouponPolicy;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -52,5 +53,23 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .fetch();
         long count = from(coupon).stream().count();
         return new PageImpl<>(results, pageable, count);
+    }
+
+    @Override
+    public Optional<GetCouponResponseDto> getCoupon(Long couponId) {
+        GetCouponResponseDto results = from(coupon)
+                .select(Projections.fields(GetCouponResponseDto.class,
+                        coupon.id,
+                        coupon.policyId,
+                        coupon.memberId,
+                        coupon.bookId,
+                        coupon.categoryId,
+                        coupon.name,
+                        coupon.expirationDate,
+                        coupon.issueDate,
+                        coupon.usedDate))
+                .where(coupon.id.eq(couponId))
+                .fetchOne();
+        return Optional.of(results);
     }
 }
