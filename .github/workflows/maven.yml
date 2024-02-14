@@ -60,3 +60,4 @@ jobs:
     - name: execute SonarQube
       run: mvn sonar:sonar -Dsonar.projectKey=ckin-coupon -Dsonar.host.url=${{secrets.SONARQUBE_URL}} -Dsonar.login=${{secrets.SONARQUBE_LOGIN}}
 
+
