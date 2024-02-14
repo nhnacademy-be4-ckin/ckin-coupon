@@ -27,11 +27,8 @@ import java.util.List;
 @Repository
 public class CouponRepositoryImpl extends QuerydslRepositorySupport implements CouponRepositoryCustom {
 
-    @Autowired
-    private final JPAQueryFactory queryFactory;
-    public CouponRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
+    public CouponRepositoryImpl() {
         super(Coupon.class);
-        this.queryFactory = jpaQueryFactory;
     }
 
     QCoupon coupon = QCoupon.coupon;
@@ -39,7 +36,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
 
     @Override
     public Page<GetCouponResponseDto> getCouponList(Pageable pageable) {
-        List<GetCouponResponseDto> results = queryFactory
+        List<GetCouponResponseDto> results = from(coupon)
                 .select(Projections.fields(GetCouponResponseDto.class,
                         coupon.id,
                         coupon.policyId,
@@ -50,11 +47,10 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.expirationDate,
                         coupon.issueDate,
                         coupon.usedDate))
-                .from(coupon)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        long count = queryFactory.selectFrom(coupon).stream().count();
+        long count = from(coupon).stream().count();
         return new PageImpl<>(results, pageable, count);
     }
 }
