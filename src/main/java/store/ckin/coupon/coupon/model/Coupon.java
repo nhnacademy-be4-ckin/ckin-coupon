@@ -51,5 +51,4 @@ public class Coupon {
     @Column(name = "coupon_used_date")
     private LocalDateTime usedDate;
 
-
 }
