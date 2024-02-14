@@ -39,11 +39,11 @@ jobs:
 
 # 도커 이미지 빌드
     - name: Build the Docker image
-      run: docker build -t gaeun099/testrepo2 .
+      run: docker build -t nhnckin/coupon .
       
 # 이미지 띄우기
     - name: push Docker image
-      run: docker push gaeun099/testrepo2
+      run: docker push nhnckin/coupon
       
 # 쉘 스크립트 실행
     - name: execute shell script
