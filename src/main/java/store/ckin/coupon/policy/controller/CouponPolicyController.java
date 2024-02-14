@@ -33,7 +33,6 @@ public class CouponPolicyController {
         return ResponseEntity.ok().body(content);
     }
 
-
     @PostMapping
     public ResponseEntity<Void> createCouponPolicy(@Valid @RequestBody CreateCouponPolicyRequestDto policyRequestDto) {
         couponPolicyService.createCouponPolicy(policyRequestDto);
