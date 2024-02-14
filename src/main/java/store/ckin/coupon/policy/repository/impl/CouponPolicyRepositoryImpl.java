@@ -43,6 +43,7 @@ public class CouponPolicyRepositoryImpl extends QuerydslRepositorySupport implem
                         couponPolicy.discountPrice,
                         couponPolicy.discountRate,
                         couponPolicy.maxDiscountPrice))
+                .where(couponPolicy.state.eq(true))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
