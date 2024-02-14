@@ -24,7 +24,7 @@ import store.ckin.coupon.coupon.service.CouponService;
 public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     @Override
-    public void createCouponPolicy(CreateCouponRequestDto policyRequestDto) {
+    public void createCoupon(CreateCouponRequestDto policyRequestDto) {
         couponRepository.save(Coupon.builder()
                 .policyId(policyRequestDto.getPolicyId())
                 .memberId(policyRequestDto.getMemberId())

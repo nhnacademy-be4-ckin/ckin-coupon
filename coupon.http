@@ -15,6 +15,6 @@ Content-Type: application/json
 
 ###
 
-GET /coupon/coupons
+GET /coupon
 Host: localhost:8080
 Content-Type: application/json

@@ -14,7 +14,7 @@ import store.ckin.coupon.coupon.service.CouponService;
 import javax.validation.Valid;
 
 /**
- * CouponPolicyController
+ * CouponController
  *
  * @author : gaeun
  * @version : 2024. 02. 09
@@ -26,16 +26,21 @@ public class CouponController {
     private final CouponService couponService;
 
 
-    @GetMapping("/coupons")
-    public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponPolicy(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    @GetMapping
+    public ResponseEntity<Page<GetCouponResponseDto>> getAllCoupon(@PageableDefault(page = 0, size = 5) Pageable pageable) {
         Page<GetCouponResponseDto> content = couponService.getCouponList(pageable);
         return ResponseEntity.ok().body(content);
     }
 
+//    @GetMapping("/{couponId}")
+//    public ResponseEntity<GetCouponResponseDto> getCouponById(@PathVariable("couponId") Long couponId) {
+//
+//    }
+
 
     @PostMapping
-    public ResponseEntity<Void> createCouponPolicy(@Valid @RequestBody CreateCouponRequestDto policyRequestDto) {
-        couponService.createCouponPolicy(policyRequestDto);
+    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CreateCouponRequestDto policyRequestDto) {
+        couponService.createCoupon(policyRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
