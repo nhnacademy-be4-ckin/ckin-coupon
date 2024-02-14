@@ -1,0 +1,20 @@
+POST /coupon
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "policyId": 1,
+  "memberId": 1,
+  "bookId": 1,
+  "categoryId": null,
+  "name": "1번 도서 쿠폰",
+  "expirationDate": "2024-03-31T00:00:00",
+  "issueDate": null,
+  "usedDate": null
+}
+
+###
+
+GET /coupon
+Host: localhost:8080
+Content-Type: application/json

@@ -1,0 +1,17 @@
+POST /couponPolicy
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "couponCodeId": 2,
+    "minOrderPrice": 20000,
+    "discountPrice": null,
+    "discountRate": 20,
+    "maxDiscountPrice": 10000
+}
+
+###
+
+GET /couponPolicy
+Host: localhost:8080
+Content-Type: application/json
