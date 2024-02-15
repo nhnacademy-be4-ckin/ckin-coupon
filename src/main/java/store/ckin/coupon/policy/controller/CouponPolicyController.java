@@ -28,7 +28,7 @@ public class CouponPolicyController {
 
 
     @GetMapping
-    public ResponseEntity<Page<GetCouponPolicyResponseDto>> getAllCouponPolicy(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public ResponseEntity<Page<GetCouponPolicyResponseDto>> getAllCouponPolicy(Pageable pageable) {
         Page<GetCouponPolicyResponseDto> content = couponPolicyService.getCouponPolicyList(pageable);
         return ResponseEntity.ok().body(content);
     }
