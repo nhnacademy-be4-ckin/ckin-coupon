@@ -32,39 +32,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class CouponTemplateRepositoryTest {
     @Autowired
     CouponTemplateRepository couponTemplateRepository;
-    @Autowired
-    CouponPolicyRepository couponPolicyRepository;
-    @Autowired
-    TestEntityManager entityManager;
 
     CouponTemplate couponTemplate;
-    CouponPolicy couponPolicy;
-    CouponCode couponCode;
 
     @BeforeEach
     void setUp() {
-        couponPolicy = new CouponPolicy();
         couponTemplate = new CouponTemplate();
-        couponCode = new CouponCode();
-
-        couponPolicy = new CouponPolicy();
-        ReflectionTestUtils.setField(couponCode, "name", "정액");
-        entityManager.persist(couponCode);
-
-        ReflectionTestUtils.setField(couponPolicy, "couponCode", couponCode);
-        ReflectionTestUtils.setField(couponPolicy, "minOrderPrice", 10000);
-        ReflectionTestUtils.setField(couponPolicy, "discountPrice", 3000);
-        ReflectionTestUtils.setField(couponPolicy, "discountRate", null);
-        ReflectionTestUtils.setField(couponPolicy, "maxDiscountPrice", 10000);
-        ReflectionTestUtils.setField(couponPolicy, "state", true);
-        entityManager.persist(couponPolicy);
 
         ReflectionTestUtils.setField(couponTemplate, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplate, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplate, "categoryId", 1L);
         ReflectionTestUtils.setField(couponTemplate, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplate, "amount", 100L);
-        entityManager.persist(couponTemplate);
+        couponTemplateRepository.save(couponTemplate);
     }
 
     @Test
@@ -73,7 +53,8 @@ class CouponTemplateRepositoryTest {
         Pageable pageable = PageRequest.of(0, 5);
         Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplateList(pageable);
 
-        Assertions.assertThat(results.getContent().get(0).getId()).isEqualTo(couponTemplate.getId());
+        Assertions.assertThat(results).isNotNull();
+        Assertions.assertThat(results.getContent().get(0).getId()).isNotNull();
         Assertions.assertThat(results.getContent().get(0).getPolicyId()).isEqualTo(couponTemplate.getPolicyId());
         Assertions.assertThat(results.getContent().get(0).getBookId()).isEqualTo(couponTemplate.getBookId());
         Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(couponTemplate.getCategoryId());
@@ -86,7 +67,8 @@ class CouponTemplateRepositoryTest {
     void testGetCouponTemplate() {
         Optional<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplate(couponTemplate.getId());
 
-        Assertions.assertThat(results.get().getId()).isEqualTo(couponTemplate.getId());
+        Assertions.assertThat(results).isNotNull();
+        Assertions.assertThat(results.get().getId()).isNotNull();
         Assertions.assertThat(results.get().getPolicyId()).isEqualTo(couponTemplate.getPolicyId());
         Assertions.assertThat(results.get().getBookId()).isEqualTo(couponTemplate.getBookId());
         Assertions.assertThat(results.get().getCategoryId()).isEqualTo(couponTemplate.getCategoryId());

@@ -21,7 +21,6 @@ import java.util.Optional;
  * @author : gaeun
  * @version : 2024. 02. 13
  */
-@Repository
 public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport implements CouponTemplateRepositoryCustom {
 
     public CouponTemplateRepositoryImpl() {

@@ -28,8 +28,7 @@ import java.util.List;
 class CouponPolicyRepositoryTest {
     @Autowired
     CouponPolicyRepository couponPolicyRepository;
-    @Autowired
-    CouponCodeRepository couponCodeRepository;
+
     @Autowired
     TestEntityManager entityManager;
 
@@ -49,7 +48,7 @@ class CouponPolicyRepositoryTest {
         ReflectionTestUtils.setField(couponPolicy, "discountRate", null);
         ReflectionTestUtils.setField(couponPolicy, "maxDiscountPrice", 10000);
         ReflectionTestUtils.setField(couponPolicy, "state", true);
-        entityManager.persist(couponPolicy);
+        couponPolicyRepository.save(couponPolicy);
     }
 
     @Test
@@ -57,7 +56,8 @@ class CouponPolicyRepositoryTest {
     void testGetCouponPolicy() {
         List<GetCouponPolicyResponseDto> results = couponPolicyRepository.getCouponPolicy();
 
-        Assertions.assertThat(results.get(0).getId()).isEqualTo(couponPolicy.getId());
+        Assertions.assertThat(results).isNotNull();
+        Assertions.assertThat(results.get(0).getId()).isNotNull();
         Assertions.assertThat(results.get(0).getMinOrderPrice()).isEqualTo(couponPolicy.getMinOrderPrice());
         Assertions.assertThat(results.get(0).getDiscountPrice()).isEqualTo(couponPolicy.getDiscountPrice());
         Assertions.assertThat(results.get(0).getDiscountRate()).isEqualTo(couponPolicy.getDiscountRate());

@@ -23,7 +23,7 @@ import java.util.List;
  * @author : gaeun
  * @version : 2024. 02. 13
  */
-@Repository
+
 public class CouponPolicyRepositoryImpl extends QuerydslRepositorySupport implements CouponPolicyRepositoryCustom {
 
     public CouponPolicyRepositoryImpl() {

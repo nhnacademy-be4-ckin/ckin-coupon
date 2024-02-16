@@ -17,7 +17,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CouponCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +27,7 @@ public class CouponCode {
     @Column(name="couponcode_name")
     private String name;
 
+    public CouponCode(String name) {
+        this.name = name;
+    }
 }
