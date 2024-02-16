@@ -27,20 +27,20 @@ public class CouponTemplateController {
 
 
     @GetMapping
-    public ResponseEntity<Page<GetCouponTemplateResponseDto>> getAllCoupon(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+    public ResponseEntity<Page<GetCouponTemplateResponseDto>> getAllCouponTemplate(@PageableDefault(page = 0, size = 5) Pageable pageable) {
         Page<GetCouponTemplateResponseDto> content = couponTemplateService.getCouponTemplateList(pageable);
         return ResponseEntity.ok().body(content);
     }
 
     @GetMapping("/{couponTemplateId}")
-    public ResponseEntity<GetCouponTemplateResponseDto> getCouponById(@PathVariable("couponTemplateId") Long couponTemplateId) {
+    public ResponseEntity<GetCouponTemplateResponseDto> getCouponTemplateById(@PathVariable("couponTemplateId") Long couponTemplateId) {
         GetCouponTemplateResponseDto content = couponTemplateService.getCouponTemplate(couponTemplateId);
         return ResponseEntity.ok().body(content);
     }
 
 
     @PostMapping
-    public ResponseEntity<Void> createCoupon(@Valid @RequestBody CreateCouponTemplateRequestDto couponRequestDto) {
+    public ResponseEntity<Void> createCouponTemplate(@Valid @RequestBody CreateCouponTemplateRequestDto couponRequestDto) {
         couponTemplateService.createCouponPolicy(couponRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -48,7 +48,7 @@ public class CouponTemplateController {
     }
 
     @PutMapping("/{couponTemplateId}")
-    public ResponseEntity<Void> updateCoupon(@PathVariable("couponTemplateId") Long couponTemplateId,
+    public ResponseEntity<Void> updateCouponTemplate(@PathVariable("couponTemplateId") Long couponTemplateId,
                                              @Valid @RequestBody CreateCouponTemplateRequestDto couponRequestDto) {
         couponTemplateService.updateCouponTemplate(couponTemplateId, couponRequestDto);
 
@@ -56,7 +56,7 @@ public class CouponTemplateController {
     }
 
     @DeleteMapping("/{couponTemplateId}")
-    public ResponseEntity<Void> deleteCoupon(@PathVariable("couponTemplateId") Long couponTemplateId) {
+    public ResponseEntity<Void> deleteCouponTemplate(@PathVariable("couponTemplateId") Long couponTemplateId) {
         couponTemplateService.deleteCouponTemplate(couponTemplateId);
 
         return ResponseEntity.ok().build();

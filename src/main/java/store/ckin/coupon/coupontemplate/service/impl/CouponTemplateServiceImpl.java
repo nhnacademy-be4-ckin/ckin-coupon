@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
-import store.ckin.coupon.coupontemplate.exception.CouponNotFoundException;
+import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
@@ -46,7 +46,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
         Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
         if(optionalCoupon.isEmpty()) {
-            throw new CouponNotFoundException();
+            throw new CouponTemplateNotFoundException();
         }
         return optionalCoupon.get();
     }
@@ -54,7 +54,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Override
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
         if(!couponTemplateRepository.existsById(couponTemplateId)) {
-            throw new CouponNotFoundException();
+            throw new CouponTemplateNotFoundException();
         }
         couponTemplateRepository.save(CouponTemplate.builder()
                 .id(couponTemplateId)
@@ -71,7 +71,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponId);
 
         if(optionalCoupon.isEmpty()) {
-            throw new CouponNotFoundException();
+            throw new CouponTemplateNotFoundException();
         }
 
         couponTemplateRepository.delete(optionalCoupon.get());
