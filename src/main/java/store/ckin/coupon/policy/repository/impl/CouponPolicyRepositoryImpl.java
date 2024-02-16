@@ -31,12 +31,19 @@ public class CouponPolicyRepositoryImpl extends QuerydslRepositorySupport implem
     }
 
     QCouponPolicy couponPolicy = QCouponPolicy.couponPolicy;
-    QCouponCode couponCode = QCouponCode.couponCode;
 
 
     @Override
     public List<GetCouponPolicyResponseDto> getCouponPolicy() {
-        List<GetCouponPolicyResponseDto> response = from(couponPolicy).select(Projections.fields(GetCouponPolicyResponseDto.class, couponPolicy.id, couponPolicy.minOrderPrice, couponPolicy.discountPrice, couponPolicy.discountRate, couponPolicy.maxDiscountPrice)).where(couponPolicy.state.eq(true)).fetch();
+        List<GetCouponPolicyResponseDto> response = from(couponPolicy)
+                .select(Projections.fields(GetCouponPolicyResponseDto.class,
+                        couponPolicy.id,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice))
+                .where(couponPolicy.state.eq(true))
+                .fetch();
         return response;
     }
 }
