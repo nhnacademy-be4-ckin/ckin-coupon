@@ -13,6 +13,7 @@ import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.service.CouponPolicyService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * CouponPolicyController
@@ -28,8 +29,8 @@ public class CouponPolicyController {
 
 
     @GetMapping
-    public ResponseEntity<Page<GetCouponPolicyResponseDto>> getAllCouponPolicy(@PageableDefault(page = 0, size = 5) Pageable pageable) {
-        Page<GetCouponPolicyResponseDto> content = couponPolicyService.getCouponPolicyList(pageable);
+    public ResponseEntity<List<GetCouponPolicyResponseDto>> getAllCouponPolicy() {
+        List<GetCouponPolicyResponseDto> content = couponPolicyService.getCouponPolicyList();
         return ResponseEntity.ok().body(content);
     }
 

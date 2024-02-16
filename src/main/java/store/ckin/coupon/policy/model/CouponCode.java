@@ -18,7 +18,6 @@ import javax.validation.constraints.NotNull;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class CouponCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

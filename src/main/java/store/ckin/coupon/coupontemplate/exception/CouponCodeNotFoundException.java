@@ -1,4 +1,4 @@
-package store.ckin.coupon.coupon.exception;
+package store.ckin.coupon.coupontemplate.exception;
 
 /**
  * description:
