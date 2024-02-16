@@ -40,7 +40,7 @@ class CouponPolicyServiceTest {
     CouponPolicyRepository couponPolicyRepository;
     @MockBean
     CouponCodeRepository couponCodeRepository;
-
+    @MockBean
     ObjectMapper objectMapper;
 
     CouponCode couponCode;
@@ -50,7 +50,6 @@ class CouponPolicyServiceTest {
     @BeforeEach
     void setUp() {
         couponPolicyService = new CouponPolicyServiceImpl(couponPolicyRepository, couponCodeRepository);
-        objectMapper = new ObjectMapper();
         couponCode = new CouponCode(1L, "정액");
         couponPolicyRequestDto = new CreateCouponPolicyRequestDto();
         couponPolicyResponseDto = new GetCouponPolicyResponseDto(1L, 10000, 3000, null, 10000);

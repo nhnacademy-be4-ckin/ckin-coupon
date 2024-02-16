@@ -41,7 +41,7 @@ public class CouponTemplateController {
 
     @PostMapping
     public ResponseEntity<Void> createCouponTemplate(@Valid @RequestBody CreateCouponTemplateRequestDto couponRequestDto) {
-        couponTemplateService.createCouponPolicy(couponRequestDto);
+        couponTemplateService.createCouponTemplate(couponRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();

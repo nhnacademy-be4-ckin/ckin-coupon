@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
+import store.ckin.coupon.coupontemplate.exception.CouponPolicyNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
+import store.ckin.coupon.policy.exception.CouponCodeNotFoundException;
 import store.ckin.coupon.policy.repository.CouponCodeRepository;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
@@ -29,7 +31,9 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponPolicyRepository couponPolicyRepository;
     @Override
-    public void createCouponPolicy(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
+    public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
+        couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId())
+                .orElseThrow(CouponPolicyNotFoundException::new);
 
         couponTemplateRepository.save(CouponTemplate.builder()
                 .policyId(couponTemplateRequestDto.getPolicyId())

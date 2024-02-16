@@ -13,7 +13,7 @@ import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDt
  */
 public interface CouponTemplateService {
 
-    void createCouponPolicy(CreateCouponTemplateRequestDto couponRequestDto);
+    void createCouponTemplate(CreateCouponTemplateRequestDto couponRequestDto);
 
     Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable);
 
