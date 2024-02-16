@@ -35,8 +35,8 @@ public class CouponPolicyRepositoryImpl extends QuerydslRepositorySupport implem
 
 
     @Override
-    public Page<GetCouponPolicyResponseDto> getCouponPolicy(Pageable pageable) {
-        List<GetCouponPolicyResponseDto> results = from(couponPolicy)
+    public List<GetCouponPolicyResponseDto> getCouponPolicy() {
+        List<GetCouponPolicyResponseDto> response = from(couponPolicy)
                 .select(Projections.fields(GetCouponPolicyResponseDto.class,
                         couponPolicy.id,
                         couponPolicy.minOrderPrice,
@@ -44,10 +44,7 @@ public class CouponPolicyRepositoryImpl extends QuerydslRepositorySupport implem
                         couponPolicy.discountRate,
                         couponPolicy.maxDiscountPrice))
                 .where(couponPolicy.state.eq(true))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
                 .fetch();
-        long count = from(couponPolicy).stream().count();
-        return new PageImpl<>(results, pageable, count);
+        return response;
     }
 }

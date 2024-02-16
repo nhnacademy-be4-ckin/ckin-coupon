@@ -14,6 +14,8 @@ import store.ckin.coupon.policy.repository.CouponCodeRepository;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 import store.ckin.coupon.policy.service.CouponPolicyService;
 
+import java.util.List;
+
 /**
  * CouponPolicyServiceImpl
  *
@@ -43,7 +45,7 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
     }
 
     @Override
-    public Page<GetCouponPolicyResponseDto> getCouponPolicyList(Pageable pageable) {
-        return couponPolicyRepository.getCouponPolicy(pageable);
+    public List<GetCouponPolicyResponseDto> getCouponPolicyList() {
+        return couponPolicyRepository.getCouponPolicy();
     }
 }
