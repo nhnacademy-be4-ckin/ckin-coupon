@@ -6,7 +6,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
-import store.ckin.coupon.coupon.model.QCoupon;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
