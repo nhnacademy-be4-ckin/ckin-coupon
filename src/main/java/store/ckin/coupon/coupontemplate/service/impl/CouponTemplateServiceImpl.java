@@ -11,6 +11,8 @@ import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundExceptio
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
+import store.ckin.coupon.policy.repository.CouponCodeRepository;
+import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
 import java.util.Optional;
 
@@ -25,8 +27,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CouponTemplateServiceImpl implements CouponTemplateService {
     private final CouponTemplateRepository couponTemplateRepository;
+    private final CouponPolicyRepository couponPolicyRepository;
     @Override
     public void createCouponPolicy(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
+
         couponTemplateRepository.save(CouponTemplate.builder()
                 .policyId(couponTemplateRequestDto.getPolicyId())
                 .bookId(couponTemplateRequestDto.getBookId())
