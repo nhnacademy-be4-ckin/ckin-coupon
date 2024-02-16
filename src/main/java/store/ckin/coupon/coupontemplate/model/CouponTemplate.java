@@ -17,27 +17,21 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class CouponTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "coupontemplate_id")
     private Long id;
-
     @NotNull
     @Column(name = "couponpolicy_id")
     private Long policyId;
-
     @Column(name = "book_id")
     private Long bookId;
-
     @Column(name = "category_id")
     private Long categoryId;
-
     @NotNull
     @Column(name = "coupontemplate_name")
     private String name;
-
     @NotNull
     @Column(name = "coupontemplate_amount")
     private Long amount;

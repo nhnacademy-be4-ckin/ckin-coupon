@@ -58,6 +58,10 @@ class CouponPolicyRepositoryTest {
         List<GetCouponPolicyResponseDto> results = couponPolicyRepository.getCouponPolicy();
 
         Assertions.assertThat(results.get(0).getId()).isEqualTo(couponPolicy.getId());
+        Assertions.assertThat(results.get(0).getMinOrderPrice()).isEqualTo(couponPolicy.getMinOrderPrice());
+        Assertions.assertThat(results.get(0).getDiscountPrice()).isEqualTo(couponPolicy.getDiscountPrice());
+        Assertions.assertThat(results.get(0).getDiscountRate()).isEqualTo(couponPolicy.getDiscountRate());
+        Assertions.assertThat(results.get(0).getMaxDiscountPrice()).isEqualTo(couponPolicy.getMaxDiscountPrice());
     }
 
 
