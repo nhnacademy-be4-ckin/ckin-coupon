@@ -96,6 +96,64 @@ class CouponTemplateControllerTest {
     }
 
     @Test
+    @DisplayName("생일 쿠폰 템플릿 목록 조회 테스트")
+    void getBirthCouponTemplate() throws Exception {
+        GetCouponTemplateResponseDto birthCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, null, "1월 생일 쿠폰", 1L);
+
+        when(couponTemplateService.getBirthCouponTemplate())
+                .thenReturn(List.of(birthCouponTemplate));
+
+        mockMvc.perform(get("/couponTemplate/birth"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id",is(birthCouponTemplate.getId()), Long.class))
+                .andExpect(jsonPath("$[0].policyId",is(birthCouponTemplate.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$[0].bookId",is(birthCouponTemplate.getBookId()), Long.class))
+                .andExpect(jsonPath("$[0].categoryId",is(birthCouponTemplate.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$[0].name",equalTo(birthCouponTemplate.getName())))
+                .andExpect(jsonPath("$[0].amount",is(birthCouponTemplate.getAmount()), Long.class))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("도서 쿠폰 템플릿 목록 조회 테스트")
+    void getBookCouponTemplate() throws Exception {
+        GetCouponTemplateResponseDto bookCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, 1L, null, "해리포터 - 도서 쿠폰", 1L);
+
+        when(couponTemplateService.getBookCouponTemplate())
+                .thenReturn(List.of(bookCouponTemplate));
+
+        mockMvc.perform(get("/couponTemplate/book"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id",is(bookCouponTemplate.getId()), Long.class))
+                .andExpect(jsonPath("$[0].policyId",is(bookCouponTemplate.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$[0].bookId",is(bookCouponTemplate.getBookId()), Long.class))
+                .andExpect(jsonPath("$[0].categoryId",is(bookCouponTemplate.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$[0].name",equalTo(bookCouponTemplate.getName())))
+                .andExpect(jsonPath("$[0].amount",is(bookCouponTemplate.getAmount()), Long.class))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("카테고리 쿠폰 템플릿 목록 조회 테스트")
+    void getCategoryCouponTemplate() throws Exception {
+        GetCouponTemplateResponseDto categoryCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, 1L, "도서 - 카테고리 쿠폰", 1L);
+
+        when(couponTemplateService.getCategoryCouponTemplate())
+                .thenReturn(List.of(categoryCouponTemplate));
+
+        mockMvc.perform(get("/couponTemplate/category"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id",is(categoryCouponTemplate.getId()), Long.class))
+                .andExpect(jsonPath("$[0].policyId",is(categoryCouponTemplate.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$[0].bookId",is(categoryCouponTemplate.getBookId()), Long.class))
+                .andExpect(jsonPath("$[0].categoryId",is(categoryCouponTemplate.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$[0].name",equalTo(categoryCouponTemplate.getName())))
+                .andExpect(jsonPath("$[0].amount",is(categoryCouponTemplate.getAmount()), Long.class))
+                .andDo(print());
+    }
+
+
+    @Test
     @DisplayName("쿠폰 템플릿 등록 테스트: 성공")
     void createCouponTemplateTest() throws Exception {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
