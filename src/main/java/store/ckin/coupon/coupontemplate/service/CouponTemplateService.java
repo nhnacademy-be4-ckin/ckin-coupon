@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
+import java.util.List;
+
 /**
  * description:
  *
@@ -22,4 +24,6 @@ public interface CouponTemplateService {
     void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto);
 
     void deleteCouponTemplate(Long couponTemplateId);
+
+    List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
 }

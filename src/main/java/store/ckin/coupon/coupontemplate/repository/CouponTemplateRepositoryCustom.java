@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,4 +19,6 @@ public interface CouponTemplateRepositoryCustom {
     Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable);
 
     Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponId);
+
+    List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
 }

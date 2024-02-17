@@ -12,6 +12,7 @@ import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDt
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * description:
@@ -35,6 +36,13 @@ public class CouponTemplateController {
     @GetMapping("/{couponTemplateId}")
     public ResponseEntity<GetCouponTemplateResponseDto> getCouponTemplateById(@PathVariable("couponTemplateId") Long couponTemplateId) {
         GetCouponTemplateResponseDto content = couponTemplateService.getCouponTemplate(couponTemplateId);
+        return ResponseEntity.ok().body(content);
+    }
+
+    @GetMapping("/birth")
+    public ResponseEntity<List<GetCouponTemplateResponseDto>> getBirthCouponTemplate() {
+        List<GetCouponTemplateResponseDto> content = couponTemplateService.getBirthCouponTemplate();
+
         return ResponseEntity.ok().body(content);
     }
 

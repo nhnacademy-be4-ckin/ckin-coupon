@@ -16,6 +16,7 @@ import store.ckin.coupon.policy.exception.CouponCodeNotFoundException;
 import store.ckin.coupon.policy.repository.CouponCodeRepository;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,18 +31,12 @@ import java.util.Optional;
 public class CouponTemplateServiceImpl implements CouponTemplateService {
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponPolicyRepository couponPolicyRepository;
+
     @Override
     public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
-        couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId())
-                .orElseThrow(CouponPolicyNotFoundException::new);
+        couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId()).orElseThrow(CouponPolicyNotFoundException::new);
 
-        couponTemplateRepository.save(CouponTemplate.builder()
-                .policyId(couponTemplateRequestDto.getPolicyId())
-                .bookId(couponTemplateRequestDto.getBookId())
-                .categoryId(couponTemplateRequestDto.getCategoryId())
-                .name(couponTemplateRequestDto.getName())
-                .amount(couponTemplateRequestDto.getAmount())
-                .build());
+        couponTemplateRepository.save(CouponTemplate.builder().policyId(couponTemplateRequestDto.getPolicyId()).bookId(couponTemplateRequestDto.getBookId()).categoryId(couponTemplateRequestDto.getCategoryId()).name(couponTemplateRequestDto.getName()).amount(couponTemplateRequestDto.getAmount()).build());
 
     }
 
@@ -53,7 +48,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Override
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
         Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
-        if(optionalCoupon.isEmpty()) {
+        if (optionalCoupon.isEmpty()) {
             throw new CouponTemplateNotFoundException();
         }
         return optionalCoupon.get();
@@ -61,27 +56,25 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
 
     @Override
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
-        if(!couponTemplateRepository.existsById(couponTemplateId)) {
+        if (!couponTemplateRepository.existsById(couponTemplateId)) {
             throw new CouponTemplateNotFoundException();
         }
-        couponTemplateRepository.save(CouponTemplate.builder()
-                .id(couponTemplateId)
-                .policyId(couponRequestDto.getPolicyId())
-                .bookId(couponRequestDto.getBookId())
-                .categoryId(couponRequestDto.getCategoryId())
-                .name(couponRequestDto.getName())
-                .amount(couponRequestDto.getAmount())
-                .build());
+        couponTemplateRepository.save(CouponTemplate.builder().id(couponTemplateId).policyId(couponRequestDto.getPolicyId()).bookId(couponRequestDto.getBookId()).categoryId(couponRequestDto.getCategoryId()).name(couponRequestDto.getName()).amount(couponRequestDto.getAmount()).build());
     }
 
     @Override
     public void deleteCouponTemplate(Long couponId) {
         Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponId);
 
-        if(optionalCoupon.isEmpty()) {
+        if (optionalCoupon.isEmpty()) {
             throw new CouponTemplateNotFoundException();
         }
 
         couponTemplateRepository.delete(optionalCoupon.get());
+    }
+
+    @Override
+    public List<GetCouponTemplateResponseDto> getBirthCouponTemplate() {
+        return couponTemplateRepository.getBirthCouponTemplate();
     }
 }

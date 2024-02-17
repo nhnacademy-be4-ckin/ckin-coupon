@@ -61,4 +61,19 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                 .fetchOne();
         return Optional.of(results);
     }
+
+    @Override
+    public List<GetCouponTemplateResponseDto> getBirthCouponTemplate() {
+        List<GetCouponTemplateResponseDto> results = from(couponTemplate)
+                .select(Projections.fields(GetCouponTemplateResponseDto.class,
+                        couponTemplate.id,
+                        couponTemplate.policyId,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        couponTemplate.amount))
+                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNull()))
+                .fetch();
+        return results;
+    }
 }
