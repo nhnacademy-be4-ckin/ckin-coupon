@@ -125,6 +125,45 @@ class CouponTemplateServiceTest {
     }
 
     @Test
+    @DisplayName("생일 쿠폰 템플릿 목록 조회 테스트")
+    void testGetBirthCouponTemplate() {
+        GetCouponTemplateResponseDto birthCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, null, "1월 생일 쿠폰", 1L);
+
+        when(couponTemplateRepository.getBirthCouponTemplate()).thenReturn(List.of(birthCouponTemplate));
+
+        couponTemplateService.getBirthCouponTemplate();
+
+        verify(couponTemplateRepository, times(1))
+                .getBirthCouponTemplate();
+    }
+
+    @Test
+    @DisplayName("도서 쿠폰 템플릿 목록 조회 테스트")
+    void testGetBookCouponTemplate() {
+        GetCouponTemplateResponseDto bookCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, 1L, null, "해리포터 - 도서 쿠폰", 1L);
+
+        when(couponTemplateRepository.getBookCouponTemplate()).thenReturn(List.of(bookCouponTemplate));
+
+        couponTemplateService.getBookCouponTemplate();
+
+        verify(couponTemplateRepository, times(1))
+                .getBookCouponTemplate();
+    }
+
+    @Test
+    @DisplayName("카테고리 쿠폰 템플릿 목록 조회 테스트")
+    void testGetCategoryCouponTemplate() {
+        GetCouponTemplateResponseDto categoryCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, 1L, "도서 - 카테고리 쿠폰", 1L);
+
+        when(couponTemplateRepository.getCategoryTemplate()).thenReturn(List.of(categoryCouponTemplate));
+
+        couponTemplateService.getCategoryCouponTemplate();
+
+        verify(couponTemplateRepository, times(1))
+                .getCategoryTemplate();
+    }
+
+    @Test
     @DisplayName("쿠폰 템플릿 수정 테스트")
     void testUpdateCouponTemplate() {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
