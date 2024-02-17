@@ -21,4 +21,6 @@ public interface CouponTemplateRepositoryCustom {
     Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponId);
 
     List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
+
+    List<GetCouponTemplateResponseDto> getBookCouponTemplate();
 }

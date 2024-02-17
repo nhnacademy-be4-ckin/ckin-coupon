@@ -26,4 +26,6 @@ public interface CouponTemplateService {
     void deleteCouponTemplate(Long couponTemplateId);
 
     List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
+
+    List<GetCouponTemplateResponseDto> getBookCouponTemplate();
 }
