@@ -28,4 +28,6 @@ public interface CouponTemplateService {
     List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
 
     List<GetCouponTemplateResponseDto> getBookCouponTemplate();
+
+    List<GetCouponTemplateResponseDto> getCategoryCouponTemplate();
 }

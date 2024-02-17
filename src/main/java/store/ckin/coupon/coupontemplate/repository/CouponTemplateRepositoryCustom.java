@@ -23,4 +23,6 @@ public interface CouponTemplateRepositoryCustom {
     List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
 
     List<GetCouponTemplateResponseDto> getBookCouponTemplate();
+
+    List<GetCouponTemplateResponseDto> getCategoryTemplate();
 }

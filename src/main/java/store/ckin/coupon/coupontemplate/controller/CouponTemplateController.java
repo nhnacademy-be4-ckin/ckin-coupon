@@ -53,6 +53,13 @@ public class CouponTemplateController {
         return ResponseEntity.ok().body(content);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<List<GetCouponTemplateResponseDto>> getCategoryCouponTemplate() {
+        List<GetCouponTemplateResponseDto> content = couponTemplateService.getCategoryCouponTemplate();
+
+        return ResponseEntity.ok().body(content);
+    }
+
 
     @PostMapping
     public ResponseEntity<Void> createCouponTemplate(@Valid @RequestBody CreateCouponTemplateRequestDto couponRequestDto) {

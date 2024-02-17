@@ -82,4 +82,9 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     public List<GetCouponTemplateResponseDto> getBookCouponTemplate() {
         return couponTemplateRepository.getBookCouponTemplate();
     }
+
+    @Override
+    public List<GetCouponTemplateResponseDto> getCategoryCouponTemplate() {
+        return couponTemplateRepository.getCategoryTemplate();
+    }
 }
