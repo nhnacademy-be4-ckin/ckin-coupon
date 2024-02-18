@@ -65,7 +65,7 @@ class CouponTemplateControllerTest {
         when(couponTemplateService.getCouponTemplateList(pageable))
                 .thenReturn(page);
 
-        mockMvc.perform(get("/couponTemplate")
+        mockMvc.perform(get("/coupon/couponTemplate")
                         .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -84,7 +84,7 @@ class CouponTemplateControllerTest {
     void getCouponTemplateByIdTest() throws Exception {
         when(couponTemplateService.getCouponTemplate(anyLong())).thenReturn(couponTemplateResponseDto);
 
-        mockMvc.perform(get("/couponTemplate/{couponTemplateId}", 1L))
+        mockMvc.perform(get("/coupon/couponTemplate/{couponTemplateId}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id",is(couponTemplateResponseDto.getId()), Long.class))
                 .andExpect(jsonPath("$.policyId",is(couponTemplateResponseDto.getPolicyId()), Long.class))
@@ -99,18 +99,23 @@ class CouponTemplateControllerTest {
     @DisplayName("생일 쿠폰 템플릿 목록 조회 테스트")
     void getBirthCouponTemplate() throws Exception {
         GetCouponTemplateResponseDto birthCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, null, "1월 생일 쿠폰", 1L);
+        PageRequest pageable = PageRequest.of(0, 5);
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(birthCouponTemplate), pageable, 1);
 
-        when(couponTemplateService.getBirthCouponTemplate())
-                .thenReturn(List.of(birthCouponTemplate));
+        when(couponTemplateService.getBirthCouponTemplate(pageable))
+                .thenReturn(page);
 
-        mockMvc.perform(get("/couponTemplate/birth"))
+        mockMvc.perform(get("/coupon/couponTemplate/birth")
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id",is(birthCouponTemplate.getId()), Long.class))
-                .andExpect(jsonPath("$[0].policyId",is(birthCouponTemplate.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$[0].bookId",is(birthCouponTemplate.getBookId()), Long.class))
-                .andExpect(jsonPath("$[0].categoryId",is(birthCouponTemplate.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$[0].name",equalTo(birthCouponTemplate.getName())))
-                .andExpect(jsonPath("$[0].amount",is(birthCouponTemplate.getAmount()), Long.class))
+                .andExpect(jsonPath("$.content[0].id",is(birthCouponTemplate.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(birthCouponTemplate.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(birthCouponTemplate.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(birthCouponTemplate.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(birthCouponTemplate.getName())))
+                .andExpect(jsonPath("$.content[0].amount",is(birthCouponTemplate.getAmount()), Long.class))
                 .andDo(print());
     }
 
@@ -118,18 +123,23 @@ class CouponTemplateControllerTest {
     @DisplayName("도서 쿠폰 템플릿 목록 조회 테스트")
     void getBookCouponTemplate() throws Exception {
         GetCouponTemplateResponseDto bookCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, 1L, null, "해리포터 - 도서 쿠폰", 1L);
+        PageRequest pageable = PageRequest.of(0, 5);
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(bookCouponTemplate), pageable, 1);
 
-        when(couponTemplateService.getBookCouponTemplate())
-                .thenReturn(List.of(bookCouponTemplate));
+        when(couponTemplateService.getBookCouponTemplate(pageable))
+                .thenReturn(page);
 
-        mockMvc.perform(get("/couponTemplate/book"))
+        mockMvc.perform(get("/coupon/couponTemplate/book")
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id",is(bookCouponTemplate.getId()), Long.class))
-                .andExpect(jsonPath("$[0].policyId",is(bookCouponTemplate.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$[0].bookId",is(bookCouponTemplate.getBookId()), Long.class))
-                .andExpect(jsonPath("$[0].categoryId",is(bookCouponTemplate.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$[0].name",equalTo(bookCouponTemplate.getName())))
-                .andExpect(jsonPath("$[0].amount",is(bookCouponTemplate.getAmount()), Long.class))
+                .andExpect(jsonPath("$.content[0].id",is(bookCouponTemplate.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(bookCouponTemplate.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(bookCouponTemplate.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(bookCouponTemplate.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(bookCouponTemplate.getName())))
+                .andExpect(jsonPath("$.content[0].amount",is(bookCouponTemplate.getAmount()), Long.class))
                 .andDo(print());
     }
 
@@ -137,18 +147,23 @@ class CouponTemplateControllerTest {
     @DisplayName("카테고리 쿠폰 템플릿 목록 조회 테스트")
     void getCategoryCouponTemplate() throws Exception {
         GetCouponTemplateResponseDto categoryCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, 1L, "도서 - 카테고리 쿠폰", 1L);
+        PageRequest pageable = PageRequest.of(0, 5);
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(categoryCouponTemplate), pageable, 1);
 
-        when(couponTemplateService.getCategoryCouponTemplate())
-                .thenReturn(List.of(categoryCouponTemplate));
+        when(couponTemplateService.getCategoryCouponTemplate(pageable))
+                .thenReturn(page);
 
-        mockMvc.perform(get("/couponTemplate/category"))
+        mockMvc.perform(get("/coupon/couponTemplate/category")
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].id",is(categoryCouponTemplate.getId()), Long.class))
-                .andExpect(jsonPath("$[0].policyId",is(categoryCouponTemplate.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$[0].bookId",is(categoryCouponTemplate.getBookId()), Long.class))
-                .andExpect(jsonPath("$[0].categoryId",is(categoryCouponTemplate.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$[0].name",equalTo(categoryCouponTemplate.getName())))
-                .andExpect(jsonPath("$[0].amount",is(categoryCouponTemplate.getAmount()), Long.class))
+                .andExpect(jsonPath("$.content[0].id",is(categoryCouponTemplate.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(categoryCouponTemplate.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(categoryCouponTemplate.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(categoryCouponTemplate.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(categoryCouponTemplate.getName())))
+                .andExpect(jsonPath("$.content[0].amount",is(categoryCouponTemplate.getAmount()), Long.class))
                 .andDo(print());
     }
 
@@ -162,7 +177,7 @@ class CouponTemplateControllerTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "해리포터 전집");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        mockMvc.perform(post("/couponTemplate")
+        mockMvc.perform(post("/coupon/couponTemplate")
                 .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -173,7 +188,7 @@ class CouponTemplateControllerTest {
     @DisplayName("쿠폰 템플릿 등록 테스트: 실패")
     void createCouponTemplateTest_X() throws Exception {
 
-        mockMvc.perform(post("/couponTemplate")
+        mockMvc.perform(post("/coupon/couponTemplate")
                         .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
@@ -189,7 +204,7 @@ class CouponTemplateControllerTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "해리포터 전집");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        mockMvc.perform(put("/couponTemplate/{couponTemplateId}", 1L)
+        mockMvc.perform(put("/coupon/couponTemplate/{couponTemplateId}", 1L)
                         .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -200,7 +215,7 @@ class CouponTemplateControllerTest {
     @DisplayName("쿠폰 템플릿 수정 테스트: 실패")
     void updateCouponTemplateTest_X() throws Exception {
 
-        mockMvc.perform(put("/couponTemplate/{couponTemplateId}", 1L)
+        mockMvc.perform(put("/coupon/couponTemplate/{couponTemplateId}", 1L)
                         .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
@@ -211,7 +226,7 @@ class CouponTemplateControllerTest {
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void deleteCouponTemplateTest() throws Exception {
 
-        mockMvc.perform(delete("/couponTemplate/{couponTemplateId}", 1L))
+        mockMvc.perform(delete("/coupon/couponTemplate/{couponTemplateId}", 1L))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

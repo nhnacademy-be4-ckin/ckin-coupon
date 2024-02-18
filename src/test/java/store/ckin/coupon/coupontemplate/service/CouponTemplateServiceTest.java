@@ -128,39 +128,45 @@ class CouponTemplateServiceTest {
     @DisplayName("생일 쿠폰 템플릿 목록 조회 테스트")
     void testGetBirthCouponTemplate() {
         GetCouponTemplateResponseDto birthCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, null, "1월 생일 쿠폰", 1L);
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(birthCouponTemplate));
+        Pageable pageable = PageRequest.of(0, 5);
 
-        when(couponTemplateRepository.getBirthCouponTemplate()).thenReturn(List.of(birthCouponTemplate));
+        when(couponTemplateRepository.getBirthCouponTemplate(pageable)).thenReturn(page);
 
-        couponTemplateService.getBirthCouponTemplate();
+        couponTemplateService.getBirthCouponTemplate(pageable);
 
         verify(couponTemplateRepository, times(1))
-                .getBirthCouponTemplate();
+                .getBirthCouponTemplate(pageable);
     }
 
     @Test
     @DisplayName("도서 쿠폰 템플릿 목록 조회 테스트")
     void testGetBookCouponTemplate() {
         GetCouponTemplateResponseDto bookCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, 1L, null, "해리포터 - 도서 쿠폰", 1L);
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(bookCouponTemplate));
+        Pageable pageable = PageRequest.of(0, 5);
 
-        when(couponTemplateRepository.getBookCouponTemplate()).thenReturn(List.of(bookCouponTemplate));
+        when(couponTemplateRepository.getBookCouponTemplate(pageable)).thenReturn(page);
 
-        couponTemplateService.getBookCouponTemplate();
+        couponTemplateService.getBookCouponTemplate(pageable);
 
         verify(couponTemplateRepository, times(1))
-                .getBookCouponTemplate();
+                .getBookCouponTemplate(pageable);
     }
 
     @Test
     @DisplayName("카테고리 쿠폰 템플릿 목록 조회 테스트")
     void testGetCategoryCouponTemplate() {
         GetCouponTemplateResponseDto categoryCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, 1L, "도서 - 카테고리 쿠폰", 1L);
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(categoryCouponTemplate));
+        Pageable pageable = PageRequest.of(0, 5);
 
-        when(couponTemplateRepository.getCategoryTemplate()).thenReturn(List.of(categoryCouponTemplate));
+        when(couponTemplateRepository.getCategoryTemplate(pageable)).thenReturn(page);
 
-        couponTemplateService.getCategoryCouponTemplate();
+        couponTemplateService.getCategoryCouponTemplate(pageable);
 
         verify(couponTemplateRepository, times(1))
-                .getCategoryTemplate();
+                .getCategoryTemplate(pageable);
     }
 
     @Test

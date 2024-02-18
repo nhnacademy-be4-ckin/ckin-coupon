@@ -98,43 +98,46 @@ class CouponTemplateRepositoryTest {
     @Test
     @DisplayName("생일 쿠폰 템플릿 목록 가져오기 테스트")
     void testGetBirthCouponTemplate() {
-        List<GetCouponTemplateResponseDto> results = couponTemplateRepository.getBirthCouponTemplate();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getBirthCouponTemplate(pageable);
 
         Assertions.assertThat(results).isNotNull();
-        Assertions.assertThat(results.get(0).getId()).isNotNull();
-        Assertions.assertThat(results.get(0).getPolicyId()).isEqualTo(birthCouponTemplate.getPolicyId());
-        Assertions.assertThat(results.get(0).getBookId()).isEqualTo(birthCouponTemplate.getBookId());
-        Assertions.assertThat(results.get(0).getCategoryId()).isEqualTo(birthCouponTemplate.getCategoryId());
-        Assertions.assertThat(results.get(0).getName()).isEqualTo(birthCouponTemplate.getName());
-        Assertions.assertThat(results.get(0).getAmount()).isEqualTo(birthCouponTemplate.getAmount());
+        Assertions.assertThat(results.getContent().get(0).getId()).isNotNull();
+        Assertions.assertThat(results.getContent().get(0).getPolicyId()).isEqualTo(birthCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.getContent().get(0).getBookId()).isEqualTo(birthCouponTemplate.getBookId());
+        Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(birthCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.getContent().get(0).getName()).isEqualTo(birthCouponTemplate.getName());
+        Assertions.assertThat(results.getContent().get(0).getAmount()).isEqualTo(birthCouponTemplate.getAmount());
     }
 
     @Test
     @DisplayName("도서 쿠폰 템플릿 목록 가져오기 테스트")
     void testGetBookCouponTemplate() {
-        List<GetCouponTemplateResponseDto> results = couponTemplateRepository.getBookCouponTemplate();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getBookCouponTemplate(pageable);
 
         Assertions.assertThat(results).isNotNull();
-        Assertions.assertThat(results.get(0).getId()).isNotNull();
-        Assertions.assertThat(results.get(0).getPolicyId()).isEqualTo(bookCouponTemplate.getPolicyId());
-        Assertions.assertThat(results.get(0).getBookId()).isEqualTo(bookCouponTemplate.getBookId());
-        Assertions.assertThat(results.get(0).getCategoryId()).isEqualTo(bookCouponTemplate.getCategoryId());
-        Assertions.assertThat(results.get(0).getName()).isEqualTo(bookCouponTemplate.getName());
-        Assertions.assertThat(results.get(0).getAmount()).isEqualTo(bookCouponTemplate.getAmount());
+        Assertions.assertThat(results.getContent().get(0).getId()).isNotNull();
+        Assertions.assertThat(results.getContent().get(0).getPolicyId()).isEqualTo(bookCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.getContent().get(0).getBookId()).isEqualTo(bookCouponTemplate.getBookId());
+        Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(bookCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.getContent().get(0).getName()).isEqualTo(bookCouponTemplate.getName());
+        Assertions.assertThat(results.getContent().get(0).getAmount()).isEqualTo(bookCouponTemplate.getAmount());
     }
 
     @Test
     @DisplayName("카테고리 쿠폰 템플릿 목록 가져오기 테스트")
     void testGetCategoryCouponTemplate() {
-        List<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCategoryTemplate();
+        Pageable pageable = PageRequest.of(0, 5);
+        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCategoryTemplate(pageable);
 
         Assertions.assertThat(results).isNotNull();
-        Assertions.assertThat(results.get(0).getId()).isNotNull();
-        Assertions.assertThat(results.get(0).getPolicyId()).isEqualTo(categoryCouponTemplate.getPolicyId());
-        Assertions.assertThat(results.get(0).getBookId()).isEqualTo(categoryCouponTemplate.getBookId());
-        Assertions.assertThat(results.get(0).getCategoryId()).isEqualTo(categoryCouponTemplate.getCategoryId());
-        Assertions.assertThat(results.get(0).getName()).isEqualTo(categoryCouponTemplate.getName());
-        Assertions.assertThat(results.get(0).getAmount()).isEqualTo(categoryCouponTemplate.getAmount());
+        Assertions.assertThat(results.getContent().get(0).getId()).isNotNull();
+        Assertions.assertThat(results.getContent().get(0).getPolicyId()).isEqualTo(categoryCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.getContent().get(0).getBookId()).isEqualTo(categoryCouponTemplate.getBookId());
+        Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(categoryCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.getContent().get(0).getName()).isEqualTo(categoryCouponTemplate.getName());
+        Assertions.assertThat(results.getContent().get(0).getAmount()).isEqualTo(categoryCouponTemplate.getAmount());
     }
 
 }
