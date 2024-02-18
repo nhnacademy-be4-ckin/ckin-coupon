@@ -20,9 +20,9 @@ public interface CouponTemplateRepositoryCustom {
 
     Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponId);
 
-    List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
+    Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable);
 
-    List<GetCouponTemplateResponseDto> getBookCouponTemplate();
+    Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable);
 
-    List<GetCouponTemplateResponseDto> getCategoryTemplate();
+    Page<GetCouponTemplateResponseDto> getCategoryTemplate(Pageable pageable);
 }

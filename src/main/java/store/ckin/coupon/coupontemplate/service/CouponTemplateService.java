@@ -25,9 +25,9 @@ public interface CouponTemplateService {
 
     void deleteCouponTemplate(Long couponTemplateId);
 
-    List<GetCouponTemplateResponseDto> getBirthCouponTemplate();
+    Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable);
 
-    List<GetCouponTemplateResponseDto> getBookCouponTemplate();
+    Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable);
 
-    List<GetCouponTemplateResponseDto> getCategoryCouponTemplate();
+    Page<GetCouponTemplateResponseDto> getCategoryCouponTemplate(Pageable pageable);
 }

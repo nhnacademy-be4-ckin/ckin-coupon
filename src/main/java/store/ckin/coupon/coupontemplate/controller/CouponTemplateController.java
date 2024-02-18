@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/couponTemplate")
+@RequestMapping("/coupon/couponTemplate")
 public class CouponTemplateController {
     private final CouponTemplateService couponTemplateService;
 
@@ -40,22 +40,22 @@ public class CouponTemplateController {
     }
 
     @GetMapping("/birth")
-    public ResponseEntity<List<GetCouponTemplateResponseDto>> getBirthCouponTemplate() {
-        List<GetCouponTemplateResponseDto> content = couponTemplateService.getBirthCouponTemplate();
+    public ResponseEntity<Page<GetCouponTemplateResponseDto>> getBirthCouponTemplate(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+        Page<GetCouponTemplateResponseDto> content = couponTemplateService.getBirthCouponTemplate(pageable);
 
         return ResponseEntity.ok().body(content);
     }
 
     @GetMapping("/book")
-    public ResponseEntity<List<GetCouponTemplateResponseDto>> getBookCouponTemplate() {
-        List<GetCouponTemplateResponseDto> content = couponTemplateService.getBookCouponTemplate();
+    public ResponseEntity<Page<GetCouponTemplateResponseDto>> getBookCouponTemplate(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+        Page<GetCouponTemplateResponseDto> content = couponTemplateService.getBookCouponTemplate(pageable);
 
         return ResponseEntity.ok().body(content);
     }
 
     @GetMapping("/category")
-    public ResponseEntity<List<GetCouponTemplateResponseDto>> getCategoryCouponTemplate() {
-        List<GetCouponTemplateResponseDto> content = couponTemplateService.getCategoryCouponTemplate();
+    public ResponseEntity<Page<GetCouponTemplateResponseDto>> getCategoryCouponTemplate(@PageableDefault(page = 0, size = 5) Pageable pageable) {
+        Page<GetCouponTemplateResponseDto> content = couponTemplateService.getCategoryCouponTemplate(pageable);
 
         return ResponseEntity.ok().body(content);
     }

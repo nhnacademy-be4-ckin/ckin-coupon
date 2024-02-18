@@ -23,7 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/couponPolicy")
+@RequestMapping("/coupon/couponPolicy")
 public class CouponPolicyController {
     private final CouponPolicyService couponPolicyService;
 

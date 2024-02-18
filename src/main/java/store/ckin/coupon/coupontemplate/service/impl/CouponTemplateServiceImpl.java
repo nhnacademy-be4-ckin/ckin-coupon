@@ -74,17 +74,17 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     }
 
     @Override
-    public List<GetCouponTemplateResponseDto> getBirthCouponTemplate() {
-        return couponTemplateRepository.getBirthCouponTemplate();
+    public Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable) {
+        return couponTemplateRepository.getBirthCouponTemplate(pageable);
     }
 
     @Override
-    public List<GetCouponTemplateResponseDto> getBookCouponTemplate() {
-        return couponTemplateRepository.getBookCouponTemplate();
+    public Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable) {
+        return couponTemplateRepository.getBookCouponTemplate(pageable);
     }
 
     @Override
-    public List<GetCouponTemplateResponseDto> getCategoryCouponTemplate() {
-        return couponTemplateRepository.getCategoryTemplate();
+    public Page<GetCouponTemplateResponseDto> getCategoryCouponTemplate(Pageable pageable) {
+        return couponTemplateRepository.getCategoryTemplate(pageable);
     }
 }

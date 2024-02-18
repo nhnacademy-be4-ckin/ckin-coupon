@@ -63,7 +63,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
     }
 
     @Override
-    public List<GetCouponTemplateResponseDto> getBirthCouponTemplate() {
+    public Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable) {
         List<GetCouponTemplateResponseDto> results = from(couponTemplate)
                 .select(Projections.fields(GetCouponTemplateResponseDto.class,
                         couponTemplate.id,
@@ -73,12 +73,15 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.name,
                         couponTemplate.amount))
                 .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNull()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
-        return results;
+        long count = from(couponTemplate).stream().count();
+        return new PageImpl<>(results, pageable, count);
     }
 
     @Override
-    public List<GetCouponTemplateResponseDto> getBookCouponTemplate() {
+    public Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable) {
         List<GetCouponTemplateResponseDto> results = from(couponTemplate)
                 .select(Projections.fields(GetCouponTemplateResponseDto.class,
                         couponTemplate.id,
@@ -88,12 +91,15 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.name,
                         couponTemplate.amount))
                 .where(couponTemplate.bookId.isNotNull().and(couponTemplate.categoryId.isNull()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
-        return results;
+        long count = from(couponTemplate).stream().count();
+        return new PageImpl<>(results, pageable, count);
     }
 
     @Override
-    public List<GetCouponTemplateResponseDto> getCategoryTemplate() {
+    public Page<GetCouponTemplateResponseDto> getCategoryTemplate(Pageable pageable) {
         List<GetCouponTemplateResponseDto> results = from(couponTemplate)
                 .select(Projections.fields(GetCouponTemplateResponseDto.class,
                         couponTemplate.id,
@@ -103,7 +109,10 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.name,
                         couponTemplate.amount))
                 .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
-        return results;
+        long count = from(couponTemplate).stream().count();
+        return new PageImpl<>(results, pageable, count);
     }
 }
