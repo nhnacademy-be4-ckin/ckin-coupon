@@ -45,4 +45,10 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
+    @Override
+    public Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable) {
+        return couponRepository.getBirthCouponAll(pageable);
+
+    }
+
 }

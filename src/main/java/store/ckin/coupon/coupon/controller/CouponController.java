@@ -42,4 +42,11 @@ public class CouponController {
         return ResponseEntity.ok().body(content);
     }
 
+    @GetMapping("/birth")
+    public ResponseEntity<Page<GetCouponResponseDto>> getBirthCouponAll(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<GetCouponResponseDto> content = couponService.getBirthCouponAll(pageable);
+
+        return ResponseEntity.ok().body(content);
+    }
+
 }
