@@ -49,4 +49,11 @@ public class CouponController {
         return ResponseEntity.ok().body(content);
     }
 
+    @GetMapping("/book")
+    public ResponseEntity<Page<GetCouponResponseDto>> getBookCouponAll(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<GetCouponResponseDto> content = couponService.getBookCouponAll(pageable);
+
+        return ResponseEntity.ok().body(content);
+    }
+
 }

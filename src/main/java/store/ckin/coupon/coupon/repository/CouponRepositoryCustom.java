@@ -18,4 +18,6 @@ public interface CouponRepositoryCustom {
     Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId);
 
     Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable);
+
+    Page<GetCouponResponseDto> getBookCouponAll(Pageable pageable);
 }
