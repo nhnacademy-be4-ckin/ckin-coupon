@@ -15,7 +15,8 @@ public interface CouponService {
 
     void createCouponTemplate(CreateCouponRequestDto couponRequestDto);
 
-    Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId);
+    Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId);
+    Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId);
 
     Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable);
 

@@ -41,10 +41,16 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId) {
+    public Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId) {
         //TODO: 회원 아이디가 존재하는지 확인
-        return couponRepository.getCouponListByMember(pageable, memberId);
+        return couponRepository.getUsedCouponByMember(pageable, memberId);
 
+    }
+
+    @Override
+    public Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId) {
+        //TODO: 회원 아이디가 존재하는지 확인
+        return couponRepository.getUnUsedCouponByMember(pageable, memberId);
     }
 
     @Transactional(readOnly = true)

@@ -15,7 +15,8 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 public interface CouponRepositoryCustom {
-    Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId);
+    Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId);
+    Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId);
 
     Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable);
 

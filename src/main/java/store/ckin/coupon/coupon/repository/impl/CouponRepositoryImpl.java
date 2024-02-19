@@ -33,7 +33,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
 
     @Override
-    public Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId) {
+    public Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId) {
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
@@ -49,6 +49,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.issueDate,
                         coupon.usedDate))
                         .where(coupon.memberId.eq(memberId))
+                .where(coupon.usedDate.isNull())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -57,6 +58,38 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable, count);
+    }
+
+    @Override
+    public Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId) {
+        List<GetCouponResponseDto> results = from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(new QGetCouponResponseDto(
+                        coupon.id,
+                        coupon.memberId,
+                        coupon.couponTemplateId,
+                        couponTemplate.policyId,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        coupon.expirationDate,
+                        coupon.issueDate,
+                        coupon.usedDate))
+                .where(coupon.memberId.eq(memberId))
+                .where(coupon.usedDate.isNotNull())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long count = from(coupon)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(coupon.count())
+                .where(coupon.memberId.eq(memberId))
+                .where(coupon.usedDate.isNotNull())
                 .fetchOne();
 
         return new PageImpl<>(results, pageable, count);
