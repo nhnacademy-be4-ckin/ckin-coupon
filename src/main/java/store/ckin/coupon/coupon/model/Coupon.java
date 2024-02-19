@@ -23,7 +23,7 @@ import java.util.Date;
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "coupopn_id")
+    @Column(name = "coupon_id")
     private Long id;
     @NotNull
     @Column(name = "member_id")

@@ -39,4 +39,10 @@ public class CouponServiceImpl implements CouponService {
                 .build());
     }
 
+    @Override
+    public Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId) {
+        return couponRepository.getCouponListByMember(pageable, memberId);
+
+    }
+
 }

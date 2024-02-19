@@ -6,9 +6,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
+import store.ckin.coupon.coupon.dto.response.QGetCouponResponseDto;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.model.QCoupon;
 import store.ckin.coupon.coupon.repository.CouponRepositoryCustom;
+import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
 
 import java.util.List;
@@ -28,5 +30,34 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     }
 
     QCoupon coupon = QCoupon.coupon;
+    QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
 
+    @Override
+    public Page<GetCouponResponseDto> getCouponListByMember(Pageable pageable, Long memberId) {
+        List<GetCouponResponseDto> results = from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(new QGetCouponResponseDto(
+                        coupon.id,
+                        coupon.memberId,
+                        coupon.couponTemplateId,
+                        couponTemplate.policyId,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        coupon.expirationDate,
+                        coupon.issueDate,
+                        coupon.usedDate))
+                        .where(coupon.memberId.eq(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long count = from(coupon)
+                .select(coupon.count())
+                .where(coupon.memberId.eq(memberId))
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable, count);
+    }
 }
