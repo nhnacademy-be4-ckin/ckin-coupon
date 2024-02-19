@@ -71,4 +71,12 @@ public class CouponController {
         return ResponseEntity.ok().body(content);
     }
 
+    @PutMapping("{couponId}")
+    public ResponseEntity<Void> updateCouponUsedDate(@PathVariable("couponId") Long couponId) {
+        couponService.updateCouponUsedDate(couponId);
+
+        return ResponseEntity.ok()
+                .build();
+    }
+
 }

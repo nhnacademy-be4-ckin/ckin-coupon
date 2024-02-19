@@ -6,5 +6,5 @@ package store.ckin.coupon.coupon.exception;
  * @author : gaeun
  * @version : 2024. 02. 14
  */
-public class CouponTemplateNotFoundException extends RuntimeException {
+public class CouponNotFoundException extends RuntimeException {
 }

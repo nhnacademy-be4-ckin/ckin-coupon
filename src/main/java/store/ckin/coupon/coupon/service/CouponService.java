@@ -23,4 +23,6 @@ public interface CouponService {
     Page<GetCouponResponseDto> getBookCouponAll(Pageable pageable);
 
     Page<GetCouponResponseDto> getCategoryCouponAll(Pageable pageable);
+
+    void updateCouponUsedDate(Long couponId);
 }
