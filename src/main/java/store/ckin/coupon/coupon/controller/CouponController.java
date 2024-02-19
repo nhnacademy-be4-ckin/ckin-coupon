@@ -56,4 +56,11 @@ public class CouponController {
         return ResponseEntity.ok().body(content);
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<Page<GetCouponResponseDto>> getCategoryCouponAll(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<GetCouponResponseDto> content = couponService.getCategoryCouponAll(pageable);
+
+        return ResponseEntity.ok().body(content);
+    }
+
 }

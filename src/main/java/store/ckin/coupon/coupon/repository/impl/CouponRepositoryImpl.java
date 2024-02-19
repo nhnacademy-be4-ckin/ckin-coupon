@@ -123,4 +123,35 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
 
         return new PageImpl<>(results, pageable, count);
     }
+
+    @Override
+    public Page<GetCouponResponseDto> getCategoryCouponAll(Pageable pageable) {
+        List<GetCouponResponseDto> results = from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(new QGetCouponResponseDto(
+                        coupon.id,
+                        coupon.memberId,
+                        coupon.couponTemplateId,
+                        couponTemplate.policyId,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        coupon.expirationDate,
+                        coupon.issueDate,
+                        coupon.usedDate))
+                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long count = from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(coupon.count())
+                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
+                .fetchOne();
+
+        return new PageImpl<>(results, pageable, count);
+    }
 }

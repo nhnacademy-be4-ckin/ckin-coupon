@@ -20,4 +20,6 @@ public interface CouponRepositoryCustom {
     Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable);
 
     Page<GetCouponResponseDto> getBookCouponAll(Pageable pageable);
+
+    Page<GetCouponResponseDto> getCategoryCouponAll(Pageable pageable);
 }
