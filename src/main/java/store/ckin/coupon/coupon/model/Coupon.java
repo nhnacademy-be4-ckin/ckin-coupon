@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * description:
+ * Coupon
  *
  * @author : gaeun
  * @version : 2024. 02. 15

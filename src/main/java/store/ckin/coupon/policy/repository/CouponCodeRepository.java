@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import store.ckin.coupon.policy.model.CouponCode;
 
 /**
- * description:
+ * CouponCodeRepository
  *
  * @author : gaeun
  * @version : 2024. 02. 10

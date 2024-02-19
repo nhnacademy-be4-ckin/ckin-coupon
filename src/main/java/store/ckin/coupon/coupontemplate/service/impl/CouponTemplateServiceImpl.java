@@ -34,7 +34,8 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Transactional
     @Override
     public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
-        couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId()).orElseThrow(CouponPolicyNotFoundException::new);
+        couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId())
+                .orElseThrow(() -> new CouponPolicyNotFoundException(couponTemplateRequestDto.getPolicyId()));
 
         couponTemplateRepository.save(CouponTemplate.builder()
                 .policyId(couponTemplateRequestDto.getPolicyId())
@@ -55,7 +56,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
         Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
         if (optionalCoupon.isEmpty()) {
-            throw new CouponTemplateNotFoundException();
+            throw new CouponTemplateNotFoundException(couponTemplateId);
         }
         return optionalCoupon.get();
     }
@@ -63,7 +64,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Override
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
         if (!couponTemplateRepository.existsById(couponTemplateId)) {
-            throw new CouponTemplateNotFoundException();
+            throw new CouponTemplateNotFoundException(couponTemplateId);
         }
         couponTemplateRepository.save(CouponTemplate.builder().id(couponTemplateId)
                 .policyId(couponRequestDto.getPolicyId())
@@ -75,11 +76,11 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     }
     @Transactional
     @Override
-    public void deleteCouponTemplate(Long couponId) {
-        Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponId);
+    public void deleteCouponTemplate(Long couponTemplateId) {
+        Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponTemplateId);
 
         if (optionalCoupon.isEmpty()) {
-            throw new CouponTemplateNotFoundException();
+            throw new CouponTemplateNotFoundException(couponTemplateId);
         }
 
         couponTemplateRepository.delete(optionalCoupon.get());

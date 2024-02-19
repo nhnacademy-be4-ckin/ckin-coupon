@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * description:
+ * CouponTemplate
  *
  * @author : gaeun
  * @version : 2024. 02. 15

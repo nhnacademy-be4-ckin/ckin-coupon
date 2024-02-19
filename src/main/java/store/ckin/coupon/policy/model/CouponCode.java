@@ -24,7 +24,7 @@ public class CouponCode {
     private Long id;
 
     @NotNull
-    @Column(name="couponcode_name")
+    @Column(name = "couponcode_name")
     private String name;
 
     public CouponCode(String name) {

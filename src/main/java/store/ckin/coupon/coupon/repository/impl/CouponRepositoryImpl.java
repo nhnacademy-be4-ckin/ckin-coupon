@@ -18,18 +18,27 @@ import java.util.Optional;
 
 
 /**
- * description:
+ * CouponRepositoryImpl
  *
  * @author : gaeun
  * @version : 2024. 02. 13
  */
 public class CouponRepositoryImpl extends QuerydslRepositorySupport implements CouponRepositoryCustom {
 
+    /**
+     * Instantiates a new Coupon repository.
+     */
     public CouponRepositoryImpl() {
         super(Coupon.class);
     }
 
+    /**
+     * The Coupon.
+     */
     QCoupon coupon = QCoupon.coupon;
+    /**
+     * The Coupon template.
+     */
     QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
 
     @Override
@@ -48,7 +57,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.expirationDate,
                         coupon.issueDate,
                         coupon.usedDate))
-                        .where(coupon.memberId.eq(memberId))
+                .where(coupon.memberId.eq(memberId))
                 .where(coupon.usedDate.isNull())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

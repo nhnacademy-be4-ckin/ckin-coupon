@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 /**
- * description:
+ * 쿠폰 템플릿을 생성할 때 사용하는 dto 입니다.
  *
  * @author : gaeun
  * @version : 2024. 02. 08

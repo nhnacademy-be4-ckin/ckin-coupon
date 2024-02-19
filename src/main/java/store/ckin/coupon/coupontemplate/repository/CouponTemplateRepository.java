@@ -5,7 +5,7 @@ import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.impl.CouponTemplateRepositoryImpl;
 
 /**
- * description:
+ * CouponTemplateRepository
  *
  * @author : gaeun
  * @version : 2024. 02. 08

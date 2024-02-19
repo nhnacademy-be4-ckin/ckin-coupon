@@ -16,7 +16,7 @@ import java.util.Optional;
 
 
 /**
- * description:
+ * CouponTemplateRepositoryImpl
  *
  * @author : gaeun
  * @version : 2024. 02. 13

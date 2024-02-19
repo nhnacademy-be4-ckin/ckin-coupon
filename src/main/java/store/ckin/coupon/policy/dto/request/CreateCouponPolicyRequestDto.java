@@ -8,7 +8,7 @@ import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 
 /**
- * description:
+ * 쿠폰 정책을 생성하는 dto 입니다.
  *
  * @author : gaeun
  * @version : 2024. 02. 08

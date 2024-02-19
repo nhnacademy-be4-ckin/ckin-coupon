@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
- * description:
+ * 쿠폰 생성시 사용하는 dto 입니다.
  *
  * @author : gaeun
  * @version : 2024. 02. 08

@@ -86,7 +86,7 @@ class CouponTemplateServiceTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        when(couponPolicyRepository.findById(anyLong())).thenThrow(new CouponPolicyNotFoundException());
+        when(couponPolicyRepository.findById(anyLong())).thenThrow(new CouponPolicyNotFoundException(couponPolicy.getId()));
 
         assertThrows(CouponPolicyNotFoundException.class, () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
     }

@@ -8,7 +8,7 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 
 /**
- * GetCouponPolicyResponseDto
+ * 쿠폰 정책을 반환하는 dto 입니다.
  *
  * @author : gaeun
  * @version : 2024. 02. 12

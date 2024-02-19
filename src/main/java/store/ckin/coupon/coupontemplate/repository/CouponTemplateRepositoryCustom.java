@@ -16,13 +16,43 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 public interface CouponTemplateRepositoryCustom {
+    /**
+     * 모든 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
+     *
+     * @param pageable the pageable
+     * @return the coupon template list
+     */
     Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable);
 
+    /**
+     * 아이디로 쿠폰 템플릿을 조회하는 메서드 입니다.
+     *
+     * @param couponId the coupon id
+     * @return the coupon template
+     */
     Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponId);
 
+    /**
+     * 생일 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
+     *
+     * @param pageable the pageable
+     * @return the birth coupon template
+     */
     Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable);
 
+    /**
+     * 도서 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
+     *
+     * @param pageable the pageable
+     * @return the book coupon template
+     */
     Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable);
 
+    /**
+     * 카테고리 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
+     *
+     * @param pageable the pageable
+     * @return the category template
+     */
     Page<GetCouponTemplateResponseDto> getCategoryTemplate(Pageable pageable);
 }

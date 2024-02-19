@@ -28,12 +28,23 @@ public class CouponPolicyController {
     private final CouponPolicyService couponPolicyService;
 
 
+    /**
+     * 모든 쿠폰 정책 목록을 반환하는 메서드 입니다.
+     *
+     * @return the all coupon policy
+     */
     @GetMapping
     public ResponseEntity<List<GetCouponPolicyResponseDto>> getAllCouponPolicy() {
         List<GetCouponPolicyResponseDto> content = couponPolicyService.getCouponPolicyList();
         return ResponseEntity.ok().body(content);
     }
 
+    /**
+     * 쿠폰 정책을 생성하는 메서드 입니다.
+     *
+     * @param policyRequestDto the policy request dto
+     * @return the response entity
+     */
     @PostMapping
     public ResponseEntity<Void> createCouponPolicy(@Valid @RequestBody CreateCouponPolicyRequestDto policyRequestDto) {
         couponPolicyService.createCouponPolicy(policyRequestDto);

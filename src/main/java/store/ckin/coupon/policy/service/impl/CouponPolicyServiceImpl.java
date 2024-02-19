@@ -23,15 +23,16 @@ import java.util.List;
  * @version : 2024. 02. 08
  */
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CouponPolicyServiceImpl implements CouponPolicyService {
     private final CouponPolicyRepository couponPolicyRepository;
     private final CouponCodeRepository couponCodeRepository;
+
     @Override
+    @Transactional
     public void createCouponPolicy(CreateCouponPolicyRequestDto policyRequestDto) {
         CouponCode couponCode = couponCodeRepository.findById(policyRequestDto.getCouponCodeId())
-                .orElseThrow(CouponCodeNotFoundException::new);
+                .orElseThrow(() -> new CouponCodeNotFoundException(policyRequestDto.getCouponCodeId()));
 
         couponPolicyRepository.save(CouponPolicy.builder()
                 .couponCode(couponCode)
@@ -45,6 +46,7 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<GetCouponPolicyResponseDto> getCouponPolicyList() {
         return couponPolicyRepository.getCouponPolicy();
     }

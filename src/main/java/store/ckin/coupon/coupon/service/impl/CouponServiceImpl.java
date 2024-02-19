@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Optional;
 
 /**
- * description:
+ * CouponServiceImpl
  *
  * @author : gaeun
  * @version : 2024. 02. 15
@@ -28,7 +28,7 @@ public class CouponServiceImpl implements CouponService {
 
     @Transactional
     @Override
-    public void createCouponTemplate(CreateCouponRequestDto couponRequestDto) {
+    public void createCoupon(CreateCouponRequestDto couponRequestDto) {
         couponRepository.save(Coupon.builder()
                 .memberId(couponRequestDto.getMemberId())
                 .couponTemplateId(couponRequestDto.getCouponTemplateId())
@@ -73,8 +73,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
     public void updateCouponUsedDate(Long couponId) {
         Optional<Coupon> coupon = couponRepository.findById(couponId);
-        if(coupon.isEmpty()) {
-            throw new CouponNotFoundException();
+        if (coupon.isEmpty()) {
+            throw new CouponNotFoundException(couponId);
         }
 
         couponRepository.save(Coupon.builder()
