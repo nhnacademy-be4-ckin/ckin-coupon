@@ -26,25 +26,31 @@ import java.util.Optional;
  * @version : 2024. 02. 15
  */
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CouponTemplateServiceImpl implements CouponTemplateService {
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponPolicyRepository couponPolicyRepository;
 
+    @Transactional
     @Override
     public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
         couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId()).orElseThrow(CouponPolicyNotFoundException::new);
 
-        couponTemplateRepository.save(CouponTemplate.builder().policyId(couponTemplateRequestDto.getPolicyId()).bookId(couponTemplateRequestDto.getBookId()).categoryId(couponTemplateRequestDto.getCategoryId()).name(couponTemplateRequestDto.getName()).amount(couponTemplateRequestDto.getAmount()).build());
+        couponTemplateRepository.save(CouponTemplate.builder()
+                .policyId(couponTemplateRequestDto.getPolicyId())
+                .bookId(couponTemplateRequestDto.getBookId())
+                .categoryId(couponTemplateRequestDto.getCategoryId())
+                .name(couponTemplateRequestDto.getName())
+                .amount(couponTemplateRequestDto.getAmount())
+                .build());
 
     }
-
+    @Transactional
     @Override
     public Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable) {
         return couponTemplateRepository.getCouponTemplateList(pageable);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
         Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
@@ -53,15 +59,21 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         }
         return optionalCoupon.get();
     }
-
+    @Transactional
     @Override
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
         if (!couponTemplateRepository.existsById(couponTemplateId)) {
             throw new CouponTemplateNotFoundException();
         }
-        couponTemplateRepository.save(CouponTemplate.builder().id(couponTemplateId).policyId(couponRequestDto.getPolicyId()).bookId(couponRequestDto.getBookId()).categoryId(couponRequestDto.getCategoryId()).name(couponRequestDto.getName()).amount(couponRequestDto.getAmount()).build());
+        couponTemplateRepository.save(CouponTemplate.builder().id(couponTemplateId)
+                .policyId(couponRequestDto.getPolicyId())
+                .bookId(couponRequestDto.getBookId())
+                .categoryId(couponRequestDto.getCategoryId())
+                .name(couponRequestDto.getName())
+                .amount(couponRequestDto.getAmount())
+                .build());
     }
-
+    @Transactional
     @Override
     public void deleteCouponTemplate(Long couponId) {
         Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponId);
@@ -72,17 +84,17 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
 
         couponTemplateRepository.delete(optionalCoupon.get());
     }
-
+    @Transactional(readOnly = true)
     @Override
     public Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable) {
         return couponTemplateRepository.getBirthCouponTemplate(pageable);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable) {
         return couponTemplateRepository.getBookCouponTemplate(pageable);
     }
-
+    @Transactional(readOnly = true)
     @Override
     public Page<GetCouponTemplateResponseDto> getCategoryCouponTemplate(Pageable pageable) {
         return couponTemplateRepository.getCategoryTemplate(pageable);

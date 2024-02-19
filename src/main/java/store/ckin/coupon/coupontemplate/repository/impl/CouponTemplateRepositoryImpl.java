@@ -76,7 +76,11 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        long count = from(couponTemplate).stream().count();
+
+        long count = from(couponTemplate)
+                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
+                .fetchCount();
+
         return new PageImpl<>(results, pageable, count);
     }
 
@@ -94,7 +98,12 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        long count = from(couponTemplate).stream().count();
+
+        long count = from(couponTemplate)
+                .select(couponTemplate.count())
+                .where(couponTemplate.bookId.isNotNull().and(couponTemplate.categoryId.isNull()))
+                .fetchOne();
+
         return new PageImpl<>(results, pageable, count);
     }
 
@@ -112,7 +121,11 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-        long count = from(couponTemplate).stream().count();
+
+        long count = from(couponTemplate)
+                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
+                .fetchCount();
+
         return new PageImpl<>(results, pageable, count);
     }
 }
