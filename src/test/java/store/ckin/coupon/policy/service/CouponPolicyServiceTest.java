@@ -83,7 +83,7 @@ class CouponPolicyServiceTest {
         ReflectionTestUtils.setField(couponPolicyRequestDto, "discountRate", null);
         ReflectionTestUtils.setField(couponPolicyRequestDto, "maxDiscountPrice", 10000);
 
-        when(couponCodeRepository.findById(anyLong())).thenThrow(new CouponCodeNotFoundException(couponCode.getId()));
+        when(couponCodeRepository.findById(anyLong())).thenThrow(new CouponCodeNotFoundException());
 
         assertThrows(CouponCodeNotFoundException.class, () -> couponPolicyService.createCouponPolicy(couponPolicyRequestDto));
     }

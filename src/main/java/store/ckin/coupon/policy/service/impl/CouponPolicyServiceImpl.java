@@ -32,7 +32,7 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
     @Transactional
     public void createCouponPolicy(CreateCouponPolicyRequestDto policyRequestDto) {
         CouponCode couponCode = couponCodeRepository.findById(policyRequestDto.getCouponCodeId())
-                .orElseThrow(() -> new CouponCodeNotFoundException(policyRequestDto.getCouponCodeId()));
+                .orElseThrow(CouponCodeNotFoundException::new);
 
         couponPolicyRepository.save(CouponPolicy.builder()
                 .couponCode(couponCode)

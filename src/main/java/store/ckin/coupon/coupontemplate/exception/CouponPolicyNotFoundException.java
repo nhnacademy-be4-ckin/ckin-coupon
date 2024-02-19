@@ -7,12 +7,12 @@ package store.ckin.coupon.coupontemplate.exception;
  * @version : 2024. 02. 16
  */
 public class CouponPolicyNotFoundException extends RuntimeException {
+    public static final String MESSAGE = "Not Found CouponPolicy";
     /**
      * 쿠폰정책이 존재하지 않음을 지정하는 생성자 입니다.
      *
-     * @param couponPolicyId the couponPolicyId
      */
-    public CouponPolicyNotFoundException(Long couponPolicyId) {
-        super(couponPolicyId + "은 없는 쿠폰 정책 번호입니다.");
+    public CouponPolicyNotFoundException() {
+        super(MESSAGE);
     }
 }

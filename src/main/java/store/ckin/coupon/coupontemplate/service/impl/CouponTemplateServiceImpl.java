@@ -35,7 +35,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Override
     public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
         couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId())
-                .orElseThrow(() -> new CouponPolicyNotFoundException(couponTemplateRequestDto.getPolicyId()));
+                .orElseThrow(CouponPolicyNotFoundException::new);
 
         couponTemplateRepository.save(CouponTemplate.builder()
                 .policyId(couponTemplateRequestDto.getPolicyId())
@@ -56,7 +56,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
         Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
         if (optionalCoupon.isEmpty()) {
-            throw new CouponTemplateNotFoundException(couponTemplateId);
+            throw new CouponTemplateNotFoundException();
         }
         return optionalCoupon.get();
     }
@@ -64,7 +64,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Override
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
         if (!couponTemplateRepository.existsById(couponTemplateId)) {
-            throw new CouponTemplateNotFoundException(couponTemplateId);
+            throw new CouponTemplateNotFoundException();
         }
         couponTemplateRepository.save(CouponTemplate.builder().id(couponTemplateId)
                 .policyId(couponRequestDto.getPolicyId())
@@ -80,7 +80,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponTemplateId);
 
         if (optionalCoupon.isEmpty()) {
-            throw new CouponTemplateNotFoundException(couponTemplateId);
+            throw new CouponTemplateNotFoundException();
         }
 
         couponTemplateRepository.delete(optionalCoupon.get());

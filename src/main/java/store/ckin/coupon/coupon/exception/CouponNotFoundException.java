@@ -8,12 +8,13 @@ package store.ckin.coupon.coupon.exception;
  */
 public class CouponNotFoundException extends RuntimeException {
 
+    public static final String MESSAGE = "Not Found Coupon";
+
     /**
      * 해당 쿠폰 번호가 없음을 지정하는 생성자 입니다.
      *
-     * @param couponId the coupon id
      */
-    public CouponNotFoundException(Long couponId) {
-        super(couponId + "은 없는 쿠폰번호입니다.");
+    public CouponNotFoundException() {
+        super(MESSAGE);
     }
 }

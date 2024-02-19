@@ -72,16 +72,14 @@ public class CouponServiceImpl implements CouponService {
 
     @Override
     public void updateCouponUsedDate(Long couponId) {
-        Optional<Coupon> coupon = couponRepository.findById(couponId);
-        if (coupon.isEmpty()) {
-            throw new CouponNotFoundException(couponId);
-        }
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(CouponNotFoundException::new);
 
         couponRepository.save(Coupon.builder()
-                .memberId(coupon.get().getMemberId())
-                .couponTemplateId(coupon.get().getCouponTemplateId())
-                .expirationDate(coupon.get().getExpirationDate())
-                .issueDate(coupon.get().getIssueDate())
+                .memberId(coupon.getMemberId())
+                .couponTemplateId(coupon.getCouponTemplateId())
+                .expirationDate(coupon.getExpirationDate())
+                .issueDate(coupon.getIssueDate())
                 .usedDate(Calendar.getInstance().getTime())
                 .build());
     }
