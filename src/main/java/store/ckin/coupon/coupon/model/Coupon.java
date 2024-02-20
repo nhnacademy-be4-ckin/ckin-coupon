@@ -1,9 +1,6 @@
 package store.ckin.coupon.coupon.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +16,7 @@ import java.util.Date;
 @Getter
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class Coupon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
