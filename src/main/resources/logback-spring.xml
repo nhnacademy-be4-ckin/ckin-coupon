@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <!--    파일을 저장할 위치 지정       -->
     <property name="LOGS_ABSOLUTE_PATH" value="./logs"/>
+    <!--    콘솔 로그에 색상 입히기       -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 
+    <!-- 콘솔 로깅 설정 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%clr(%d{yyyyMMdd HH:mm:ss.SSS}){magenta} %clr([%thread]){blue} %clr(%-5level){} %clr([%logger{0}:%line]){cyan} : %msg %n</pattern>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %clr(%5level) %cyan(%logger) - %msg%n</pattern>
         </encoder>
     </appender>
 
+    <!-- 로깅을 파일로 저장 -->
     <appender name="LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <!-- 로깅을 파일로 저장 -->
-        <file>./logs/coupon.log</file>
+        <file>./${LOGS_ABSOLUTE_PATH}/coupon.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <charset>utf8</charset>
             <Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %thread [%X{traceId}] %-5level %logger - %m%n</Pattern>
         </encoder>
         <!--로깅 파일이 특정 조건을 넘어가면 다른 파일로 만들어 준다.-->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>./logs/coupon.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
+            <fileNamePattern>./${LOGS_ABSOLUTE_PATH}/coupon.%d{yyyy-MM-dd}.%i.gz</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>100MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -27,9 +30,18 @@
     </appender>
 
     <!--    logging level 지정 TRACE, DEBUG, INFO, WARN, ERROR, FATAL/OFF-->
-    <root level="INFO">
-        <appender-ref ref="STDOUT"/>
-    </root>
+
+    <springProfile name="prod">
+        <root level="INFO">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
+
+    <springProfile name="dev">
+        <root level="DEBUG">
+            <appender-ref ref="STDOUT"/>
+        </root>
+    </springProfile>
 
     <!--  쿼리문 로그에 출력되어 있는 파라미터에 바인딩 되는 값을 알 수 있음  -->
     <logger name="org.hibernate.type.descriptor.sql" additivity="false">
@@ -37,22 +49,31 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
+    <!--    "org.springframework.web" 패키지에 속한 클래스들에 대한 로그   -->
     <logger name="org.springframework.web" additivity="false">
         <level value = "DEBUG" />
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="LOG" />
+        <springProfile>
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
     </logger>
 
+    <!--    "store.ckin.coupon" 패키지에 속한 클래스들에 대한 로그     -->
     <logger name="store.ckin.coupon" additivity="false">
         <level value = "DEBUG" />
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="LOG" />
+        <springProfile>
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
     </logger>
 
+    <!--    Hibernate 프레임워크의 SQL 쿼리에 관련된 로그-->
     <logger name="org.hibernate.SQL" additivity="false">
         <level value = "DEBUG" />
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="LOG" />
+        <springProfile>
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
     </logger>
 
 </configuration>

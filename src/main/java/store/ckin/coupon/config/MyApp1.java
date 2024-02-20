@@ -6,11 +6,13 @@ package store.ckin.coupon.config;
  * @author : gaeun
  * @version : 2024. 02. 20
  */
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
 
+@Slf4j
 public class MyApp1 {
     final static Logger logger = LoggerFactory.getLogger(MyApp1.class);
 
