@@ -19,6 +19,7 @@ import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundExceptio
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.service.impl.CouponTemplateServiceImpl;
+import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
@@ -52,10 +53,10 @@ class CouponTemplateServiceTest {
 
     @BeforeEach
     void setUp() {
+        couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
         couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponPolicyRepository);
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
         couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L);
-        couponPolicy = new CouponPolicy();
     }
 
     @Test
@@ -206,7 +207,7 @@ class CouponTemplateServiceTest {
     @Test
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void testDeleteCouponTemplate() {
-        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate()));
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate(1L, 1L, 1L, null, "template", 30L)));
 
         couponTemplateService.deleteCouponTemplate(1L);
 

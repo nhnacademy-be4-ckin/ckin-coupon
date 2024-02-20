@@ -63,7 +63,7 @@ class CouponPolicyControllerTest {
 
         given(couponPolicyService.getCouponPolicyList()).willReturn(List.of(dto, dto2));
 
-        mockMvc.perform(get("/couponPolicy"))
+        mockMvc.perform(get("/coupon/couponPolicy"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(dto.getId()), Long.class))
                 .andExpect(jsonPath("$[0].minOrderPrice", equalTo(dto.getMinOrderPrice())))
@@ -83,7 +83,7 @@ class CouponPolicyControllerTest {
         ReflectionTestUtils.setField(couponPolicyRequestDto, "maxDiscountPrice", 10000);
 
 
-        mockMvc.perform(post("/couponPolicy")
+        mockMvc.perform(post("/coupon/couponPolicy")
                 .content(objectMapper.writeValueAsString(couponPolicyRequestDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -94,7 +94,7 @@ class CouponPolicyControllerTest {
     @DisplayName("쿠폰 정책 등록 테스트: 실패")
     void couponPolicyCreateTest_X() throws Exception {
 
-        mockMvc.perform(post("/couponPolicy")
+        mockMvc.perform(post("/coupon/couponPolicy")
                         .content(objectMapper.writeValueAsString(couponPolicyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())

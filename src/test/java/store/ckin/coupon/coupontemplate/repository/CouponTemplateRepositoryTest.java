@@ -40,9 +40,6 @@ class CouponTemplateRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        birthCouponTemplate = new CouponTemplate();
-        bookCouponTemplate = new CouponTemplate();
-        categoryCouponTemplate = new CouponTemplate();
 
         ReflectionTestUtils.setField(birthCouponTemplate, "policyId", 1L);
         ReflectionTestUtils.setField(birthCouponTemplate, "bookId", null);

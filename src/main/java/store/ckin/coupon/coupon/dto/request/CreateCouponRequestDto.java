@@ -24,6 +24,5 @@ public class CreateCouponRequestDto {
     private Date expirationDate;
     @NotNull(message = "쿠폰 발급일을 입력해주세요.")
     private Date issueDate;
-    @Column(name = "coupon_used_date")
     private Date usedDate;
 }

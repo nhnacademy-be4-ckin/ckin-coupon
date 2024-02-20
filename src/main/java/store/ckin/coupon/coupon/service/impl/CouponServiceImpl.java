@@ -84,4 +84,9 @@ public class CouponServiceImpl implements CouponService {
                 .build());
     }
 
+    @Override
+    public Page<GetCouponResponseDto> getAllCouponList(Pageable pageable) {
+        return couponRepository.getAllCouponList(pageable);
+    }
+
 }

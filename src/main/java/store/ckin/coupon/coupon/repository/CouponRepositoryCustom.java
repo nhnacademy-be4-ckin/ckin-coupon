@@ -56,4 +56,6 @@ public interface CouponRepositoryCustom {
      * @return the category coupon all
      */
     Page<GetCouponResponseDto> getCategoryCouponAll(Pageable pageable);
+
+    Page<GetCouponResponseDto> getAllCouponList(Pageable pageable);
 }

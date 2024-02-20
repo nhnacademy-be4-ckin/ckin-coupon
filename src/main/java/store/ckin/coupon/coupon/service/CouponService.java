@@ -67,4 +67,6 @@ public interface CouponService {
      * @param couponId the coupon id
      */
     void updateCouponUsedDate(Long couponId);
+
+    Page<GetCouponResponseDto> getAllCouponList(Pageable pageable);
 }

@@ -39,6 +39,12 @@ public class CouponController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping
+    public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponList(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+        Page<GetCouponResponseDto> content = couponService.getAllCouponList(pageable);
+
+        return ResponseEntity.ok().body(content);
+    }
     /**
      * 특정 회원의 사용된 쿠폰을 조회하는 메서드 입니다.
      *

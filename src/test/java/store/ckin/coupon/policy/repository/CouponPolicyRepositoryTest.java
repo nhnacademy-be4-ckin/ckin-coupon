@@ -37,8 +37,9 @@ class CouponPolicyRepositoryTest {
 
     @BeforeEach
     void setUp() {
-        couponCode = new CouponCode();
-        couponPolicy = new CouponPolicy();
+        couponCode = new CouponCode("정액");
+        couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
+
         ReflectionTestUtils.setField(couponCode, "name", "정액");
         entityManager.persist(couponCode);
 
