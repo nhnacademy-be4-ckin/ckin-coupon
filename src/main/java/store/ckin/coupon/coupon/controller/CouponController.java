@@ -45,6 +45,14 @@ public class CouponController {
 
         return ResponseEntity.ok().body(content);
     }
+
+    @GetMapping("/{couponId}")
+    public ResponseEntity<GetCouponResponseDto> getCouponByCouponId(@PathVariable("couponId")Long couponId) {
+        GetCouponResponseDto content = couponService.getCouponByCouponId(couponId);
+
+        return ResponseEntity.ok().body(content);
+    }
+
     /**
      * 특정 회원의 사용된 쿠폰을 조회하는 메서드 입니다.
      *
@@ -52,6 +60,13 @@ public class CouponController {
      * @param memberId the member id
      * @return the used coupon by member
      */
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponByMember(@PageableDefault(page = 0, size = 5) Pageable pageable, @PathVariable("memberId") Long memberId) {
+        Page<GetCouponResponseDto> content = couponService.getCouponByMember(pageable, memberId);
+
+        return ResponseEntity.ok().body(content);
+    }
+
     @GetMapping("/used/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUsedCouponByMember(@PageableDefault(page = 0, size = 5) Pageable pageable, @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUsedCouponByMember(pageable, memberId);

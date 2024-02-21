@@ -224,4 +224,55 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .fetchOne();
         return new PageImpl<>(results, pageable, count);
     }
+
+    @Override
+    public GetCouponResponseDto getCouponByCouponId(Long couponId) {
+        return from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(new QGetCouponResponseDto(
+                        coupon.id,
+                        coupon.memberId,
+                        coupon.couponTemplateId,
+                        couponTemplate.policyId,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        coupon.expirationDate,
+                        coupon.issueDate,
+                        coupon.usedDate
+                ))
+                .where(coupon.id.eq(couponId))
+                .fetchOne();
+    }
+
+    @Override
+    public Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId) {
+        List<GetCouponResponseDto> results = from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(new QGetCouponResponseDto(
+                        coupon.id,
+                        coupon.memberId,
+                        coupon.couponTemplateId,
+                        couponTemplate.policyId,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        coupon.expirationDate,
+                        coupon.issueDate,
+                        coupon.usedDate))
+                .where(coupon.memberId.eq(memberId))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long count = from(coupon)
+                .innerJoin(couponTemplate)
+                .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .select(coupon.count())
+                .where(coupon.memberId.eq(memberId))
+                .fetchOne();
+        return new PageImpl<>(results, pageable, count);
+    }
 }

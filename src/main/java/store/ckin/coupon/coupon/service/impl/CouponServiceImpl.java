@@ -89,4 +89,18 @@ public class CouponServiceImpl implements CouponService {
         return couponRepository.getAllCouponList(pageable);
     }
 
+    @Override
+    public GetCouponResponseDto getCouponByCouponId(Long couponId) {
+        if(!couponRepository.existsById(couponId)) {
+            throw new CouponNotFoundException();
+        }
+        return couponRepository.getCouponByCouponId(couponId);
+    }
+
+    @Override
+    public Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId) {
+        //TODO: memberId 존재하는지 확인
+        return couponRepository.getCouponByMember(pageable, memberId);
+    }
+
 }
