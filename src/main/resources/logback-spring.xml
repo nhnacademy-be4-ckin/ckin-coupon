@@ -34,6 +34,7 @@
     <springProfile name="prod">
         <root level="INFO">
             <appender-ref ref="STDOUT"/>
+            <appender-ref ref="LOG"/>
         </root>
     </springProfile>
 
@@ -41,39 +42,12 @@
         <root level="DEBUG">
             <appender-ref ref="STDOUT"/>
         </root>
+        <!--  쿼리문 로그에 출력되어 있는 파라미터에 바인딩 되는 값을 알 수 있음  -->
+        <logger name="org.hibernate.type.descriptor.sql" additivity="false">
+            <level value = "TRACE" />
+            <appender-ref ref="STDOUT"/>
+        </logger>
     </springProfile>
 
-    <!--  쿼리문 로그에 출력되어 있는 파라미터에 바인딩 되는 값을 알 수 있음  -->
-    <logger name="org.hibernate.type.descriptor.sql" additivity="false">
-        <level value = "TRACE" />
-        <appender-ref ref="STDOUT"/>
-    </logger>
-
-    <!--    "org.springframework.web" 패키지에 속한 클래스들에 대한 로그   -->
-    <logger name="org.springframework.web" additivity="false">
-        <level value = "DEBUG" />
-        <appender-ref ref="STDOUT"/>
-        <springProfile>
-            <appender-ref ref="STDOUT"/>
-        </springProfile>
-    </logger>
-
-    <!--    "store.ckin.coupon" 패키지에 속한 클래스들에 대한 로그     -->
-    <logger name="store.ckin.coupon" additivity="false">
-        <level value = "DEBUG" />
-        <appender-ref ref="STDOUT"/>
-        <springProfile>
-            <appender-ref ref="STDOUT"/>
-        </springProfile>
-    </logger>
-
-    <!--    Hibernate 프레임워크의 SQL 쿼리에 관련된 로그-->
-    <logger name="org.hibernate.SQL" additivity="false">
-        <level value = "DEBUG" />
-        <appender-ref ref="STDOUT"/>
-        <springProfile>
-            <appender-ref ref="STDOUT"/>
-        </springProfile>
-    </logger>
 
 </configuration>
