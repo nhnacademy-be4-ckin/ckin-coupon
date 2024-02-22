@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.Date;
 
 /**
@@ -17,8 +18,10 @@ import java.util.Date;
 @NoArgsConstructor
 public class CreateCouponRequestDto {
     @NotNull(message = "회원 아이디를 입력해주세요.")
+    @PositiveOrZero(message = "0보다 큰 값을 입력해주세요")
     private Long memberId;
     @NotNull(message = "쿠폰 템플릿 아이디를 입력해주세요.")
+    @PositiveOrZero(message = "0보다 큰 값을 입력해주세요")
     private Long couponTemplateId;
     @NotNull(message = "쿠폰 만료일을 입력해주세요.")
     private Date expirationDate;

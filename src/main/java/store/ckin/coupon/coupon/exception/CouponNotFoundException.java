@@ -12,7 +12,6 @@ public class CouponNotFoundException extends RuntimeException {
 
     /**
      * 해당 쿠폰 번호가 없음을 지정하는 생성자 입니다.
-     *
      */
     public CouponNotFoundException() {
         super(MESSAGE);

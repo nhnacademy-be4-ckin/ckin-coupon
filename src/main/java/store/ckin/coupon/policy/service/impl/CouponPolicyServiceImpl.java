@@ -28,6 +28,11 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
     private final CouponPolicyRepository couponPolicyRepository;
     private final CouponCodeRepository couponCodeRepository;
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param policyRequestDto 쿠폰 정책 생성 DTO
+     */
     @Override
     @Transactional
     public void createCouponPolicy(CreateCouponPolicyRequestDto policyRequestDto) {
@@ -45,6 +50,9 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<GetCouponPolicyResponseDto> getCouponPolicyList() {

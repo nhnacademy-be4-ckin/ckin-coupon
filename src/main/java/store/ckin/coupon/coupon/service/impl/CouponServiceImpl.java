@@ -11,6 +11,10 @@ import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
+import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
+import store.ckin.coupon.coupontemplate.model.CouponTemplate;
+import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
+import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 
 import java.util.Calendar;
 import java.util.Optional;
@@ -22,13 +26,25 @@ import java.util.Optional;
  * @version : 2024. 02. 15
  */
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
+    private final CouponTemplateRepository couponTemplateRepository;
+    private final CouponTemplateTypeRepository couponTemplateTypeRepository;
 
-    @Transactional
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponRequestDto 쿠폰 요청 DTO
+     */
     @Override
+    @Transactional
     public void createCoupon(CreateCouponRequestDto couponRequestDto) {
+        //TODO: memberId 있는지 확인
+        couponTemplateRepository.findById(couponRequestDto.getCouponTemplateId())
+                        .orElseThrow(CouponTemplateTypeNotFoundException::new);
+
         couponRepository.save(Coupon.builder()
                 .memberId(couponRequestDto.getMemberId())
                 .couponTemplateId(couponRequestDto.getCouponTemplateId())
@@ -38,7 +54,13 @@ public class CouponServiceImpl implements CouponService {
                 .build());
     }
 
-    @Transactional(readOnly = true)
+    /**
+     * {@inheritDoc}
+     *
+     * @param pageable 페이지 정보
+     * @param memberId 회원 ID
+     * @return
+     */
     @Override
     public Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId) {
         //TODO: 회원 아이디가 존재하는지 확인
@@ -46,57 +68,81 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param pageable 페이지 정보
+     * @param memberId 회원 ID
+     * @return
+     */
     @Override
     public Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId) {
         //TODO: 회원 아이디가 존재하는지 확인
         return couponRepository.getUnUsedCouponByMember(pageable, memberId);
     }
 
-    @Transactional(readOnly = true)
+    /**
+     * {@inheritDoc}
+     *
+     * @param pageable 페이지 정보
+     * @param typeId   쿠폰 템플릿 타입 ID
+     * @return
+     */
     @Override
-    public Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable) {
-        return couponRepository.getBirthCouponAll(pageable);
+    public Page<GetCouponResponseDto> getCouponList(Pageable pageable, Long typeId) {
+        couponTemplateTypeRepository.findById(typeId)
+                .orElseThrow(CouponTemplateTypeNotFoundException::new);
+
+        return couponRepository.getCouponList(pageable, typeId);
 
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponId 쿠폰 ID
+     */
     @Override
-    public Page<GetCouponResponseDto> getBookCouponAll(Pageable pageable) {
-        return couponRepository.getBookCouponAll(pageable);
-
-    }
-
-    @Override
-    public Page<GetCouponResponseDto> getCategoryCouponAll(Pageable pageable) {
-        return couponRepository.getCategoryCouponAll(pageable);
-    }
-
-    @Override
+    @Transactional
     public void updateCouponUsedDate(Long couponId) {
         Coupon coupon = couponRepository.findById(couponId)
                 .orElseThrow(CouponNotFoundException::new);
 
-        couponRepository.save(Coupon.builder()
-                .memberId(coupon.getMemberId())
-                .couponTemplateId(coupon.getCouponTemplateId())
-                .expirationDate(coupon.getExpirationDate())
-                .issueDate(coupon.getIssueDate())
-                .usedDate(Calendar.getInstance().getTime())
-                .build());
+        coupon.updateUsedCoupon();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param pageable 페이지 정보
+     * @return
+     */
     @Override
     public Page<GetCouponResponseDto> getAllCouponList(Pageable pageable) {
         return couponRepository.getAllCouponList(pageable);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponId 쿠폰 ID
+     * @return
+     */
     @Override
     public GetCouponResponseDto getCouponByCouponId(Long couponId) {
-        if(!couponRepository.existsById(couponId)) {
+        if (!couponRepository.existsById(couponId)) {
             throw new CouponNotFoundException();
         }
         return couponRepository.getCouponByCouponId(couponId);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param pageable 페이지 정보
+     * @param memberId 회원 ID
+     * @return
+     */
     @Override
     public Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId) {
         //TODO: memberId 존재하는지 확인

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
- *  * 쿠폰 템플릿을 반환할 때 사용하는 dto 입니다.
+ * 쿠폰 템플릿을 반환할 때 사용하는 dto 입니다.
  *
  * @author : gaeun
  * @version : 2024. 02. 12

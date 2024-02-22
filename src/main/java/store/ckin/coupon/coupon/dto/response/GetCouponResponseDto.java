@@ -24,6 +24,7 @@ public class GetCouponResponseDto {
     private Long policyId;
     private Long bookId;
     private Long categoryId;
+    private Long typeId;
     private String name;
     private Date expirationDate;
     private Date issueDate;
@@ -44,13 +45,14 @@ public class GetCouponResponseDto {
      * @param usedDate         the used date
      */
     @QueryProjection
-    public GetCouponResponseDto(Long id, Long memberId, Long couponTemplateId, Long policyId, Long bookId, Long categoryId, String name, Date expirationDate, Date issueDate, Date usedDate) {
+    public GetCouponResponseDto(Long id, Long memberId, Long couponTemplateId, Long policyId, Long bookId, Long categoryId, Long typeId, String name, Date expirationDate, Date issueDate, Date usedDate) {
         this.id = id;
         this.memberId = memberId;
         this.couponTemplateId = couponTemplateId;
         this.policyId = policyId;
         this.bookId = bookId;
         this.categoryId = categoryId;
+        this.typeId = typeId;
         this.name = name;
         this.expirationDate = expirationDate;
         this.issueDate = issueDate;

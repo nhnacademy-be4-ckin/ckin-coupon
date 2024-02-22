@@ -12,6 +12,7 @@ import store.ckin.coupon.coupon.model.QCoupon;
 import store.ckin.coupon.coupon.repository.CouponRepositoryCustom;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
+import store.ckin.coupon.coupontemplate.model.QCouponTemplateType;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,22 +26,17 @@ import java.util.Optional;
  */
 public class CouponRepositoryImpl extends QuerydslRepositorySupport implements CouponRepositoryCustom {
 
-    /**
-     * Instantiates a new Coupon repository.
-     */
     public CouponRepositoryImpl() {
         super(Coupon.class);
     }
 
-    /**
-     * The Coupon.
-     */
     QCoupon coupon = QCoupon.coupon;
-    /**
-     * The Coupon template.
-     */
     QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
+    QCouponTemplateType couponTemplateType = QCouponTemplateType.couponTemplateType;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId) {
         List<GetCouponResponseDto> results = from(coupon)
@@ -53,6 +49,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         couponTemplate.policyId,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
+                        couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,
@@ -72,6 +69,9 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         return new PageImpl<>(results, pageable, count);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId) {
         List<GetCouponResponseDto> results = from(coupon)
@@ -84,6 +84,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         couponTemplate.policyId,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
+                        couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,
@@ -104,8 +105,11 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         return new PageImpl<>(results, pageable, count);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public Page<GetCouponResponseDto> getBirthCouponAll(Pageable pageable) {
+    public Page<GetCouponResponseDto> getCouponList(Pageable pageable, Long typeId) {
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
@@ -116,11 +120,12 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         couponTemplate.policyId,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
+                        couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,
                         coupon.usedDate))
-                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNull()))
+                .where(couponTemplate.type().id.eq(typeId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -129,74 +134,15 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
                 .select(coupon.count())
-                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNull()))
+                .where(couponTemplate.type().id.eq(typeId))
                 .fetchOne();
 
         return new PageImpl<>(results, pageable, count);
     }
 
-    @Override
-    public Page<GetCouponResponseDto> getBookCouponAll(Pageable pageable) {
-        List<GetCouponResponseDto> results = from(coupon)
-                .innerJoin(couponTemplate)
-                .on(coupon.couponTemplateId.eq(couponTemplate.id))
-                .select(new QGetCouponResponseDto(
-                        coupon.id,
-                        coupon.memberId,
-                        coupon.couponTemplateId,
-                        couponTemplate.policyId,
-                        couponTemplate.bookId,
-                        couponTemplate.categoryId,
-                        couponTemplate.name,
-                        coupon.expirationDate,
-                        coupon.issueDate,
-                        coupon.usedDate))
-                .where(couponTemplate.bookId.isNotNull().and(couponTemplate.categoryId.isNull()))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        long count = from(coupon)
-                .innerJoin(couponTemplate)
-                .on(coupon.couponTemplateId.eq(couponTemplate.id))
-                .select(coupon.count())
-                .where(couponTemplate.bookId.isNotNull().and(couponTemplate.categoryId.isNull()))
-                .fetchOne();
-
-        return new PageImpl<>(results, pageable, count);
-    }
-
-    @Override
-    public Page<GetCouponResponseDto> getCategoryCouponAll(Pageable pageable) {
-        List<GetCouponResponseDto> results = from(coupon)
-                .innerJoin(couponTemplate)
-                .on(coupon.couponTemplateId.eq(couponTemplate.id))
-                .select(new QGetCouponResponseDto(
-                        coupon.id,
-                        coupon.memberId,
-                        coupon.couponTemplateId,
-                        couponTemplate.policyId,
-                        couponTemplate.bookId,
-                        couponTemplate.categoryId,
-                        couponTemplate.name,
-                        coupon.expirationDate,
-                        coupon.issueDate,
-                        coupon.usedDate))
-                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-
-        long count = from(coupon)
-                .innerJoin(couponTemplate)
-                .on(coupon.couponTemplateId.eq(couponTemplate.id))
-                .select(coupon.count())
-                .where(couponTemplate.bookId.isNull().and(couponTemplate.categoryId.isNotNull()))
-                .fetchOne();
-
-        return new PageImpl<>(results, pageable, count);
-    }
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Page<GetCouponResponseDto> getAllCouponList(Pageable pageable) {
         List<GetCouponResponseDto> results = from(coupon)
@@ -209,6 +155,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         couponTemplate.policyId,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
+                        couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,
@@ -225,6 +172,9 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         return new PageImpl<>(results, pageable, count);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GetCouponResponseDto getCouponByCouponId(Long couponId) {
         return from(coupon)
@@ -237,6 +187,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         couponTemplate.policyId,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
+                        couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,
@@ -246,6 +197,9 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .fetchOne();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId) {
         List<GetCouponResponseDto> results = from(coupon)
@@ -258,6 +212,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         couponTemplate.policyId,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
+                        couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,

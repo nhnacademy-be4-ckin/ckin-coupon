@@ -98,12 +98,12 @@ class CouponTemplateServiceTest {
         PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(couponTemplateResponseDto));
         Pageable pageable = PageRequest.of(0, 5);
 
-        when(couponTemplateRepository.getCouponTemplateList(any())).thenReturn(page);
+        when(couponTemplateRepository.getCouponTemplateList(any(), typeId)).thenReturn(page);
 
-        couponTemplateService.getCouponTemplateList(pageable);
+        couponTemplateService.getCouponTemplateList(pageable, typeId);
 
         verify(couponTemplateRepository, times(1))
-                .getCouponTemplateList(any());
+                .getCouponTemplateList(any(), typeId);
     }
 
     @Test

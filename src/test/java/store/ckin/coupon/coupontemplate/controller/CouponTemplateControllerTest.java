@@ -1,6 +1,5 @@
 package store.ckin.coupon.coupontemplate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +14,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
-import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -27,7 +25,6 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.servlet.function.RequestPredicates.param;
 
@@ -62,7 +59,7 @@ class CouponTemplateControllerTest {
         PageRequest pageable = PageRequest.of(0, 5);
         PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(couponTemplateResponseDto), pageable, 1);
 
-        when(couponTemplateService.getCouponTemplateList(pageable))
+        when(couponTemplateService.getCouponTemplateList(pageable, typeId))
                 .thenReturn(page);
 
         mockMvc.perform(get("/coupon/couponTemplate")

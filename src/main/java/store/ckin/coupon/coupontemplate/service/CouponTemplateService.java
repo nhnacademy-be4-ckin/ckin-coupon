@@ -5,8 +5,6 @@ import org.springframework.data.domain.Pageable;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
-import java.util.List;
-
 /**
  * CouponTemplateService
  *
@@ -16,64 +14,41 @@ import java.util.List;
 public interface CouponTemplateService {
 
     /**
-     * 쿠폰 템플릿을 생성하는 메서드 입니다.
+     * 쿠폰 템플릿을 셍성하는 메서드 입니다.
      *
-     * @param couponRequestDto the coupon request dto
+     * @param couponRequestDto 쿠폰 템플릿 요청 DTO
      */
     void createCouponTemplate(CreateCouponTemplateRequestDto couponRequestDto);
 
     /**
-     * 모든 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
+     * 쿠폰 타입별로 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
      *
-     * @param pageable the pageable
-     * @return the coupon template list
+     * @param pageable 페이지 정보
+     * @param typeId   쿠폰 템플릿 타입 ID
+     * @return 쿠폰 템플릿 목록
      */
-    Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable);
+    Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable, Long typeId);
 
     /**
-     * 아이디로 쿠폰 템플릿을 조회하는 메서드 입니다.
+     * 쿠폰 템플릿을 조회하는 메서드 입니다.
      *
-     * @param couponTemplateId the coupon template id
-     * @return the coupon template
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return 쿠폰 템플릿
      */
     GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId);
 
     /**
-     * 아이디로 쿠폰 템플릿을 수정하는 메서드 입니다.
+     * 쿠폰 템플릿을 수정하는 메서드 입니다.
      *
-     * @param couponTemplateId the coupon template id
-     * @param couponRequestDto the coupon request dto
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @param couponRequestDto 쿠폰 템플릿 요청 DTO
      */
     void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto);
 
     /**
-     * 아이디로 쿠폰 템플릿을 삭제하는 메서드 입니다.
+     * 쿠폰 템플릿을 삭제하는 메서드 입니다.
      *
-     * @param couponTemplateId the coupon template id
+     * @param couponTemplateId 쿠폰 템플릿 ID
      */
     void deleteCouponTemplate(Long couponTemplateId);
-
-    /**
-     * 생일 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
-     *
-     * @param pageable the pageable
-     * @return the birth coupon template
-     */
-    Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable);
-
-    /**
-     * 도서 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
-     *
-     * @param pageable the pageable
-     * @return the book coupon template
-     */
-    Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable);
-
-    /**
-     * 카테고리 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
-     *
-     * @param pageable the pageable
-     * @return the category coupon template
-     */
-    Page<GetCouponTemplateResponseDto> getCategoryCouponTemplate(Pageable pageable);
 }

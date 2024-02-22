@@ -37,7 +37,11 @@ public class CouponPolicyRepositoryImpl extends QuerydslRepositorySupport implem
      */
     QCouponPolicy couponPolicy = QCouponPolicy.couponPolicy;
 
-
+    /**
+     * {@inheritDoc}
+     *
+     * @return 쿠폰 정책 목록
+     */
     @Override
     public List<GetCouponPolicyResponseDto> getCouponPolicy() {
         List<GetCouponPolicyResponseDto> response = from(couponPolicy)

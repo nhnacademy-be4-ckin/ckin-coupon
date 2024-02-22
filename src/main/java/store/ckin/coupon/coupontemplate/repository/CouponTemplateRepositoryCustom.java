@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,40 +18,18 @@ public interface CouponTemplateRepositoryCustom {
     /**
      * 모든 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
      *
-     * @param pageable the pageable
-     * @return the coupon template list
+     * @param pageable 페이지 정보
+     * @param typeId   쿠폰 템플릿 타입 ID
+     * @return 쿠폰 템플릿 목록
      */
-    Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable);
+    Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable, Long typeId);
 
     /**
      * 아이디로 쿠폰 템플릿을 조회하는 메서드 입니다.
      *
-     * @param couponId the coupon id
-     * @return the coupon template
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return 쿠폰 템플릿
      */
-    Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponId);
+    Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponTemplateId);
 
-    /**
-     * 생일 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
-     *
-     * @param pageable the pageable
-     * @return the birth coupon template
-     */
-    Page<GetCouponTemplateResponseDto> getBirthCouponTemplate(Pageable pageable);
-
-    /**
-     * 도서 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
-     *
-     * @param pageable the pageable
-     * @return the book coupon template
-     */
-    Page<GetCouponTemplateResponseDto> getBookCouponTemplate(Pageable pageable);
-
-    /**
-     * 카테고리 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
-     *
-     * @param pageable the pageable
-     * @return the category template
-     */
-    Page<GetCouponTemplateResponseDto> getCategoryTemplate(Pageable pageable);
 }

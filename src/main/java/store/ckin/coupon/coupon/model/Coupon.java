@@ -1,9 +1,11 @@
 package store.ckin.coupon.coupon.model;
 
 import lombok.*;
+import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -36,5 +38,9 @@ public class Coupon {
     private Date issueDate;
     @Column(name = "coupon_used_date")
     private Date usedDate;
+
+    public void updateUsedCoupon() {
+        this.usedDate = Calendar.getInstance().getTime();
+    }
 
 }

@@ -31,7 +31,7 @@ public class CouponPolicyController {
     /**
      * 모든 쿠폰 정책 목록을 반환하는 메서드 입니다.
      *
-     * @return the all coupon policy
+     * @return 쿠폰 정책 목록
      */
     @GetMapping
     public ResponseEntity<List<GetCouponPolicyResponseDto>> getAllCouponPolicy() {
@@ -42,8 +42,7 @@ public class CouponPolicyController {
     /**
      * 쿠폰 정책을 생성하는 메서드 입니다.
      *
-     * @param policyRequestDto the policy request dto
-     * @return the response entity
+     * @param policyRequestDto 쿠폰 정책 요청 DTO
      */
     @PostMapping
     public ResponseEntity<Void> createCouponPolicy(@Valid @RequestBody CreateCouponPolicyRequestDto policyRequestDto) {

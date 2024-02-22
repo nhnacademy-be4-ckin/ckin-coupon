@@ -3,25 +3,17 @@ package store.ckin.coupon.coupontemplate.repository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
-import store.ckin.coupon.policy.model.CouponCode;
-import store.ckin.coupon.policy.model.CouponPolicy;
-import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
-import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * description:
@@ -67,7 +59,7 @@ class CouponTemplateRepositoryTest {
     @DisplayName("쿠폰 템플릿 목록 가져오기 테스트")
     void testGetCouponTemplateList() {
         Pageable pageable = PageRequest.of(0, 5);
-        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplateList(pageable);
+        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplateList(pageable, typeId);
 
         Assertions.assertThat(results).isNotNull();
         Assertions.assertThat(results.getContent().get(0).getId()).isNotNull();
