@@ -3,8 +3,8 @@ package store.ckin.coupon.coupontemplate.repository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.rules.Timeout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -12,15 +12,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
+import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
-import store.ckin.coupon.policy.model.CouponCode;
-import store.ckin.coupon.policy.model.CouponPolicy;
-import store.ckin.coupon.policy.repository.CouponPolicyRepository;
+import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * description:
@@ -32,66 +30,84 @@ import static org.junit.jupiter.api.Assertions.*;
 class CouponTemplateRepositoryTest {
     @Autowired
     CouponTemplateRepository couponTemplateRepository;
-    @Autowired
-    CouponPolicyRepository couponPolicyRepository;
+
     @Autowired
     TestEntityManager entityManager;
 
-    CouponTemplate couponTemplate;
-    CouponPolicy couponPolicy;
-    CouponCode couponCode;
+    CouponTemplate birthCouponTemplate;
+    CouponTemplate bookCouponTemplate;
+    CouponTemplate categoryCouponTemplate;
+    CouponTemplateType birthType;
+    CouponTemplateType bookType;
+    CouponTemplateType categoryType;
 
     @BeforeEach
     void setUp() {
-        couponPolicy = new CouponPolicy();
-        couponTemplate = new CouponTemplate();
-        couponCode = new CouponCode();
+        birthType = new CouponTemplateType(1L, "생일 쿠폰");
+        bookType = new CouponTemplateType(2L, "도서 쿠폰");
+        categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
 
-        couponPolicy = new CouponPolicy();
-        ReflectionTestUtils.setField(couponCode, "name", "정액");
-        entityManager.persist(couponCode);
+        entityManager.persist(birthType);
+        entityManager.persist(bookType);
+        entityManager.persist(categoryType);
 
-        ReflectionTestUtils.setField(couponPolicy, "couponCode", couponCode);
-        ReflectionTestUtils.setField(couponPolicy, "minOrderPrice", 10000);
-        ReflectionTestUtils.setField(couponPolicy, "discountPrice", 3000);
-        ReflectionTestUtils.setField(couponPolicy, "discountRate", null);
-        ReflectionTestUtils.setField(couponPolicy, "maxDiscountPrice", 10000);
-        ReflectionTestUtils.setField(couponPolicy, "state", true);
-        entityManager.persist(couponPolicy);
+        birthCouponTemplate = CouponTemplate.builder()
+                .policyId(1L)
+                .bookId(null)
+                .categoryId(null)
+                .name("1월 생일 쿠폰")
+                .amount(100L)
+                .type(birthType)
+                .build();
+        couponTemplateRepository.save(birthCouponTemplate);
 
-        ReflectionTestUtils.setField(couponTemplate, "policyId", 1L);
-        ReflectionTestUtils.setField(couponTemplate, "bookId", 1L);
-        ReflectionTestUtils.setField(couponTemplate, "categoryId", 1L);
-        ReflectionTestUtils.setField(couponTemplate, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
-        ReflectionTestUtils.setField(couponTemplate, "amount", 100L);
-        entityManager.persist(couponTemplate);
+        bookCouponTemplate = CouponTemplate.builder()
+                .policyId(1L)
+                .bookId(1L)
+                .categoryId(null)
+                .name("사람은 무엇으로 사는가 - 도서 쿠폰")
+                .amount(100L)
+                .type(bookType)
+                .build();
+        couponTemplateRepository.save(bookCouponTemplate);
+
+        categoryCouponTemplate = CouponTemplate.builder()
+                .policyId(1L)
+                .bookId(null)
+                .categoryId(1L)
+                .name("소설 - 카테고리 쿠폰")
+                .amount(100L)
+                .type(categoryType)
+                .build();
+        couponTemplateRepository.save(categoryCouponTemplate);
     }
 
     @Test
     @DisplayName("쿠폰 템플릿 목록 가져오기 테스트")
     void testGetCouponTemplateList() {
         Pageable pageable = PageRequest.of(0, 5);
-        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplateList(pageable);
+        Page<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplateList(pageable, birthType.getId());
 
-        Assertions.assertThat(results.getContent().get(0).getId()).isEqualTo(couponTemplate.getId());
-        Assertions.assertThat(results.getContent().get(0).getPolicyId()).isEqualTo(couponTemplate.getPolicyId());
-        Assertions.assertThat(results.getContent().get(0).getBookId()).isEqualTo(couponTemplate.getBookId());
-        Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(couponTemplate.getCategoryId());
-        Assertions.assertThat(results.getContent().get(0).getName()).isEqualTo(couponTemplate.getName());
-        Assertions.assertThat(results.getContent().get(0).getAmount()).isEqualTo(couponTemplate.getAmount());
+        Assertions.assertThat(results).isNotNull();
+        Assertions.assertThat(results.getContent().get(0).getId()).isNotNull();
+        Assertions.assertThat(results.getContent().get(0).getPolicyId()).isEqualTo(birthCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.getContent().get(0).getBookId()).isEqualTo(birthCouponTemplate.getBookId());
+        Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(birthCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.getContent().get(0).getName()).isEqualTo(birthCouponTemplate.getName());
+        Assertions.assertThat(results.getContent().get(0).getAmount()).isEqualTo(birthCouponTemplate.getAmount());
     }
 
     @Test
     @DisplayName("쿠폰 템플릿 가져오기 테스트")
     void testGetCouponTemplate() {
-        Optional<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplate(couponTemplate.getId());
+        Optional<GetCouponTemplateResponseDto> results = couponTemplateRepository.getCouponTemplate(bookCouponTemplate.getId());
 
-        Assertions.assertThat(results.get().getId()).isEqualTo(couponTemplate.getId());
-        Assertions.assertThat(results.get().getPolicyId()).isEqualTo(couponTemplate.getPolicyId());
-        Assertions.assertThat(results.get().getBookId()).isEqualTo(couponTemplate.getBookId());
-        Assertions.assertThat(results.get().getCategoryId()).isEqualTo(couponTemplate.getCategoryId());
-        Assertions.assertThat(results.get().getName()).isEqualTo(couponTemplate.getName());
-        Assertions.assertThat(results.get().getAmount()).isEqualTo(couponTemplate.getAmount());
+        Assertions.assertThat(results).isNotNull();
+        Assertions.assertThat(results.get().getId()).isNotNull();
+        Assertions.assertThat(results.get().getPolicyId()).isEqualTo(bookCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.get().getBookId()).isEqualTo(bookCouponTemplate.getBookId());
+        Assertions.assertThat(results.get().getCategoryId()).isEqualTo(bookCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.get().getName()).isEqualTo(bookCouponTemplate.getName());
+        Assertions.assertThat(results.get().getAmount()).isEqualTo(bookCouponTemplate.getAmount());
     }
-
 }

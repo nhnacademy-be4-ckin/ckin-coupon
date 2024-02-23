@@ -1,13 +1,15 @@
 package store.ckin.coupon.coupontemplate.model;
 
 import lombok.*;
+import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
+import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
- * description:
+ * CouponTemplate
  *
  * @author : gaeun
  * @version : 2024. 02. 15
@@ -15,7 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CouponTemplate {
     @Id
@@ -35,5 +37,17 @@ public class CouponTemplate {
     @NotNull
     @Column(name = "coupontemplate_amount")
     private Long amount;
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "template_type_id")
+    private CouponTemplateType type;
+
+    public void update(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
+        this.policyId = couponTemplateRequestDto.getPolicyId();
+        this.bookId = couponTemplateRequestDto.getBookId();
+        this.categoryId = couponTemplateRequestDto.getCategoryId();
+        this.name = couponTemplateRequestDto.getName();
+        this.amount = couponTemplateRequestDto.getAmount();
+    }
 
 }

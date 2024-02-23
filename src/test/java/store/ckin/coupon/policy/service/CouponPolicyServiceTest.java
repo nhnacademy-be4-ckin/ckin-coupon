@@ -50,7 +50,7 @@ class CouponPolicyServiceTest {
     @BeforeEach
     void setUp() {
         couponPolicyService = new CouponPolicyServiceImpl(couponPolicyRepository, couponCodeRepository);
-        couponCode = new CouponCode(1L, "정액");
+        couponCode = new CouponCode("정액");
         couponPolicyRequestDto = new CreateCouponPolicyRequestDto();
         couponPolicyResponseDto = new GetCouponPolicyResponseDto(1L, 10000, 3000, null, 10000);
     }

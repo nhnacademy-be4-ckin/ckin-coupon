@@ -23,17 +23,27 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/couponPolicy")
+@RequestMapping("/coupon/couponPolicy")
 public class CouponPolicyController {
     private final CouponPolicyService couponPolicyService;
 
 
+    /**
+     * 모든 쿠폰 정책 목록을 반환하는 메서드 입니다.
+     *
+     * @return 쿠폰 정책 목록
+     */
     @GetMapping
     public ResponseEntity<List<GetCouponPolicyResponseDto>> getAllCouponPolicy() {
         List<GetCouponPolicyResponseDto> content = couponPolicyService.getCouponPolicyList();
         return ResponseEntity.ok().body(content);
     }
 
+    /**
+     * 쿠폰 정책을 생성하는 메서드 입니다.
+     *
+     * @param policyRequestDto 쿠폰 정책 요청 DTO
+     */
     @PostMapping
     public ResponseEntity<Void> createCouponPolicy(@Valid @RequestBody CreateCouponPolicyRequestDto policyRequestDto) {
         couponPolicyService.createCouponPolicy(policyRequestDto);
