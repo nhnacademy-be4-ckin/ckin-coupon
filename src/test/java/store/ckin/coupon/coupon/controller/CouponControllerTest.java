@@ -29,7 +29,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -118,6 +118,137 @@ class CouponControllerTest {
                 .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
                 .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
                 .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("쿠폰 목록 조회 테스트 : typeId가 없는 경우")
+    void testGetAllCouponList_X() throws Exception {
+        when(couponService.getAllCouponList(any())).thenReturn(page);
+
+        mockMvc.perform(get("/coupon")
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("쿠폰 조회 테스트 : 쿠폰 아이디")
+    void testGetCouponByCouponId() throws Exception {
+        when(couponService.getCouponByCouponId(anyLong())).thenReturn(couponResponseDto);
+
+        mockMvc.perform(get("/coupon/{couponId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.memberId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.policyId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.bookId",is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.categoryId",is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.typeId",is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.name",equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.issueDate",is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.usedDate",is(couponResponseDto.getUsedDate())))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("쿠폰 조회 테스트 : 회원 아이디")
+    void testGetAllCouponByMember() throws Exception {
+        when(couponService.getCouponByMember(any(), anyLong())).thenReturn(page);
+
+        mockMvc.perform(get("/coupon/member/{memberId}", 1L)
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("사용된 쿠폰 조회 테스트 : 회원 아이디")
+    void testGetUsedCouponByMember() throws Exception {
+        ReflectionTestUtils.setField(couponResponseDto, "usedDate", Date.valueOf("2024-03-03"));
+
+        when(couponService.getUsedCouponByMember(any(), anyLong())).thenReturn(page);
+
+        mockMvc.perform(get("/coupon/used/{memberId}", 1L)
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate().toString())))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("미사용인 쿠폰 조회 테스트 : 회원 아이디")
+    void testGetUnUsedCouponByMember() throws Exception {
+        ReflectionTestUtils.setField(couponResponseDto, "usedDate", null);
+
+        when(couponService.getUnUsedCouponByMember(any(), anyLong())).thenReturn(page);
+
+        mockMvc.perform(get("/coupon/unUsed/{memberId}", 1L)
+                        .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
+                        .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("쿠폰 수정 테스트")
+    void testUpdateCouponUsedDate() throws Exception {
+        mockMvc.perform(get("/coupon/{couponId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 
