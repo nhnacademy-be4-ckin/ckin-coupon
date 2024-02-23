@@ -50,8 +50,6 @@ public class CouponController {
     @GetMapping
     public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponList(@PageableDefault(page = 0, size = 10) Pageable pageable,
                                                                        @RequestParam(required = false, name = "typeId") Long typeId) {
-        log.info("getAllCouponList");
-        log.info(String.valueOf(typeId));
         Page<GetCouponResponseDto> content = null;
         if (Objects.isNull(typeId)) {
             content = couponService.getAllCouponList(pageable);

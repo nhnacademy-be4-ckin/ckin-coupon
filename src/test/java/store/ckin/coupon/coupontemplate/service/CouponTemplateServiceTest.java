@@ -16,8 +16,11 @@ import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestD
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponPolicyNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
+import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
+import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
+import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 import store.ckin.coupon.coupontemplate.service.impl.CouponTemplateServiceImpl;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
@@ -46,15 +49,28 @@ class CouponTemplateServiceTest {
     @MockBean
     CouponPolicyRepository couponPolicyRepository;
     @MockBean
+    CouponTemplateTypeRepository couponTemplateTypeRepository;
+    @MockBean
     ObjectMapper objectMapper;
     CreateCouponTemplateRequestDto couponTemplateRequestDto;
     GetCouponTemplateResponseDto couponTemplateResponseDto;
     CouponPolicy couponPolicy;
+    CouponTemplate bookCouponTemplate;
+    CouponTemplateType birthType;
+    CouponTemplateType bookType;
+    CouponTemplateType categoryType;
+    Long typeId;
 
     @BeforeEach
     void setUp() {
+        typeId = 1L;
+        birthType = new CouponTemplateType(1L, "생일 쿠폰");
+        bookType = new CouponTemplateType(2L, "도서 쿠폰");
+        categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
+
         couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
-        couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponPolicyRepository);
+        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, bookType);
+        couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponTemplateTypeRepository, couponPolicyRepository);
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
         couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L);
     }
@@ -65,45 +81,81 @@ class CouponTemplateServiceTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
         when(couponPolicyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(couponPolicy));
+        when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookType));
 
         couponTemplateService.createCouponTemplate(couponTemplateRequestDto);
 
         verify(couponPolicyRepository, times(1))
+                .findById(anyLong());
+        verify(couponTemplateTypeRepository, times(1))
                 .findById(anyLong());
         verify(couponTemplateRepository, times(1))
                 .save(any());
     }
 
     @Test
-    @DisplayName("쿠폰 템플릿 생성 테스트: 실패")
-    void testCreateCouponTemplate_X() {
+    @DisplayName("쿠폰 템플릿 생성 테스트: Not Found CouponPolicy 실패")
+    void testCreateCouponTemplate_XPolicy() {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
         when(couponPolicyRepository.findById(anyLong())).thenThrow(new CouponPolicyNotFoundException());
+        when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookType));
 
         assertThrows(CouponPolicyNotFoundException.class, () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
     }
 
+    @Test
+    @DisplayName("쿠폰 템플릿 생성 테스트: Not Found CouponType 실패")
+    void testCreateCouponTemplate_XType() {
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
+
+        when(couponPolicyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(couponPolicy));
+        when(couponTemplateTypeRepository.findById(anyLong())).thenThrow(new CouponTemplateTypeNotFoundException());
+
+        assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
+    }
     @Test
     @DisplayName("쿠폰 템플릿 목록 조회 테스트")
     void testGetCouponTemplateList() {
         PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(couponTemplateResponseDto));
         Pageable pageable = PageRequest.of(0, 5);
 
-        when(couponTemplateRepository.getCouponTemplateList(any(), typeId)).thenReturn(page);
+        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(true);
+        when(couponTemplateRepository.getCouponTemplateList(any(),anyLong())).thenReturn(page);
 
         couponTemplateService.getCouponTemplateList(pageable, typeId);
 
+        verify(couponTemplateTypeRepository, times(1))
+                .existsById(anyLong());
         verify(couponTemplateRepository, times(1))
-                .getCouponTemplateList(any(), typeId);
+                .getCouponTemplateList(any(), anyLong());
+    }
+
+    @Test
+    @DisplayName("쿠폰 템플릿 목록 조회 테스트 : 실패")
+    void testGetCouponTemplateList_X() {
+        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(couponTemplateResponseDto));
+        Pageable pageable = PageRequest.of(0, 5);
+
+        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(false);
+        when(couponTemplateRepository.getCouponTemplateList(any(),anyLong())).thenReturn(page);
+
+        assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponTemplateService.getCouponTemplateList(pageable, typeId));
     }
 
     @Test
@@ -126,67 +178,24 @@ class CouponTemplateServiceTest {
     }
 
     @Test
-    @DisplayName("생일 쿠폰 템플릿 목록 조회 테스트")
-    void testGetBirthCouponTemplate() {
-        GetCouponTemplateResponseDto birthCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, null, "1월 생일 쿠폰", 1L);
-        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(birthCouponTemplate));
-        Pageable pageable = PageRequest.of(0, 5);
-
-        when(couponTemplateRepository.getBirthCouponTemplate(pageable)).thenReturn(page);
-
-        couponTemplateService.getBirthCouponTemplate(pageable);
-
-        verify(couponTemplateRepository, times(1))
-                .getBirthCouponTemplate(pageable);
-    }
-
-    @Test
-    @DisplayName("도서 쿠폰 템플릿 목록 조회 테스트")
-    void testGetBookCouponTemplate() {
-        GetCouponTemplateResponseDto bookCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, 1L, null, "해리포터 - 도서 쿠폰", 1L);
-        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(bookCouponTemplate));
-        Pageable pageable = PageRequest.of(0, 5);
-
-        when(couponTemplateRepository.getBookCouponTemplate(pageable)).thenReturn(page);
-
-        couponTemplateService.getBookCouponTemplate(pageable);
-
-        verify(couponTemplateRepository, times(1))
-                .getBookCouponTemplate(pageable);
-    }
-
-    @Test
-    @DisplayName("카테고리 쿠폰 템플릿 목록 조회 테스트")
-    void testGetCategoryCouponTemplate() {
-        GetCouponTemplateResponseDto categoryCouponTemplate = new GetCouponTemplateResponseDto(2L, 1L, null, 1L, "도서 - 카테고리 쿠폰", 1L);
-        PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(categoryCouponTemplate));
-        Pageable pageable = PageRequest.of(0, 5);
-
-        when(couponTemplateRepository.getCategoryTemplate(pageable)).thenReturn(page);
-
-        couponTemplateService.getCategoryCouponTemplate(pageable);
-
-        verify(couponTemplateRepository, times(1))
-                .getCategoryTemplate(pageable);
-    }
-
-    @Test
     @DisplayName("쿠폰 템플릿 수정 테스트")
     void testUpdateCouponTemplate() {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        when(couponTemplateRepository.existsById(anyLong())).thenReturn(true);
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
+        when(couponPolicyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(couponPolicy));
 
         couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto);
 
         verify(couponTemplateRepository, times(1))
-                .existsById(anyLong());
-        verify(couponTemplateRepository, times(1))
-                .save(any());
+                .findById(anyLong());
+        verify(couponPolicyRepository, times(1))
+                .findById(anyLong());
     }
 
 
@@ -196,7 +205,8 @@ class CouponTemplateServiceTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
-        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
+        ReflectionTestUtils.setField(couponTemplateRequestDto,  "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
         when(couponTemplateRepository.existsById(anyLong())).thenReturn(false);
@@ -207,7 +217,7 @@ class CouponTemplateServiceTest {
     @Test
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void testDeleteCouponTemplate() {
-        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate(1L, 1L, 1L, null, "template", 30L)));
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate(1L, 1L, 1L, null, "template", 30L, new CouponTemplateType(1L, "생일 쿠폰"))));
 
         couponTemplateService.deleteCouponTemplate(1L);
 

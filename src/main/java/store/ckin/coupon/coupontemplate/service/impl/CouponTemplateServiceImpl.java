@@ -51,6 +51,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
                 .policyId(couponTemplateRequestDto.getPolicyId())
                 .bookId(couponTemplateRequestDto.getBookId())
                 .categoryId(couponTemplateRequestDto.getCategoryId())
+                .type(templateType)
                 .name(couponTemplateRequestDto.getName())
                 .amount(couponTemplateRequestDto.getAmount())
                 .type(templateType)
