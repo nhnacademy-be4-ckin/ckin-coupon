@@ -118,12 +118,12 @@ class CouponServiceTest {
     @Test
     @DisplayName("쿠폰 생성 테스트")
     void testCreateCoupon() {
-        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(bookCouponTemplate));
+        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(true);
 
         couponService.createCoupon(couponRequestDto);
 
-        verify(couponTemplateRepository, times(1))
-                .findById(anyLong());
+        verify(couponTemplateTypeRepository, times(1))
+                .existsById(anyLong());
         verify(couponRepository, times(1))
                 .save(any());
     }
@@ -152,12 +152,12 @@ class CouponServiceTest {
     @Test
     @DisplayName("쿠폰 목록 조회 테스트 : 타입별")
     void testGetCouponList() {
-        when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.of(bookType));
+        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(true);
 
         couponService.getCouponList(pageable, bookType.getId());
 
         verify(couponTemplateTypeRepository, times(1))
-                .findById(anyLong());
+                .existsById(anyLong());
         verify(couponRepository, times(1))
                 .getCouponList(any(), anyLong());
     }
