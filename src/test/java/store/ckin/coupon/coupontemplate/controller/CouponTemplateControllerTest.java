@@ -1,8 +1,9 @@
 package store.ckin.coupon.coupontemplate.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
-import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
+import store.ckin.coupon.coupontemplate.model.CouponTemplate;
+import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
 
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +30,6 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.web.servlet.function.RequestPredicates.param;
 
@@ -37,6 +39,7 @@ import static org.springframework.web.servlet.function.RequestPredicates.param;
  * @author : gaeun
  * @version : 2024. 02. 16
  */
+
 @WebMvcTest(CouponTemplateController.class)
 class CouponTemplateControllerTest {
     @Autowired
@@ -48,10 +51,12 @@ class CouponTemplateControllerTest {
 
     CreateCouponTemplateRequestDto couponTemplateRequestDto;
     GetCouponTemplateResponseDto couponTemplateResponseDto;
+    Long typeId;
 
     @BeforeEach
     void setUp() {
         objectMapper = new ObjectMapper();
+        typeId = 1L;
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
         couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L);
     }
@@ -62,12 +67,13 @@ class CouponTemplateControllerTest {
         PageRequest pageable = PageRequest.of(0, 5);
         PageImpl<GetCouponTemplateResponseDto> page = new PageImpl<>(List.of(couponTemplateResponseDto), pageable, 1);
 
-        when(couponTemplateService.getCouponTemplateList(pageable))
+        when(couponTemplateService.getCouponTemplateList(any(), anyLong()))
                 .thenReturn(page);
 
-        mockMvc.perform(get("/couponTemplate")
+        mockMvc.perform(get("/coupon/couponTemplate")
                         .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
+                        .param("type", "1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content[0].id",is(couponTemplateResponseDto.getId()), Long.class))
@@ -84,7 +90,7 @@ class CouponTemplateControllerTest {
     void getCouponTemplateByIdTest() throws Exception {
         when(couponTemplateService.getCouponTemplate(anyLong())).thenReturn(couponTemplateResponseDto);
 
-        mockMvc.perform(get("/couponTemplate/{couponTemplateId}", 1L))
+        mockMvc.perform(get("/coupon/couponTemplate/{couponTemplateId}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id",is(couponTemplateResponseDto.getId()), Long.class))
                 .andExpect(jsonPath("$.policyId",is(couponTemplateResponseDto.getPolicyId()), Long.class))
@@ -101,10 +107,11 @@ class CouponTemplateControllerTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", 1L);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "해리포터 전집");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        mockMvc.perform(post("/couponTemplate")
+        mockMvc.perform(post("/coupon/couponTemplate")
                 .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -115,7 +122,7 @@ class CouponTemplateControllerTest {
     @DisplayName("쿠폰 템플릿 등록 테스트: 실패")
     void createCouponTemplateTest_X() throws Exception {
 
-        mockMvc.perform(post("/couponTemplate")
+        mockMvc.perform(post("/coupon/couponTemplate")
                         .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
@@ -128,10 +135,11 @@ class CouponTemplateControllerTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", 1L);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "해리포터 전집");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        mockMvc.perform(put("/couponTemplate/{couponTemplateId}", 1L)
+        mockMvc.perform(put("/coupon/couponTemplate/{couponTemplateId}", 1L)
                         .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -142,7 +150,7 @@ class CouponTemplateControllerTest {
     @DisplayName("쿠폰 템플릿 수정 테스트: 실패")
     void updateCouponTemplateTest_X() throws Exception {
 
-        mockMvc.perform(put("/couponTemplate/{couponTemplateId}", 1L)
+        mockMvc.perform(put("/coupon/couponTemplate/{couponTemplateId}", 1L)
                         .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
@@ -153,7 +161,7 @@ class CouponTemplateControllerTest {
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void deleteCouponTemplateTest() throws Exception {
 
-        mockMvc.perform(delete("/couponTemplate/{couponTemplateId}", 1L))
+        mockMvc.perform(delete("/coupon/couponTemplate/{couponTemplateId}", 1L))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

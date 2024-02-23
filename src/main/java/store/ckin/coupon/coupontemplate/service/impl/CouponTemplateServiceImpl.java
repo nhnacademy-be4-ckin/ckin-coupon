@@ -9,79 +9,117 @@ import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestD
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponPolicyNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
+import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
+import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
+import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
-import store.ckin.coupon.policy.exception.CouponCodeNotFoundException;
-import store.ckin.coupon.policy.repository.CouponCodeRepository;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
 import java.util.Optional;
 
 /**
- * description:
+ * CouponTemplateServiceImpl
  *
  * @author : gaeun
  * @version : 2024. 02. 15
  */
-@Service
 @Transactional
+@Service
 @RequiredArgsConstructor
 public class CouponTemplateServiceImpl implements CouponTemplateService {
     private final CouponTemplateRepository couponTemplateRepository;
+    private final CouponTemplateTypeRepository couponTemplateTypeRepository;
     private final CouponPolicyRepository couponPolicyRepository;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponTemplateRequestDto 쿠폰 템플릿 요청 DTO
+     */
     @Override
     public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
+        CouponTemplateType templateType =
+                couponTemplateTypeRepository.findById(couponTemplateRequestDto.getTypeId())
+                        .orElseThrow(CouponTemplateTypeNotFoundException::new);
         couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId())
                 .orElseThrow(CouponPolicyNotFoundException::new);
 
+        //TODO: bookId, categoryId 검수
         couponTemplateRepository.save(CouponTemplate.builder()
                 .policyId(couponTemplateRequestDto.getPolicyId())
                 .bookId(couponTemplateRequestDto.getBookId())
                 .categoryId(couponTemplateRequestDto.getCategoryId())
+                .type(templateType)
                 .name(couponTemplateRequestDto.getName())
                 .amount(couponTemplateRequestDto.getAmount())
+                .type(templateType)
                 .build());
 
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param pageable 페이지 정보
+     * @param typeId   쿠폰 템플릿 타입 ID
+     * @return
+     */
+    @Transactional(readOnly = true)
     @Override
-    public Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable) {
-        return couponTemplateRepository.getCouponTemplateList(pageable);
+    public Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable, Long typeId) {
+        if (!couponTemplateTypeRepository.existsById(typeId)) {
+            throw new CouponTemplateTypeNotFoundException();
+        }
+        return couponTemplateRepository.getCouponTemplateList(pageable, typeId);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return
+     */
+    @Transactional(readOnly = true)
     @Override
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
         Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
-        if(optionalCoupon.isEmpty()) {
+        if (optionalCoupon.isEmpty()) {
             throw new CouponTemplateNotFoundException();
         }
+
         return optionalCoupon.get();
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @param couponRequestDto 쿠폰 템플릿 요청 DTO
+     */
     @Override
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
-        if(!couponTemplateRepository.existsById(couponTemplateId)) {
-            throw new CouponTemplateNotFoundException();
-        }
-        couponTemplateRepository.save(CouponTemplate.builder()
-                .id(couponTemplateId)
-                .policyId(couponRequestDto.getPolicyId())
-                .bookId(couponRequestDto.getBookId())
-                .categoryId(couponRequestDto.getCategoryId())
-                .name(couponRequestDto.getName())
-                .amount(couponRequestDto.getAmount())
-                .build());
+        CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
+                .orElseThrow(CouponTemplateNotFoundException::new);
+
+        couponPolicyRepository.findById(couponRequestDto.getPolicyId())
+                .orElseThrow(CouponPolicyNotFoundException::new);
+
+        //TODO: bookId, categoryId 검수
+        couponTemplate.update(couponRequestDto);
     }
 
+    /**
+     * {@inheritDoc}
+     *
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     */
     @Override
-    public void deleteCouponTemplate(Long couponId) {
-        Optional<CouponTemplate> optionalCoupon = couponTemplateRepository.findById(couponId);
+    public void deleteCouponTemplate(Long couponTemplateId) {
+        CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
+                .orElseThrow(CouponTemplateNotFoundException::new);
 
-        if(optionalCoupon.isEmpty()) {
-            throw new CouponTemplateNotFoundException();
-        }
-
-        couponTemplateRepository.delete(optionalCoupon.get());
+        couponTemplateRepository.delete(couponTemplate);
     }
 }

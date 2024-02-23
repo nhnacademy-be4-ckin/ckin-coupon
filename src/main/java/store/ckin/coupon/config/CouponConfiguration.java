@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * description:
+ * CouponConfiguration
  *
  * @author : gaeun
  * @version : 2024. 02. 13

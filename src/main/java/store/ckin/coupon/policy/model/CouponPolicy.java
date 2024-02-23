@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CouponPolicy {
     @Id

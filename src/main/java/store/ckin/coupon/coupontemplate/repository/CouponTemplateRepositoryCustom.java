@@ -15,7 +15,21 @@ import java.util.Optional;
  */
 @NoRepositoryBean
 public interface CouponTemplateRepositoryCustom {
-    Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable);
+    /**
+     * 모든 쿠폰 템플릿 목록을 조회하는 메서드 입니다.
+     *
+     * @param pageable 페이지 정보
+     * @param typeId   쿠폰 템플릿 타입 ID
+     * @return 쿠폰 템플릿 목록
+     */
+    Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable, Long typeId);
 
-    Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponId);
+    /**
+     * 아이디로 쿠폰 템플릿을 조회하는 메서드 입니다.
+     *
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return 쿠폰 템플릿
+     */
+    Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponTemplateId);
+
 }

@@ -23,12 +23,18 @@ import java.util.List;
  * @version : 2024. 02. 08
  */
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class CouponPolicyServiceImpl implements CouponPolicyService {
     private final CouponPolicyRepository couponPolicyRepository;
     private final CouponCodeRepository couponCodeRepository;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param policyRequestDto 쿠폰 정책 생성 DTO
+     */
     @Override
+    @Transactional
     public void createCouponPolicy(CreateCouponPolicyRequestDto policyRequestDto) {
         CouponCode couponCode = couponCodeRepository.findById(policyRequestDto.getCouponCodeId())
                 .orElseThrow(CouponCodeNotFoundException::new);
@@ -44,7 +50,11 @@ public class CouponPolicyServiceImpl implements CouponPolicyService {
 
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
+    @Transactional(readOnly = true)
     public List<GetCouponPolicyResponseDto> getCouponPolicyList() {
         return couponPolicyRepository.getCouponPolicy();
     }
