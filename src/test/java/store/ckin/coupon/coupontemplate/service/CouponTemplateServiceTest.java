@@ -85,13 +85,13 @@ class CouponTemplateServiceTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
-        when(couponPolicyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(couponPolicy));
+        when(couponPolicyRepository.existsById(anyLong())).thenReturn(true);
         when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookType));
 
         couponTemplateService.createCouponTemplate(couponTemplateRequestDto);
 
         verify(couponPolicyRepository, times(1))
-                .findById(anyLong());
+                .existsById(anyLong());
         verify(couponTemplateTypeRepository, times(1))
                 .findById(anyLong());
         verify(couponTemplateRepository, times(1))
@@ -188,14 +188,14 @@ class CouponTemplateServiceTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
         when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
-        when(couponPolicyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(couponPolicy));
+        when(couponPolicyRepository.existsById(anyLong())).thenReturn(true);
 
         couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto);
 
         verify(couponTemplateRepository, times(1))
                 .findById(anyLong());
         verify(couponPolicyRepository, times(1))
-                .findById(anyLong());
+                .existsById(anyLong());
     }
 
 
