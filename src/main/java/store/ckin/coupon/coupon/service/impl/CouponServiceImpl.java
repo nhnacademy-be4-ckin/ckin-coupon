@@ -42,8 +42,9 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void createCoupon(CreateCouponRequestDto couponRequestDto) {
         //TODO: memberId 있는지 확인
-        couponTemplateRepository.findById(couponRequestDto.getCouponTemplateId())
-                        .orElseThrow(CouponTemplateTypeNotFoundException::new);
+        if(couponTemplateRepository.existsById(couponRequestDto.getCouponTemplateId())) {
+            throw new CouponTemplateTypeNotFoundException();
+        }
 
         couponRepository.save(Coupon.builder()
                 .memberId(couponRequestDto.getMemberId())
@@ -90,8 +91,9 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public Page<GetCouponResponseDto> getCouponList(Pageable pageable, Long typeId) {
-        couponTemplateTypeRepository.findById(typeId)
-                .orElseThrow(CouponTemplateTypeNotFoundException::new);
+        if(couponTemplateRepository.existsById(typeId)) {
+            throw new CouponTemplateTypeNotFoundException();
+        }
 
         return couponRepository.getCouponList(pageable, typeId);
 
