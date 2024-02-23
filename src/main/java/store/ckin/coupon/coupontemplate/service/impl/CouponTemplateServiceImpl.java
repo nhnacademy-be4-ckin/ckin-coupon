@@ -43,8 +43,9 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         CouponTemplateType templateType =
                 couponTemplateTypeRepository.findById(couponTemplateRequestDto.getTypeId())
                         .orElseThrow(CouponTemplateTypeNotFoundException::new);
-        couponPolicyRepository.findById(couponTemplateRequestDto.getPolicyId())
-                .orElseThrow(CouponPolicyNotFoundException::new);
+        if(couponPolicyRepository.existsById(couponTemplateRequestDto.getPolicyId())) {
+            throw new CouponPolicyNotFoundException();
+        }
 
         //TODO: bookId, categoryId 검수
         couponTemplateRepository.save(CouponTemplate.builder()
@@ -102,9 +103,9 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
         CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
                 .orElseThrow(CouponTemplateNotFoundException::new);
-
-        couponPolicyRepository.findById(couponRequestDto.getPolicyId())
-                .orElseThrow(CouponPolicyNotFoundException::new);
+        if(couponPolicyRepository.existsById(couponRequestDto.getPolicyId())) {
+            throw new CouponPolicyNotFoundException();
+        }
 
         //TODO: bookId, categoryId 검수
         couponTemplate.update(couponRequestDto);
