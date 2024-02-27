@@ -15,6 +15,8 @@ import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundExce
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 
+import java.util.List;
+
 /**
  * CouponServiceImpl
  *
@@ -145,6 +147,14 @@ public class CouponServiceImpl implements CouponService {
     public Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId) {
         //TODO: memberId 존재하는지 확인
         return couponRepository.getCouponByMember(pageable, memberId);
+    }
+
+    @Override
+    public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList) {
+        //TODO: memberId 존재하는지 확인
+        //TODO: 카테고리 아이디 리스트 받아오기
+        List<Long> categoryIdList = List.of(1L);
+        return couponRepository.getCouponForBuyList(memberId, bookIdList, categoryIdList);
     }
 
 

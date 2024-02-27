@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 
+import java.util.List;
+
 /**
  * CouponService
  *
@@ -76,4 +78,5 @@ public interface CouponService {
      */
     Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId);
 
+    List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList);
 }

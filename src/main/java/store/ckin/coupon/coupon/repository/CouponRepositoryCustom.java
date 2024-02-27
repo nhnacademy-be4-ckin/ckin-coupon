@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * CouponPolicyRepositoryCustom
@@ -66,4 +66,6 @@ public interface CouponRepositoryCustom {
      * @return 쿠폰 DTO 목록
      */
     Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId);
+
+    List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList, List<Long> categoryIdList);
 }

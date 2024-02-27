@@ -22,6 +22,7 @@ public class GetCouponResponseDto {
     private Long memberId;
     private Long couponTemplateId;
     private Long policyId;
+    private Long couponCodeId;
     private Integer minOrderPrice;
     private Integer discountPrice;
     private Integer discountRate;
@@ -49,11 +50,12 @@ public class GetCouponResponseDto {
      * @param usedDate         the used date
      */
     @QueryProjection
-    public GetCouponResponseDto(Long id, Long memberId, Long couponTemplateId, Long policyId, Integer minOrderPrice, Integer discountPrice, Integer discountRate, Integer maxDiscountPrice, Long bookId, Long categoryId, Long typeId, String name, Date expirationDate, Date issueDate, Date usedDate) {
+    public GetCouponResponseDto(Long id, Long memberId, Long couponTemplateId, Long policyId, Long couponCodeId, Integer minOrderPrice, Integer discountPrice, Integer discountRate, Integer maxDiscountPrice, Long bookId, Long categoryId, Long typeId, String name, Date expirationDate, Date issueDate, Date usedDate) {
         this.id = id;
         this.memberId = memberId;
         this.couponTemplateId = couponTemplateId;
         this.policyId = policyId;
+        this.couponCodeId = couponCodeId;
         this.minOrderPrice = minOrderPrice;
         this.discountPrice = discountPrice;
         this.discountRate = discountRate;

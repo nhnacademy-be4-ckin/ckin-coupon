@@ -13,6 +13,7 @@ import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -127,5 +128,19 @@ public class CouponController {
         couponService.updateCouponUsedDate(couponId);
 
         return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 도서에 해당하는 쿠폰 리스트를 반환하는 메소드입니다.
+     *
+     * @param
+     */
+    @GetMapping("/sale")
+    public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,
+                                                                             @RequestParam("bookId") List<Long> bookIdList) {
+
+        List<GetCouponResponseDto> content = couponService.getCouponForBuyList(memberId, bookIdList);
+
+        return ResponseEntity.ok().body(content);
     }
 }
