@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
-import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
 import javax.validation.Valid;
 import java.util.Objects;
@@ -129,5 +128,4 @@ public class CouponController {
 
         return ResponseEntity.ok().build();
     }
-
 }

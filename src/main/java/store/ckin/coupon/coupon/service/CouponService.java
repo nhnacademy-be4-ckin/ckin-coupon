@@ -75,4 +75,5 @@ public interface CouponService {
      * @return 쿠폰 DTO 목록
      */
     Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId);
+
 }

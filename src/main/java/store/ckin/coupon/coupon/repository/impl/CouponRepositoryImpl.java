@@ -13,6 +13,7 @@ import store.ckin.coupon.coupon.repository.CouponRepositoryCustom;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplateType;
+import store.ckin.coupon.policy.model.QCouponPolicy;
 
 import java.util.List;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
     QCoupon coupon = QCoupon.coupon;
     QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
     QCouponTemplateType couponTemplateType = QCouponTemplateType.couponTemplateType;
+    QCouponPolicy couponPolicy = QCouponPolicy.couponPolicy;
 
     /**
      * {@inheritDoc}
@@ -42,11 +44,17 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponResponseDto(
                         coupon.id,
                         coupon.memberId,
                         coupon.couponTemplateId,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.type().id,
@@ -77,11 +85,17 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponResponseDto(
                         coupon.id,
                         coupon.memberId,
                         coupon.couponTemplateId,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.type().id,
@@ -113,11 +127,17 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponResponseDto(
                         coupon.id,
                         coupon.memberId,
                         coupon.couponTemplateId,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.type().id,
@@ -148,11 +168,17 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponResponseDto(
                         coupon.id,
                         coupon.memberId,
                         coupon.couponTemplateId,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.type().id,
@@ -180,19 +206,24 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         return from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponResponseDto(
                         coupon.id,
                         coupon.memberId,
                         coupon.couponTemplateId,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.type().id,
                         couponTemplate.name,
                         coupon.expirationDate,
                         coupon.issueDate,
-                        coupon.usedDate
-                ))
+                        coupon.usedDate))
                 .where(coupon.id.eq(couponId))
                 .fetchOne();
     }
@@ -205,11 +236,17 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         List<GetCouponResponseDto> results = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponResponseDto(
                         coupon.id,
                         coupon.memberId,
                         coupon.couponTemplateId,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.type().id,

@@ -58,7 +58,7 @@ class CouponTemplateControllerTest {
         objectMapper = new ObjectMapper();
         typeId = 1L;
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
-        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L);
+        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L);
     }
 
     @Test

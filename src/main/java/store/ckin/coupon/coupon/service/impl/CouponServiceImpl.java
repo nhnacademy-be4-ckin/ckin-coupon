@@ -12,12 +12,8 @@ import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
-import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
-
-import java.util.Calendar;
-import java.util.Optional;
 
 /**
  * CouponServiceImpl
@@ -42,7 +38,7 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void createCoupon(CreateCouponRequestDto couponRequestDto) {
         //TODO: memberId 있는지 확인
-        if(!couponTemplateTypeRepository.existsById(couponRequestDto.getCouponTemplateId())) {
+        if (!couponTemplateTypeRepository.existsById(couponRequestDto.getCouponTemplateId())) {
             throw new CouponTemplateTypeNotFoundException();
         }
 
@@ -91,7 +87,7 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public Page<GetCouponResponseDto> getCouponList(Pageable pageable, Long typeId) {
-        if(!couponTemplateTypeRepository.existsById(typeId)) {
+        if (!couponTemplateTypeRepository.existsById(typeId)) {
             throw new CouponTemplateTypeNotFoundException();
         }
 
@@ -150,5 +146,6 @@ public class CouponServiceImpl implements CouponService {
         //TODO: memberId 존재하는지 확인
         return couponRepository.getCouponByMember(pageable, memberId);
     }
+
 
 }

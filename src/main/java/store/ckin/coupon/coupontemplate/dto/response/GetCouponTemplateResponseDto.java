@@ -20,4 +20,5 @@ public class GetCouponTemplateResponseDto {
     private Long categoryId;
     private String name;
     private Long amount;
+    private Long typeId;
 }
