@@ -43,9 +43,6 @@ public class CouponTemplateController {
     }
 
     /**
-     * zn
-     */
-    /**
      * 쿠폰 템플릿을 조회하는 메서드 입니다.
      *
      * @param couponTemplateId 쿠폰 템플릿 ID

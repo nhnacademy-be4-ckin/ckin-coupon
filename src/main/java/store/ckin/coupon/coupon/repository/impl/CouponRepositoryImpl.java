@@ -69,7 +69,10 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .fetch();
 
         long count = from(coupon)
+                .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
                 .fetchOne();
@@ -110,7 +113,10 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .fetch();
 
         long count = from(coupon)
+                .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
                 .where(coupon.usedDate.isNotNull())
@@ -153,6 +159,8 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         long count = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .where(couponTemplate.type().id.eq(typeId))
                 .fetchOne();
@@ -193,6 +201,8 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         long count = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .fetchOne();
         return new PageImpl<>(results, pageable, count);
@@ -262,6 +272,8 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         long count = from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
                 .fetchOne();
