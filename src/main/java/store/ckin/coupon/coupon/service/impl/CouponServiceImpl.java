@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
+import store.ckin.coupon.coupon.exception.CouponAlreadyExistException;
 import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
@@ -15,6 +16,8 @@ import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundExce
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -155,6 +158,31 @@ public class CouponServiceImpl implements CouponService {
         //TODO: 카테고리 아이디 리스트 받아오기
         List<Long> categoryIdList = List.of(1L);
         return couponRepository.getCouponForBuyList(memberId, bookIdList, categoryIdList);
+    }
+
+    @Override
+    public Boolean isExistCoupon(Long memberId, Long couponTemplateId) {
+        return couponRepository.isExistCoupon(memberId, couponTemplateId);
+    }
+
+    @Override
+    @Transactional
+    public boolean createCouponByIds(Long memberId, Long couponTemplateId) {
+        if (!couponTemplateRepository.existsById((couponTemplateId))) {
+            return false;
+        }
+
+        if(isExistCoupon(memberId, couponTemplateId)) {
+            return false;
+        }
+        couponRepository.save(Coupon.builder()
+                .memberId(memberId)
+                .couponTemplateId(couponTemplateId)
+                .expirationDate(Date.valueOf(LocalDate.now().plusDays(30)))
+                .issueDate(Date.valueOf(LocalDate.now()))
+                .usedDate(null)
+                .build());
+        return true;
     }
 
 

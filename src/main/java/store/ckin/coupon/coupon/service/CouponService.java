@@ -79,4 +79,8 @@ public interface CouponService {
     Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId);
 
     List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList);
+
+    Boolean isExistCoupon(Long memberId, Long couponTemplateId);
+
+    boolean createCouponByIds(Long memberId, Long couponTemplateId);
 }

@@ -68,4 +68,6 @@ public interface CouponRepositoryCustom {
     Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId);
 
     List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList, List<Long> categoryIdList);
+
+    Boolean isExistCoupon(Long memberId, Long couponTemplateId);
 }

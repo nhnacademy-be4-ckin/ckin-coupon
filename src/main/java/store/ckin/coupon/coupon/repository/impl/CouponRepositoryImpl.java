@@ -1,5 +1,6 @@
 package store.ckin.coupon.coupon.repository.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -315,5 +316,13 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .fetch();
 
         return results;
+    }
+
+    @Override
+    public Boolean isExistCoupon(Long memberId, Long couponTemplateId) {
+        long result = from(coupon)
+                .where(coupon.memberId.eq(memberId).and(coupon.couponTemplateId.eq(couponTemplateId)))
+                .fetchCount();
+        return result > 0;
     }
 }

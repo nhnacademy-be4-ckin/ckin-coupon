@@ -42,6 +42,19 @@ public class CouponController {
     }
 
     /**
+     * 회원이 해당 쿠폰을 발급받은 기록이 있는지 확인하고 등록합니다.
+     *
+     * @param memberId 회원ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     */
+    @PostMapping("/{memberId}/{couponTemplateId}")
+    public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
+                                                  @PathVariable("couponTemplateId") Long couponTemplateId) {
+        boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(content);
+    }
+    /**
      * 쿠폰을 목록을 조회하는 메서드 입니다.
      *
      * @param pageable 페이지 정보
@@ -86,6 +99,7 @@ public class CouponController {
 
         return ResponseEntity.ok().body(content);
     }
+
 
     /**
      * 특정 회원의 사용된 쿠폰을 조회하는 메서드 입니다.
