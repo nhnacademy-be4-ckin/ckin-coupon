@@ -12,12 +12,12 @@ import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
-import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 
-import java.util.Calendar;
-import java.util.Optional;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * CouponServiceImpl
@@ -42,7 +42,7 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void createCoupon(CreateCouponRequestDto couponRequestDto) {
         //TODO: memberId 있는지 확인
-        if(!couponTemplateTypeRepository.existsById(couponRequestDto.getCouponTemplateId())) {
+        if (!couponTemplateTypeRepository.existsById(couponRequestDto.getCouponTemplateId())) {
             throw new CouponTemplateTypeNotFoundException();
         }
 
@@ -91,7 +91,7 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public Page<GetCouponResponseDto> getCouponList(Pageable pageable, Long typeId) {
-        if(!couponTemplateTypeRepository.existsById(typeId)) {
+        if (!couponTemplateTypeRepository.existsById(typeId)) {
             throw new CouponTemplateTypeNotFoundException();
         }
 
@@ -150,5 +150,54 @@ public class CouponServiceImpl implements CouponService {
         //TODO: memberId 존재하는지 확인
         return couponRepository.getCouponByMember(pageable, memberId);
     }
+
+    /**
+     * @param memberId   회원 ID
+     * @param bookIdList 도서 리스트
+     * @return
+     */
+    @Override
+    public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList) {
+        //TODO: memberId 존재하는지 확인
+        //TODO: 카테고리 아이디 리스트 받아오기
+        List<Long> categoryIdList = List.of(1L);
+        return couponRepository.getCouponForBuyList(memberId, bookIdList, categoryIdList);
+    }
+
+    /**
+     * @param memberId         회원 ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return
+     */
+    @Override
+    public Boolean isExistCoupon(Long memberId, Long couponTemplateId) {
+        return couponRepository.isExistCoupon(memberId, couponTemplateId);
+    }
+
+    /**
+     * @param memberId         회원 ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return
+     */
+    @Override
+    @Transactional
+    public boolean createCouponByIds(Long memberId, Long couponTemplateId) {
+        if (!couponTemplateRepository.existsById((couponTemplateId))) {
+            return false;
+        }
+
+        if (isExistCoupon(memberId, couponTemplateId)) {
+            return false;
+        }
+        couponRepository.save(Coupon.builder()
+                .memberId(memberId)
+                .couponTemplateId(couponTemplateId)
+                .expirationDate(Date.valueOf(LocalDate.now().plusDays(30)))
+                .issueDate(Date.valueOf(LocalDate.now()))
+                .usedDate(null)
+                .build());
+        return true;
+    }
+
 
 }

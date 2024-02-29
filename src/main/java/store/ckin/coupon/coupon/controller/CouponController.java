@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
-import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -39,6 +39,20 @@ public class CouponController {
         couponService.createCoupon(couponRequestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * 회원이 해당 쿠폰을 발급받은 기록이 있는지 확인하고 등록합니다.
+     *
+     * @param memberId         회원ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     */
+    @PostMapping("/{memberId}/{couponTemplateId}")
+    public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
+                                                     @PathVariable("couponTemplateId") Long couponTemplateId) {
+        boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
 
     /**
@@ -87,6 +101,7 @@ public class CouponController {
         return ResponseEntity.ok().body(content);
     }
 
+
     /**
      * 특정 회원의 사용된 쿠폰을 조회하는 메서드 입니다.
      *
@@ -130,4 +145,17 @@ public class CouponController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 도서에 해당하는 쿠폰 리스트를 반환하는 메소드입니다.
+     *
+     * @param
+     */
+    @GetMapping("/sale")
+    public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,
+                                                                          @RequestParam("bookId") List<Long> bookIdList) {
+
+        List<GetCouponResponseDto> content = couponService.getCouponForBuyList(memberId, bookIdList);
+
+        return ResponseEntity.ok().body(content);
+    }
 }

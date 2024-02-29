@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 
-import java.util.Optional;
+import java.util.List;
 
 /**
  * CouponPolicyRepositoryCustom
@@ -66,4 +66,23 @@ public interface CouponRepositoryCustom {
      * @return 쿠폰 DTO 목록
      */
     Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId);
+
+    /**
+     * 도서에 해당하는 쿠폰 리스트를 반환하는 메소드입니다.
+     *
+     * @param memberId       회원 ID
+     * @param bookIdList     도서 리스트
+     * @param categoryIdList 카테고리 리스트
+     * @return 쿠폰 응답 DTO 리스트
+     */
+    List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList, List<Long> categoryIdList);
+
+    /**
+     * 회원이 해당 쿠폰을 발급받은 기록이 있는지 확인하는 메소드 입니다.
+     *
+     * @param memberId         회원 ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return True/False
+     */
+    Boolean isExistCoupon(Long memberId, Long couponTemplateId);
 }

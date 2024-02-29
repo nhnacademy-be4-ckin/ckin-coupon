@@ -1,9 +1,7 @@
 package store.ckin.coupon.coupontemplate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +14,19 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
-import store.ckin.coupon.coupontemplate.model.CouponTemplate;
-import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
-import static org.springframework.web.servlet.function.RequestPredicates.param;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * description:
@@ -58,7 +53,7 @@ class CouponTemplateControllerTest {
         objectMapper = new ObjectMapper();
         typeId = 1L;
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
-        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L);
+        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L);
     }
 
     @Test
@@ -74,14 +69,14 @@ class CouponTemplateControllerTest {
                         .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .param("type", "1")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id",is(couponTemplateResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.content[0].policyId",is(couponTemplateResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].bookId",is(couponTemplateResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.content[0].categoryId",is(couponTemplateResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.content[0].name",equalTo(couponTemplateResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].amount",is(couponTemplateResponseDto.getAmount()), Long.class))
+                .andExpect(jsonPath("$.content[0].id", is(couponTemplateResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId", is(couponTemplateResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId", is(couponTemplateResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId", is(couponTemplateResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name", equalTo(couponTemplateResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].amount", is(couponTemplateResponseDto.getAmount()), Long.class))
                 .andDo(print());
     }
 
@@ -92,12 +87,12 @@ class CouponTemplateControllerTest {
 
         mockMvc.perform(get("/coupon/couponTemplate/{couponTemplateId}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id",is(couponTemplateResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.policyId",is(couponTemplateResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.bookId",is(couponTemplateResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.categoryId",is(couponTemplateResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.name",equalTo(couponTemplateResponseDto.getName())))
-                .andExpect(jsonPath("$.amount",is(couponTemplateResponseDto.getAmount()), Long.class))
+                .andExpect(jsonPath("$.id", is(couponTemplateResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.policyId", is(couponTemplateResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.bookId", is(couponTemplateResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.categoryId", is(couponTemplateResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.name", equalTo(couponTemplateResponseDto.getName())))
+                .andExpect(jsonPath("$.amount", is(couponTemplateResponseDto.getAmount()), Long.class))
                 .andDo(print());
     }
 
@@ -112,8 +107,8 @@ class CouponTemplateControllerTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
         mockMvc.perform(post("/coupon/couponTemplate")
-                .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
-                .contentType(MediaType.APPLICATION_JSON))
+                        .content(objectMapper.writeValueAsString(couponTemplateRequestDto))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
