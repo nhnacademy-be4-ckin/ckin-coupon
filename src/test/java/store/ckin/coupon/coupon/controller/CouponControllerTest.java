@@ -16,22 +16,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
-import store.ckin.coupon.coupontemplate.controller.CouponTemplateController;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
-import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
-import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
 
 import java.sql.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,6 +49,7 @@ class CouponControllerTest {
     GetCouponResponseDto couponResponseDto;
     Pageable pageable;
     PageImpl<GetCouponResponseDto> page;
+    List<GetCouponResponseDto> couponList;
 
     @BeforeEach
     void setUp() {
@@ -81,6 +76,7 @@ class CouponControllerTest {
 
         pageable = PageRequest.of(0, 5);
         page = new PageImpl<>(List.of(couponResponseDto));
+        couponList = List.of(couponResponseDto);
     }
 
     @Test
@@ -97,6 +93,15 @@ class CouponControllerTest {
     }
 
     @Test
+    @DisplayName("쿠폰 발급 기록을 확인하고 등록 테스트")
+    void testCreateCouponByIds() throws Exception {
+
+        mockMvc.perform(post("/coupon/{memberId}/{couponTemplateId}", 1L, 1L))
+                .andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @Test
     @DisplayName("쿠폰 목록 조회 테스트 : typeId가 있는 경우")
     void testGetAllCouponList() throws Exception {
         when(couponService.getCouponList(any(), anyLong())).thenReturn(page);
@@ -107,17 +112,17 @@ class CouponControllerTest {
                         .param("typeId", "1")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
-                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
-                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
-                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andExpect(jsonPath("$.content[0].id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(print());
     }
 
@@ -131,17 +136,17 @@ class CouponControllerTest {
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
-                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
-                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
-                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andExpect(jsonPath("$.content[0].id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(print());
     }
 
@@ -153,17 +158,17 @@ class CouponControllerTest {
         mockMvc.perform(get("/coupon/{couponId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id",is(couponResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.memberId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.policyId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.bookId",is(couponResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.categoryId",is(couponResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.typeId",is(couponResponseDto.getTypeId()), Long.class))
-                .andExpect(jsonPath("$.name",equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
-                .andExpect(jsonPath("$.issueDate",is(couponResponseDto.getIssueDate().toString())))
-                .andExpect(jsonPath("$.usedDate",is(couponResponseDto.getUsedDate())))
+                .andExpect(jsonPath("$.id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(print());
     }
 
@@ -177,17 +182,17 @@ class CouponControllerTest {
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
-                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
-                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
-                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andExpect(jsonPath("$.content[0].id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(print());
     }
 
@@ -203,17 +208,17 @@ class CouponControllerTest {
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
-                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
-                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
-                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate().toString())))
+                .andExpect(jsonPath("$.content[0].id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate", is(couponResponseDto.getUsedDate().toString())))
                 .andDo(print());
     }
 
@@ -229,26 +234,48 @@ class CouponControllerTest {
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content[0].id",is(couponResponseDto.getId()), Long.class))
-                .andExpect(jsonPath("$.content[0].memberId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].couponTemplateId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].policyId",is(couponResponseDto.getPolicyId()), Long.class))
-                .andExpect(jsonPath("$.content[0].bookId",is(couponResponseDto.getBookId()), Long.class))
-                .andExpect(jsonPath("$.content[0].categoryId",is(couponResponseDto.getCategoryId()), Long.class))
-                .andExpect(jsonPath("$.content[0].typeId",is(couponResponseDto.getTypeId()), Long.class))
-                .andExpect(jsonPath("$.content[0].name",equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].expirationDate",equalTo(couponResponseDto.getExpirationDate().toString())))
-                .andExpect(jsonPath("$.content[0].issueDate",is(couponResponseDto.getIssueDate().toString())))
-                .andExpect(jsonPath("$.content[0].usedDate",is(couponResponseDto.getUsedDate())))
+                .andExpect(jsonPath("$.content[0].id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$.content[0].memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$.content[0].bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$.content[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$.content[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$.content[0].name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$.content[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$.content[0].usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(print());
     }
 
     @Test
     @DisplayName("쿠폰 수정 테스트")
     void testUpdateCouponUsedDate() throws Exception {
-        mockMvc.perform(get("/coupon/{couponId}", 1L)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(put("/coupon/{couponId}", 1L))
                 .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("도서에 해당하는 쿠폰 리스트 반환 테스트")
+    void testGetCouponForBuyList() throws Exception {
+        when(couponService.getCouponForBuyList(any(), any())).thenReturn(couponList);
+
+        mockMvc.perform(get("/coupon/sale")
+                        .param("memberId", "1")
+                        .param("bookId", "1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id", is(couponResponseDto.getId()), Long.class))
+                .andExpect(jsonPath("$[0].memberId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
+                .andExpect(jsonPath("$[0].bookId", is(couponResponseDto.getBookId()), Long.class))
+                .andExpect(jsonPath("$[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
+                .andExpect(jsonPath("$[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
+                .andExpect(jsonPath("$[0].name", equalTo(couponResponseDto.getName())))
+                .andExpect(jsonPath("$[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
+                .andExpect(jsonPath("$[0].usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(print());
     }
 

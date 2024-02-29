@@ -10,6 +10,7 @@ import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplateType;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepositoryCustom;
+import store.ckin.coupon.policy.model.QCouponPolicy;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
 
     QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
     QCouponTemplateType couponTemplateType = QCouponTemplateType.couponTemplateType;
+    QCouponPolicy couponPolicy = QCouponPolicy.couponPolicy;
 
     /**
      * {@inheritDoc}
@@ -42,9 +44,15 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
         List<GetCouponTemplateResponseDto> results = from(couponTemplate)
                 .innerJoin(couponTemplateType)
                 .on(couponTemplate.type().eq(couponTemplateType))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(Projections.fields(GetCouponTemplateResponseDto.class,
                         couponTemplate.id,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.name,
@@ -57,6 +65,8 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
         long count = from(couponTemplate)
                 .innerJoin(couponTemplateType)
                 .on(couponTemplate.type().eq(couponTemplateType))
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(couponTemplate.count())
                 .where(couponTemplateType.id.eq(typeId))
                 .fetchOne();
@@ -73,9 +83,15 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
     @Override
     public Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponTemplateId) {
         GetCouponTemplateResponseDto results = from(couponTemplate)
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(Projections.fields(GetCouponTemplateResponseDto.class,
                         couponTemplate.id,
                         couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.name,

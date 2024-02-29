@@ -13,7 +13,6 @@ import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDt
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 /**
  * CouponTemplateController
