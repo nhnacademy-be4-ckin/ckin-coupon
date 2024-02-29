@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
  * description:
  *
@@ -21,6 +19,7 @@ class CouponTemplateTypeRepositoryTest {
     CouponTemplateType birthType;
     CouponTemplateType bookType;
     CouponTemplateType categoryType;
+
     @Test
     @DisplayName("save test")
     void testSave() {

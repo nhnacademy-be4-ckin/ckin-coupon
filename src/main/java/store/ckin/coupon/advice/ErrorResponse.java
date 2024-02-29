@@ -2,7 +2,6 @@ package store.ckin.coupon.advice;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * description:

@@ -29,7 +29,7 @@ import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -72,7 +72,7 @@ class CouponTemplateServiceTest {
         bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, bookType);
         couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponTemplateTypeRepository, couponPolicyRepository);
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
-        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, 2L);
+        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L);
     }
 
     @Test
@@ -129,6 +129,7 @@ class CouponTemplateServiceTest {
 
         assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
     }
+
     @Test
     @DisplayName("쿠폰 템플릿 목록 조회 테스트")
     void testGetCouponTemplateList() {
@@ -136,7 +137,7 @@ class CouponTemplateServiceTest {
         Pageable pageable = PageRequest.of(0, 5);
 
         when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(true);
-        when(couponTemplateRepository.getCouponTemplateList(any(),anyLong())).thenReturn(page);
+        when(couponTemplateRepository.getCouponTemplateList(any(), anyLong())).thenReturn(page);
 
         couponTemplateService.getCouponTemplateList(pageable, typeId);
 
@@ -153,7 +154,7 @@ class CouponTemplateServiceTest {
         Pageable pageable = PageRequest.of(0, 5);
 
         when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(false);
-        when(couponTemplateRepository.getCouponTemplateList(any(),anyLong())).thenReturn(page);
+        when(couponTemplateRepository.getCouponTemplateList(any(), anyLong())).thenReturn(page);
 
         assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponTemplateService.getCouponTemplateList(pageable, typeId));
     }
@@ -206,12 +207,28 @@ class CouponTemplateServiceTest {
         ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
         ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
-        ReflectionTestUtils.setField(couponTemplateRequestDto,  "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
         ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
 
         when(couponTemplateRepository.existsById(anyLong())).thenReturn(false);
 
         assertThrows(CouponTemplateNotFoundException.class, () -> couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto));
+    }
+
+    @Test
+    @DisplayName("쿠폰 템플릿 수정 테스트: 실패 : 존재하지 않는 정책 아이디")
+    void testUpdateCouponTemplate_XP() {
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
+        ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
+
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
+        when(couponPolicyRepository.existsById(anyLong())).thenReturn(false);
+
+        assertThrows(CouponPolicyNotFoundException.class, () -> couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto));
     }
 
     @Test

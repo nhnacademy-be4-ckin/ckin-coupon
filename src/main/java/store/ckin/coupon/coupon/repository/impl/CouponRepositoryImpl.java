@@ -1,6 +1,5 @@
 package store.ckin.coupon.coupon.repository.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +10,6 @@ import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.model.QCoupon;
 import store.ckin.coupon.coupon.repository.CouponRepositoryCustom;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
-import store.ckin.coupon.coupontemplate.model.QCouponTemplateType;
 import store.ckin.coupon.policy.model.QCouponPolicy;
 
 import java.util.List;
@@ -31,7 +29,6 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
 
     QCoupon coupon = QCoupon.coupon;
     QCouponTemplate couponTemplate = QCouponTemplate.couponTemplate;
-    QCouponTemplateType couponTemplateType = QCouponTemplateType.couponTemplateType;
     QCouponPolicy couponPolicy = QCouponPolicy.couponPolicy;
 
     /**
@@ -62,7 +59,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.issueDate,
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId))
-                .where(coupon.usedDate.isNull())
+                .where(coupon.usedDate.isNotNull())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -74,7 +71,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
-                .where(coupon.usedDate.isNull())
+                .where(coupon.usedDate.isNotNull())
                 .fetchOne();
 
         return new PageImpl<>(results, pageable, count);
@@ -108,7 +105,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.issueDate,
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId))
-                .where(coupon.usedDate.isNotNull())
+                .where(coupon.usedDate.isNull())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -120,7 +117,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
-                .where(coupon.usedDate.isNotNull())
+                .where(coupon.usedDate.isNull())
                 .fetchOne();
 
         return new PageImpl<>(results, pageable, count);
@@ -285,6 +282,12 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
         return new PageImpl<>(results, pageable, count);
     }
 
+    /**
+     * @param memberId       회원 ID
+     * @param bookIdList     도서 리스트
+     * @param categoryIdList 카테고리 리스트
+     * @return
+     */
     @Override
     public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList, List<Long> categoryIdList) {
         List<GetCouponResponseDto> results = from(coupon)
@@ -311,13 +314,18 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId)
                         .and((couponTemplate.type().id.eq(1L))
-                        .or(couponTemplate.bookId.in(bookIdList))
-                        .or(couponTemplate.categoryId.in(categoryIdList))))
+                                .or(couponTemplate.bookId.in(bookIdList))
+                                .or(couponTemplate.categoryId.in(categoryIdList))))
                 .fetch();
 
         return results;
     }
 
+    /**
+     * @param memberId         회원 ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return
+     */
     @Override
     public Boolean isExistCoupon(Long memberId, Long couponTemplateId) {
         long result = from(coupon)

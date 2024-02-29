@@ -1,7 +1,6 @@
 package store.ckin.coupon.coupon.model;
 
 import lombok.*;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

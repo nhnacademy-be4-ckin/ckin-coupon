@@ -44,16 +44,17 @@ public class CouponController {
     /**
      * 회원이 해당 쿠폰을 발급받은 기록이 있는지 확인하고 등록합니다.
      *
-     * @param memberId 회원ID
+     * @param memberId         회원ID
      * @param couponTemplateId 쿠폰 템플릿 ID
      */
     @PostMapping("/{memberId}/{couponTemplateId}")
     public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
-                                                  @PathVariable("couponTemplateId") Long couponTemplateId) {
+                                                     @PathVariable("couponTemplateId") Long couponTemplateId) {
         boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
+
     /**
      * 쿠폰을 목록을 조회하는 메서드 입니다.
      *
@@ -151,7 +152,7 @@ public class CouponController {
      */
     @GetMapping("/sale")
     public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,
-                                                                             @RequestParam("bookId") List<Long> bookIdList) {
+                                                                          @RequestParam("bookId") List<Long> bookIdList) {
 
         List<GetCouponResponseDto> content = couponService.getCouponForBuyList(memberId, bookIdList);
 

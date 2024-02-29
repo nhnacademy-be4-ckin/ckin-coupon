@@ -18,27 +18,20 @@ import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.impl.CouponServiceImpl;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
-import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
-import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
-import store.ckin.coupon.coupontemplate.service.impl.CouponTemplateServiceImpl;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
-import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.*;
 
 /**
@@ -71,6 +64,7 @@ class CouponServiceTest {
     Long typeId;
     Pageable pageable;
     PageImpl<GetCouponResponseDto> page;
+    List<GetCouponResponseDto> couponList;
 
     @BeforeEach
     void setUp() {
@@ -105,7 +99,7 @@ class CouponServiceTest {
         pageable = PageRequest.of(0, 5);
         page = new PageImpl<>(List.of(couponResponseDto));
 
-        coupon =  Coupon.builder()
+        coupon = Coupon.builder()
                 .id(1L)
                 .memberId(1L)
                 .couponTemplateId(1L)
@@ -113,6 +107,8 @@ class CouponServiceTest {
                 .issueDate(Date.valueOf("2024-02-30"))
                 .usedDate(null)
                 .build();
+
+        couponList = List.of(couponResponseDto);
     }
 
     @Test
@@ -138,6 +134,7 @@ class CouponServiceTest {
         verify(couponRepository, times(1))
                 .getUsedCouponByMember(any(), anyLong());
     }
+
     @Test
     @DisplayName("쿠폰 조회 테스트 : 회원의 미사용 쿠폰")
     void testGetUnUsedCouponByMember() {
@@ -225,5 +222,66 @@ class CouponServiceTest {
 
         verify(couponRepository, times(1))
                 .getCouponByMember(any(), anyLong());
+    }
+
+    @Test
+    @DisplayName("도서에 해당하는 쿠폰 목록을 반환 테스트")
+    void testGetCouponForBuyList() {
+        when(couponRepository.getCouponForBuyList(anyLong(), anyList(), anyList())).thenReturn(couponList);
+
+        couponService.getCouponForBuyList(1L, List.of(1L, 2L, 3L));
+
+        verify(couponRepository, times(1))
+                .getCouponForBuyList(anyLong(), anyList(), anyList());
+    }
+
+    @Test
+    @DisplayName("쿠폰이 존재하는지 확인 테스트")
+    void testIsExistCoupon() {
+        when(couponRepository.isExistCoupon(anyLong(), anyLong())).thenReturn(false);
+
+        couponService.isExistCoupon(1L, 1L);
+
+        verify(couponRepository, times(1))
+                .isExistCoupon(anyLong(), anyLong());
+    }
+
+    @Test
+    @DisplayName("쿠폰 발급 테스트 : 성공")
+    void testCreateCouponByIds() {
+        when(couponTemplateRepository.existsById(anyLong())).thenReturn(true);
+        when(couponRepository.isExistCoupon(anyLong(), anyLong())).thenReturn(false);
+
+        couponService.createCouponByIds(1L, 1L);
+
+        verify(couponTemplateRepository, times(1))
+                .existsById(anyLong());
+        verify(couponRepository, times(1))
+                .isExistCoupon(anyLong(), anyLong());
+    }
+
+    @Test
+    @DisplayName("쿠폰 발급 테스트 : 실패 : 존재하지 않는 템플릿")
+    void testCreateCouponByIds_X() {
+        when(couponTemplateRepository.existsById(anyLong())).thenReturn(false);
+
+        couponService.createCouponByIds(1L, 1L);
+
+        verify(couponTemplateRepository, times(1))
+                .existsById(anyLong());
+    }
+
+    @Test
+    @DisplayName("쿠폰 발급 테스트 : 실패 : 이미 존재하는 쿠폰")
+    void testCreateCouponByIds_XC() {
+        when(couponTemplateRepository.existsById(anyLong())).thenReturn(true);
+        when(couponRepository.isExistCoupon(anyLong(), anyLong())).thenReturn(true);
+
+        couponService.createCouponByIds(1L, 1L);
+
+        verify(couponTemplateRepository, times(1))
+                .existsById(anyLong());
+        verify(couponRepository, times(1))
+                .isExistCoupon(anyLong(), anyLong());
     }
 }

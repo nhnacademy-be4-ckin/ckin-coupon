@@ -4,18 +4,14 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
 
-import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -64,7 +60,6 @@ class CouponPolicyRepositoryTest {
         Assertions.assertThat(results.get(0).getDiscountRate()).isEqualTo(couponPolicy.getDiscountRate());
         Assertions.assertThat(results.get(0).getMaxDiscountPrice()).isEqualTo(couponPolicy.getMaxDiscountPrice());
     }
-
 
 
 }

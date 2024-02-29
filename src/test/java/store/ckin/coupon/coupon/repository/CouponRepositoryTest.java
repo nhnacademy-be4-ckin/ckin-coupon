@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +16,7 @@ import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 
 import javax.persistence.EntityManager;
 import java.sql.Date;
-
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
 /**
  * CouponRepositoryTest
@@ -43,6 +41,7 @@ class CouponRepositoryTest {
     Coupon bookCoupon;
     Coupon categoryCoupon;
     Pageable pageable;
+
     @BeforeEach
     void setUp() {
         entityManager
@@ -113,38 +112,7 @@ class CouponRepositoryTest {
         couponRepository.save(bookCoupon);
 
         categoryCoupon = Coupon.builder()
-                .memberId(3L)
-                .couponTemplateId(3L)
-                .expirationDate(Date.valueOf("2024-05-30"))
-                .issueDate(Date.valueOf("2024-02-22"))
-                .usedDate(null)
-                .build();
-        couponRepository.save(categoryCoupon);
-    }
-
-//    @BeforeEach
-    @DisplayName("save Test")
-    void saveEntity() {
-        birthCoupon = Coupon.builder()
                 .memberId(1L)
-                .couponTemplateId(1L)
-                .expirationDate(Date.valueOf("2024-05-30"))
-                .issueDate(Date.valueOf("2024-02-22"))
-                .usedDate(Date.valueOf("2024-02-24"))
-                .build();
-        couponRepository.save(birthCoupon);
-
-        bookCoupon = Coupon.builder()
-                .memberId(2L)
-                .couponTemplateId(2L)
-                .expirationDate(Date.valueOf("2024-05-30"))
-                .issueDate(Date.valueOf("2024-02-22"))
-                .usedDate(null)
-                .build();
-        couponRepository.save(bookCoupon);
-
-        categoryCoupon = Coupon.builder()
-                .memberId(3L)
                 .couponTemplateId(3L)
                 .expirationDate(Date.valueOf("2024-05-30"))
                 .issueDate(Date.valueOf("2024-02-22"))
@@ -156,7 +124,7 @@ class CouponRepositoryTest {
     @Test
     @DisplayName("회원의 사용된 쿠폰 가져오기")
     void testGetUsedCouponByMember() {
-        Page<GetCouponResponseDto> results = couponRepository.getCouponByMember(pageable, 1L);
+        Page<GetCouponResponseDto> results = couponRepository.getUsedCouponByMember(pageable, 1L);
 
         Assertions.assertThat(results.getNumber()).isEqualTo(pageable.getPageNumber());
         Assertions.assertThat(results.getContent().get(0).getMemberId()).isEqualTo(birthCoupon.getMemberId());
@@ -174,7 +142,7 @@ class CouponRepositoryTest {
     @Test
     @DisplayName("회원의 미사용 쿠폰 가져오기")
     void testGetUnUsedCouponByMember() {
-        Page<GetCouponResponseDto> results = couponRepository.getCouponByMember(pageable, 2L);
+        Page<GetCouponResponseDto> results = couponRepository.getUnUsedCouponByMember(pageable, 2L);
 
         Assertions.assertThat(results.getNumber()).isEqualTo(pageable.getPageNumber());
         Assertions.assertThat(results.getContent().get(0).getMemberId()).isEqualTo(bookCoupon.getMemberId());
@@ -260,5 +228,30 @@ class CouponRepositoryTest {
         Assertions.assertThat(results.getContent().get(0).getCategoryId()).isEqualTo(birthCouponTemplate.getCategoryId());
         Assertions.assertThat(results.getContent().get(0).getName()).isEqualTo(birthCouponTemplate.getName());
         Assertions.assertThat(results.getContent().get(0).getTypeId()).isEqualTo(birthType.getId());
+    }
+
+    @Test
+    @DisplayName("해당 도서에 적용되는 회원의 쿠폰 목록 가져오기 테스트")
+    void testGetCouponForBuyList() {
+        List<GetCouponResponseDto> results = couponRepository.getCouponForBuyList(1L, List.of(1L), List.of(1L));
+
+        Assertions.assertThat(results.get(0).getMemberId()).isEqualTo(birthCoupon.getMemberId());
+        Assertions.assertThat(results.get(0).getCouponTemplateId()).isEqualTo(birthCoupon.getCouponTemplateId());
+        Assertions.assertThat(results.get(0).getUsedDate().getMonth()).isEqualTo(birthCoupon.getUsedDate().getMonth());
+        Assertions.assertThat(results.get(0).getExpirationDate().getMonth()).isEqualTo(birthCoupon.getExpirationDate().getMonth());
+        Assertions.assertThat(results.get(0).getIssueDate().getMonth()).isEqualTo(birthCoupon.getIssueDate().getMonth());
+        Assertions.assertThat(results.get(0).getPolicyId()).isEqualTo(birthCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.get(0).getBookId()).isEqualTo(birthCouponTemplate.getBookId());
+        Assertions.assertThat(results.get(0).getCategoryId()).isEqualTo(birthCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.get(0).getName()).isEqualTo(birthCouponTemplate.getName());
+        Assertions.assertThat(results.get(0).getTypeId()).isEqualTo(birthType.getId());
+    }
+
+    @Test
+    @DisplayName("쿠폰이 존재하는지 확인 테스트")
+    void testIsExistCoupon() {
+        boolean result = couponRepository.isExistCoupon(1L, 1L);
+
+        Assertions.assertThat(result).isEqualTo(true);
     }
 }

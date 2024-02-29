@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
-import store.ckin.coupon.coupon.exception.CouponAlreadyExistException;
 import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
@@ -152,6 +151,11 @@ public class CouponServiceImpl implements CouponService {
         return couponRepository.getCouponByMember(pageable, memberId);
     }
 
+    /**
+     * @param memberId   회원 ID
+     * @param bookIdList 도서 리스트
+     * @return
+     */
     @Override
     public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList) {
         //TODO: memberId 존재하는지 확인
@@ -160,11 +164,21 @@ public class CouponServiceImpl implements CouponService {
         return couponRepository.getCouponForBuyList(memberId, bookIdList, categoryIdList);
     }
 
+    /**
+     * @param memberId         회원 ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return
+     */
     @Override
     public Boolean isExistCoupon(Long memberId, Long couponTemplateId) {
         return couponRepository.isExistCoupon(memberId, couponTemplateId);
     }
 
+    /**
+     * @param memberId         회원 ID
+     * @param couponTemplateId 쿠폰 템플릿 ID
+     * @return
+     */
     @Override
     @Transactional
     public boolean createCouponByIds(Long memberId, Long couponTemplateId) {
@@ -172,7 +186,7 @@ public class CouponServiceImpl implements CouponService {
             return false;
         }
 
-        if(isExistCoupon(memberId, couponTemplateId)) {
+        if (isExistCoupon(memberId, couponTemplateId)) {
             return false;
         }
         couponRepository.save(Coupon.builder()
