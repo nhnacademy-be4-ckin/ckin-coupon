@@ -138,9 +138,9 @@ public class CouponController {
      * @param couponId 쿠폰 ID
      * @return 쿠폰 DTO 목록
      */
-    @PutMapping("{couponId}")
-    public ResponseEntity<Void> updateCouponUsedDate(@PathVariable("couponId") Long couponId) {
-        couponService.updateCouponUsedDate(couponId);
+    @PutMapping
+    public ResponseEntity<Void> updateCouponUsedDate(@RequestParam("couponId") List<Long> couponIds) {
+        couponService.updateCouponUsedDate(couponIds);
 
         return ResponseEntity.ok().build();
     }

@@ -50,9 +50,9 @@ public interface CouponService {
     /**
      * 쿠폰이 사용됐음을 업데이트하는 메서드 입니다.
      *
-     * @param couponId 쿠폰 ID
+     * @param couponIds 쿠폰 ID
      */
-    void updateCouponUsedDate(Long couponId);
+    void updateCouponUsedDate(List<Long> couponIds);
 
     /**
      * 쿠폰을 목록을 조회하는 메서드 입니다.
