@@ -96,7 +96,7 @@ class CouponControllerTest {
     @DisplayName("쿠폰 발급 기록을 확인하고 등록 테스트")
     void testCreateCouponByIds() throws Exception {
 
-        mockMvc.perform(post("/coupon/{memberId}/{couponTemplateId}", 1L, 1L))
+        mockMvc.perform(post("/coupon/members/{memberId}/{couponTemplateId}", 1L, 1L))
                 .andExpect(status().isCreated())
                 .andDo(print());
     }
@@ -177,7 +177,7 @@ class CouponControllerTest {
     void testGetAllCouponByMember() throws Exception {
         when(couponService.getCouponByMember(any(), anyLong())).thenReturn(page);
 
-        mockMvc.perform(get("/coupon/member/{memberId}", 1L)
+        mockMvc.perform(get("/coupon/members/{memberId}", 1L)
                         .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -203,7 +203,7 @@ class CouponControllerTest {
 
         when(couponService.getUsedCouponByMember(any(), anyLong())).thenReturn(page);
 
-        mockMvc.perform(get("/coupon/used/{memberId}", 1L)
+        mockMvc.perform(get("/coupon/members/used/{memberId}", 1L)
                         .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -229,7 +229,7 @@ class CouponControllerTest {
 
         when(couponService.getUnUsedCouponByMember(any(), anyLong())).thenReturn(page);
 
-        mockMvc.perform(get("/coupon/unUsed/{memberId}", 1L)
+        mockMvc.perform(get("/coupon/members/unUsed/{memberId}", 1L)
                         .param("page", objectMapper.writeValueAsString(pageable.getPageNumber()))
                         .param("size", objectMapper.writeValueAsString(pageable.getPageSize()))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -251,7 +251,7 @@ class CouponControllerTest {
     @Test
     @DisplayName("쿠폰 수정 테스트")
     void testUpdateCouponUsedDate() throws Exception {
-        mockMvc.perform(put("/coupon/{couponId}", 1L))
+        mockMvc.perform(put("/coupon?couponId=1"))
                 .andExpect(status().isOk())
                 .andDo(print());
     }

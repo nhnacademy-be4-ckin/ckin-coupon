@@ -50,9 +50,7 @@ class CouponRepositoryTest {
         entityManager
                 .createNativeQuery("ALTER TABLE CouponTemplate ALTER COLUMN coupontemplate_id RESTART WITH 1")
                 .executeUpdate();
-        entityManager
-                .createNativeQuery("ALTER TABLE CouponTemplateType ALTER COLUMN template_type_id RESTART WITH 1")
-                .executeUpdate();
+
         pageable = PageRequest.of(0, 3);
 
         birthType = new CouponTemplateType(1L, "생일 쿠폰");
@@ -118,6 +116,8 @@ class CouponRepositoryTest {
                 .issueDate(Date.valueOf("2024-02-22"))
                 .usedDate(null)
                 .build();
+
+        entityManager.flush();
         couponRepository.save(categoryCoupon);
     }
 

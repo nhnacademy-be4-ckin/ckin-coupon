@@ -6,12 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 
 /**
@@ -21,12 +22,13 @@ import java.util.List;
  * @version : 2024. 02. 16
  */
 @DataJpaTest
+@Transactional
 class CouponPolicyRepositoryTest {
     @Autowired
     CouponPolicyRepository couponPolicyRepository;
 
     @Autowired
-    TestEntityManager entityManager;
+    EntityManager entityManager;
 
     CouponCode couponCode;
     CouponPolicy couponPolicy;
@@ -45,6 +47,8 @@ class CouponPolicyRepositoryTest {
         ReflectionTestUtils.setField(couponPolicy, "discountRate", null);
         ReflectionTestUtils.setField(couponPolicy, "maxDiscountPrice", 10000);
         ReflectionTestUtils.setField(couponPolicy, "state", true);
+
+        entityManager.flush();
         couponPolicyRepository.save(couponPolicy);
     }
 
