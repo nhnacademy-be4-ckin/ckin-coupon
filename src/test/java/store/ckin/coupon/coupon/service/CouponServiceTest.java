@@ -172,7 +172,7 @@ class CouponServiceTest {
     void testUpdateCouponUsedDate() {
         when(couponRepository.findById(anyLong())).thenReturn(Optional.of(coupon));
 
-        couponService.updateCouponUsedDate(1L);
+        couponService.updateCouponUsedDate(List.of(1L));
 
         verify(couponRepository, times(1))
                 .findById(anyLong());

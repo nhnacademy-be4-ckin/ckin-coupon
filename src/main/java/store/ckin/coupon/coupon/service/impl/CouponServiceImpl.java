@@ -107,7 +107,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void updateCouponUsedDate(List<Long> couponIds) {
-        for(Long couponId : couponIds) {
+        for (Long couponId : couponIds) {
             Coupon coupon = couponRepository.findById(couponId)
                     .orElseThrow(CouponNotFoundException::new);
 
