@@ -2,10 +2,7 @@ package store.ckin.coupon.policy.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.ckin.coupon.policy.model.CouponCode;
 
-import javax.persistence.Column;
-import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 

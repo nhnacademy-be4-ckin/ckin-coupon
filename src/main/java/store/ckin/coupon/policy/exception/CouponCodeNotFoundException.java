@@ -8,9 +8,9 @@ package store.ckin.coupon.policy.exception;
  */
 public class CouponCodeNotFoundException extends RuntimeException {
     public static final String MESSAGE = "Not Found CouponPolicy";
+
     /**
      * 해당 쿠폰 코드 번호가 없음을 지정하는 생성자 입니다.
-     *
      */
     public CouponCodeNotFoundException() {
         super(MESSAGE);

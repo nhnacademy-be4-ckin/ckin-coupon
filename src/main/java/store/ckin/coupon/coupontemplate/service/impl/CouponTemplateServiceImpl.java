@@ -43,7 +43,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         CouponTemplateType templateType =
                 couponTemplateTypeRepository.findById(couponTemplateRequestDto.getTypeId())
                         .orElseThrow(CouponTemplateTypeNotFoundException::new);
-        if(!couponPolicyRepository.existsById(couponTemplateRequestDto.getPolicyId())) {
+        if (!couponPolicyRepository.existsById(couponTemplateRequestDto.getPolicyId())) {
             throw new CouponPolicyNotFoundException();
         }
 
@@ -103,7 +103,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
         CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
                 .orElseThrow(CouponTemplateNotFoundException::new);
-        if(!couponPolicyRepository.existsById(couponRequestDto.getPolicyId())) {
+        if (!couponPolicyRepository.existsById(couponRequestDto.getPolicyId())) {
             throw new CouponPolicyNotFoundException();
         }
 

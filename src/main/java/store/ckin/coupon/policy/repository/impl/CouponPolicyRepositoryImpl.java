@@ -1,16 +1,9 @@
 package store.ckin.coupon.policy.repository.impl;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-import org.springframework.stereotype.Repository;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.model.CouponPolicy;
-import store.ckin.coupon.policy.model.QCouponCode;
 import store.ckin.coupon.policy.model.QCouponPolicy;
 import store.ckin.coupon.policy.repository.CouponPolicyRepositoryCustom;
 

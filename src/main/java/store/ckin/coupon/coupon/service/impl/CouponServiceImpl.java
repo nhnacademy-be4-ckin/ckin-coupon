@@ -64,7 +64,6 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public Page<GetCouponResponseDto> getUsedCouponByMember(Pageable pageable, Long memberId) {
-        //TODO: 회원 아이디가 존재하는지 확인
         return couponRepository.getUsedCouponByMember(pageable, memberId);
 
     }
@@ -78,7 +77,6 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public Page<GetCouponResponseDto> getUnUsedCouponByMember(Pageable pageable, Long memberId) {
-        //TODO: 회원 아이디가 존재하는지 확인
         return couponRepository.getUnUsedCouponByMember(pageable, memberId);
     }
 
@@ -149,7 +147,6 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public Page<GetCouponResponseDto> getCouponByMember(Pageable pageable, Long memberId) {
-        //TODO: memberId 존재하는지 확인
         return couponRepository.getCouponByMember(pageable, memberId);
     }
 
@@ -160,7 +157,6 @@ public class CouponServiceImpl implements CouponService {
      */
     @Override
     public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList) {
-        //TODO: memberId 존재하는지 확인
         //TODO: 카테고리 아이디 리스트 받아오기
         List<Long> categoryIdList = List.of(1L);
         return couponRepository.getCouponForBuyList(memberId, bookIdList, categoryIdList);
