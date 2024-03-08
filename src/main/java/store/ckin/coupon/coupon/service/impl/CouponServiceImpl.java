@@ -102,15 +102,17 @@ public class CouponServiceImpl implements CouponService {
     /**
      * {@inheritDoc}
      *
-     * @param couponId 쿠폰 ID
+     * @param couponIds 쿠폰 ID
      */
     @Override
     @Transactional
-    public void updateCouponUsedDate(Long couponId) {
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(CouponNotFoundException::new);
+    public void updateCouponUsedDate(List<Long> couponIds) {
+        for(Long couponId : couponIds) {
+            Coupon coupon = couponRepository.findById(couponId)
+                    .orElseThrow(CouponNotFoundException::new);
 
-        coupon.updateUsedCoupon();
+            coupon.updateUsedCoupon();
+        }
     }
 
     /**
