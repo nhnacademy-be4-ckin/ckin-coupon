@@ -6,14 +6,15 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
 
+import javax.persistence.EntityManager;
 import java.util.Optional;
 
 /**
@@ -23,12 +24,13 @@ import java.util.Optional;
  * @version : 2024. 02. 16
  */
 @DataJpaTest
+@Transactional
 class CouponTemplateRepositoryTest {
     @Autowired
     CouponTemplateRepository couponTemplateRepository;
 
     @Autowired
-    TestEntityManager entityManager;
+    EntityManager entityManager;
 
     CouponTemplate birthCouponTemplate;
     CouponTemplate bookCouponTemplate;
@@ -39,6 +41,7 @@ class CouponTemplateRepositoryTest {
 
     @BeforeEach
     void setUp() {
+
         birthType = new CouponTemplateType(1L, "생일 쿠폰");
         bookType = new CouponTemplateType(2L, "도서 쿠폰");
         categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
@@ -46,6 +49,8 @@ class CouponTemplateRepositoryTest {
         entityManager.persist(birthType);
         entityManager.persist(bookType);
         entityManager.persist(categoryType);
+
+        entityManager.flush();
 
         birthCouponTemplate = CouponTemplate.builder()
                 .policyId(1L)
@@ -75,6 +80,8 @@ class CouponTemplateRepositoryTest {
                 .amount(100L)
                 .type(categoryType)
                 .build();
+
+        entityManager.flush();
         couponTemplateRepository.save(categoryCouponTemplate);
     }
 
