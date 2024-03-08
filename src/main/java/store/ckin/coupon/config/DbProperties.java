@@ -14,6 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Setter
 @ConfigurationProperties(prefix = "ckin.coupon")
 public class DbProperties {
+    private String driver;
     private String url;
     private String userName;
     private String password;
