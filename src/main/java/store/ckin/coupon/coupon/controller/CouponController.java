@@ -47,7 +47,7 @@ public class CouponController {
      * @param memberId         회원ID
      * @param couponTemplateId 쿠폰 템플릿 ID
      */
-    @PostMapping("/{memberId}/{couponTemplateId}")
+    @PostMapping("/members/{memberId}/{couponTemplateId}")
     public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
                                                      @PathVariable("couponTemplateId") Long couponTemplateId) {
         boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
@@ -93,7 +93,7 @@ public class CouponController {
      * @param memberId 회원 ID
      * @return 쿠폰 DTO 목록
      */
-    @GetMapping("/member/{memberId}")
+    @GetMapping("/members/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getAllCouponByMember(@PageableDefault(page = 0, size = 10) Pageable pageable,
                                                                            @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getCouponByMember(pageable, memberId);
@@ -109,7 +109,7 @@ public class CouponController {
      * @param memberId 회원 ID
      * @return 쿠폰 DTO 목록
      */
-    @GetMapping("/used/{memberId}")
+    @GetMapping("/members/used/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUsedCouponByMember(@PageableDefault(page = 0, size = 5) Pageable pageable,
                                                                             @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUsedCouponByMember(pageable, memberId);
@@ -124,7 +124,7 @@ public class CouponController {
      * @param memberId 회원 ID
      * @return 쿠폰 DTO 목록
      */
-    @GetMapping("/unUsed/{memberId}")
+    @GetMapping("/members/unUsed/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUnUsedCouponByMember(@PageableDefault(page = 0, size = 5) Pageable pageable,
                                                                               @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUnUsedCouponByMember(pageable, memberId);
@@ -135,7 +135,7 @@ public class CouponController {
     /**
      * 쿠폰이 사용됐음을 업데이트 하는 메서드 입니다.
      *
-     * @param couponId 쿠폰 ID
+     * @param couponIds 쿠폰 ID
      * @return 쿠폰 DTO 목록
      */
     @PutMapping
