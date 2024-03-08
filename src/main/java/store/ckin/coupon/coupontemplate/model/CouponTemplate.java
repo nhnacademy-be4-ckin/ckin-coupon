@@ -2,11 +2,9 @@ package store.ckin.coupon.coupontemplate.model;
 
 import lombok.*;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
-import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 /**
  * CouponTemplate

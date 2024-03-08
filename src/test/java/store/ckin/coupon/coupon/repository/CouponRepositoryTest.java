@@ -252,6 +252,6 @@ class CouponRepositoryTest {
     void testIsExistCoupon() {
         boolean result = couponRepository.isExistCoupon(1L, 1L);
 
-        Assertions.assertThat(result).isEqualTo(true);
+        Assertions.assertThat(result).isTrue();
     }
 }

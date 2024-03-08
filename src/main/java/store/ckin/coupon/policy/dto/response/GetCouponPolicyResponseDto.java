@@ -3,9 +3,6 @@ package store.ckin.coupon.policy.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * 쿠폰 정책을 반환하는 dto 입니다.
