@@ -290,7 +290,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
      */
     @Override
     public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList, List<Long> categoryIdList) {
-        List<GetCouponResponseDto> results = from(coupon)
+        return from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))
                 .leftJoin(couponPolicy)
@@ -318,7 +318,6 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                                 .or(couponTemplate.categoryId.in(categoryIdList))))
                 .fetch();
 
-        return results;
     }
 
     /**
