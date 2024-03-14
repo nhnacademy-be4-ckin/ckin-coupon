@@ -1,4 +1,4 @@
-package store.ckin.coupon.config;
+package store.ckin.coupon.config.properties;
 
 import lombok.Getter;
 import lombok.Setter;

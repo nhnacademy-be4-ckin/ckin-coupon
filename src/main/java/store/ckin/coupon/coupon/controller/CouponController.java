@@ -51,6 +51,7 @@ public class CouponController {
     public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
                                                      @PathVariable("couponTemplateId") Long couponTemplateId) {
         boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
+        log.debug("content: {}", content);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
