@@ -7,8 +7,6 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 쿠폰 템플릿을 생성할 때 사용하는 dto 입니다.

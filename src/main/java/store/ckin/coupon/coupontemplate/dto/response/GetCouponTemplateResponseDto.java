@@ -1,13 +1,10 @@
 package store.ckin.coupon.coupontemplate.dto.response;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  * 쿠폰 템플릿을 반환할 때 사용하는 dto 입니다.
