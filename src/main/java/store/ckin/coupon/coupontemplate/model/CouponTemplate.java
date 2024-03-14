@@ -5,6 +5,9 @@ import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestD
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.sql.Date;
 
 /**
  * CouponTemplate
@@ -35,6 +38,10 @@ public class CouponTemplate {
     @NotNull
     @Column(name = "coupontemplate_amount")
     private Long amount;
+    @Column(name = "expiration_duration")
+    private Integer duration;
+    @Column(name = "expiration_date")
+    private Date expirationDate;
     @NotNull
     @ManyToOne
     @JoinColumn(name = "template_type_id")
@@ -46,6 +53,8 @@ public class CouponTemplate {
         this.categoryId = couponTemplateRequestDto.getCategoryId();
         this.name = couponTemplateRequestDto.getName();
         this.amount = couponTemplateRequestDto.getAmount();
+        this.duration = couponTemplateRequestDto.getDuration();
+        this.expirationDate = couponTemplateRequestDto.getExpirationDate();
     }
 
 }

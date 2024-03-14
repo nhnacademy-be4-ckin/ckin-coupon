@@ -47,7 +47,6 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
             throw new CouponPolicyNotFoundException();
         }
 
-        //TODO: bookId, categoryId 검수
         couponTemplateRepository.save(CouponTemplate.builder()
                 .policyId(couponTemplateRequestDto.getPolicyId())
                 .bookId(couponTemplateRequestDto.getBookId())
@@ -56,6 +55,8 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
                 .name(couponTemplateRequestDto.getName())
                 .amount(couponTemplateRequestDto.getAmount())
                 .type(templateType)
+                .duration(couponTemplateRequestDto.getDuration())
+                .expirationDate(couponTemplateRequestDto.getExpirationDate())
                 .build());
 
     }

@@ -1,11 +1,11 @@
 package store.ckin.coupon.coupontemplate.repository.impl;
 
-import com.querydsl.core.types.Projections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
+import store.ckin.coupon.coupontemplate.dto.response.QGetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplateType;
@@ -46,7 +46,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                 .on(couponTemplate.type().eq(couponTemplateType))
                 .leftJoin(couponPolicy)
                 .on(couponTemplate.policyId.eq(couponPolicy.id))
-                .select(Projections.fields(GetCouponTemplateResponseDto.class,
+                .select(new QGetCouponTemplateResponseDto(
                         couponTemplate.id,
                         couponTemplate.policyId,
                         couponPolicy.minOrderPrice,
@@ -56,7 +56,11 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.name,
-                        couponTemplate.amount))
+                        couponTemplate.amount,
+                        couponTemplate.type().id,
+                        couponTemplate.duration,
+                        couponTemplate.expirationDate
+                ))
                 .where(couponTemplateType.id.eq(typeId))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -85,7 +89,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
         GetCouponTemplateResponseDto results = from(couponTemplate)
                 .leftJoin(couponPolicy)
                 .on(couponTemplate.policyId.eq(couponPolicy.id))
-                .select(Projections.fields(GetCouponTemplateResponseDto.class,
+                .select(new QGetCouponTemplateResponseDto(
                         couponTemplate.id,
                         couponTemplate.policyId,
                         couponPolicy.minOrderPrice,
@@ -95,7 +99,11 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.bookId,
                         couponTemplate.categoryId,
                         couponTemplate.name,
-                        couponTemplate.amount))
+                        couponTemplate.amount,
+                        couponTemplate.type().id,
+                        couponTemplate.duration,
+                        couponTemplate.expirationDate
+                ))
                 .where(couponTemplate.id.eq(couponTemplateId))
                 .fetchOne();
         return Optional.of(results);
