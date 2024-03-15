@@ -1,13 +1,12 @@
 package store.ckin.coupon.policy.repository.impl;
 
 import com.querydsl.core.types.Projections;
+import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.model.CouponPolicy;
 import store.ckin.coupon.policy.model.QCouponPolicy;
 import store.ckin.coupon.policy.repository.CouponPolicyRepositoryCustom;
-
-import java.util.List;
 
 
 /**

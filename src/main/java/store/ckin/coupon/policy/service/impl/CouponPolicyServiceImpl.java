@@ -1,5 +1,6 @@
 package store.ckin.coupon.policy.service.impl;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,8 +12,6 @@ import store.ckin.coupon.policy.model.CouponPolicy;
 import store.ckin.coupon.policy.repository.CouponCodeRepository;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 import store.ckin.coupon.policy.service.CouponPolicyService;
-
-import java.util.List;
 
 /**
  * CouponPolicyServiceImpl

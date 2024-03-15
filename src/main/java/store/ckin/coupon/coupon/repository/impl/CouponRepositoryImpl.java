@@ -1,5 +1,6 @@
 package store.ckin.coupon.coupon.repository.impl;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,8 +12,6 @@ import store.ckin.coupon.coupon.model.QCoupon;
 import store.ckin.coupon.coupon.repository.CouponRepositoryCustom;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
 import store.ckin.coupon.policy.model.QCouponPolicy;
-
-import java.util.List;
 
 
 /**
@@ -289,7 +288,8 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
      * @return
      */
     @Override
-    public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList, List<Long> categoryIdList) {
+    public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList,
+                                                          List<Long> categoryIdList) {
         return from(coupon)
                 .innerJoin(couponTemplate)
                 .on(coupon.couponTemplateId.eq(couponTemplate.id))

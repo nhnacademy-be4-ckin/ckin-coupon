@@ -1,9 +1,8 @@
 package store.ckin.coupon.policy.service;
 
+import java.util.List;
 import store.ckin.coupon.policy.dto.request.CreateCouponPolicyRequestDto;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
-
-import java.util.List;
 
 /**
  * CouponPolicyService

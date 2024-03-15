@@ -1,10 +1,9 @@
 package store.ckin.coupon.coupon.dto.response;
 
 import com.querydsl.core.annotations.QueryProjection;
+import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
 
 /**
  * 쿠폰 반환시 사용하는 dto 입니다.
@@ -47,7 +46,10 @@ public class GetCouponResponseDto {
      * @param usedDate         the used date
      */
     @QueryProjection
-    public GetCouponResponseDto(Long id, Long memberId, Long couponTemplateId, Long policyId, Long couponCodeId, Integer minOrderPrice, Integer discountPrice, Integer discountRate, Integer maxDiscountPrice, Long bookId, Long categoryId, Long typeId, String name, Date expirationDate, Date issueDate, Date usedDate) {
+    public GetCouponResponseDto(Long id, Long memberId, Long couponTemplateId, Long policyId, Long couponCodeId,
+                                Integer minOrderPrice, Integer discountPrice, Integer discountRate,
+                                Integer maxDiscountPrice, Long bookId, Long categoryId, Long typeId, String name,
+                                Date expirationDate, Date issueDate, Date usedDate) {
         this.id = id;
         this.memberId = memberId;
         this.couponTemplateId = couponTemplateId;

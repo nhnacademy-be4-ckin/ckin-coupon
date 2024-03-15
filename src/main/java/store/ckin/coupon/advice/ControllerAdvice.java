@@ -25,7 +25,8 @@ public class ControllerAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(content);
     }
 
-    @ExceptionHandler({CouponNotFoundException.class, CouponCodeNotFoundException.class, CouponTemplateNotFoundException.class, CouponNotFoundException.class})
+    @ExceptionHandler({CouponNotFoundException.class, CouponCodeNotFoundException.class,
+            CouponTemplateNotFoundException.class, CouponNotFoundException.class})
     public ResponseEntity<ErrorResponse> getRuntimeException(RuntimeException runtimeException) {
         ErrorResponse content = new ErrorResponse(runtimeException.getMessage());
 

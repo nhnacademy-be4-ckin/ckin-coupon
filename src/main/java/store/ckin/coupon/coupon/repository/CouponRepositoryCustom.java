@@ -1,11 +1,10 @@
 package store.ckin.coupon.coupon.repository;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
-
-import java.util.List;
 
 /**
  * CouponPolicyRepositoryCustom

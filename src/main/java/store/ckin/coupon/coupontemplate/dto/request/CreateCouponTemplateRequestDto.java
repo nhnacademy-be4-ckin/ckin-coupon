@@ -1,12 +1,11 @@
 package store.ckin.coupon.coupontemplate.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import java.sql.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-import java.sql.Date;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 쿠폰 템플릿을 생성할 때 사용하는 dto 입니다.

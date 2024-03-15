@@ -1,5 +1,7 @@
 package store.ckin.coupon.coupontemplate.repository.impl;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -11,9 +13,6 @@ import store.ckin.coupon.coupontemplate.model.QCouponTemplate;
 import store.ckin.coupon.coupontemplate.model.QCouponTemplateType;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepositoryCustom;
 import store.ckin.coupon.policy.model.QCouponPolicy;
-
-import java.util.List;
-import java.util.Optional;
 
 
 /**
@@ -62,6 +61,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.expirationDate
                 ))
                 .where(couponTemplateType.id.eq(typeId))
+                .orderBy(couponTemplate.expirationDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();

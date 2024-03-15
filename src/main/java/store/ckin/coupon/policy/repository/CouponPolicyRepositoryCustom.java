@@ -1,9 +1,8 @@
 package store.ckin.coupon.policy.repository;
 
+import java.util.List;
 import org.springframework.data.repository.NoRepositoryBean;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
-
-import java.util.List;
 
 /**
  * CouponPolicyRepositoryCustom

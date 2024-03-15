@@ -1,11 +1,20 @@
 package store.ckin.coupon.coupontemplate.model;
 
-import lombok.*;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 
 /**
  * CouponTemplate

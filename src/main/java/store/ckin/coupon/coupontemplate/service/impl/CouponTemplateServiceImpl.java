@@ -1,5 +1,6 @@
 package store.ckin.coupon.coupontemplate.service.impl;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,8 +17,6 @@ import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
-
-import java.util.Optional;
 
 /**
  * CouponTemplateServiceImpl
@@ -86,7 +85,8 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
     @Transactional(readOnly = true)
     @Override
     public GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId) {
-        Optional<GetCouponTemplateResponseDto> optionalCoupon = couponTemplateRepository.getCouponTemplate(couponTemplateId);
+        Optional<GetCouponTemplateResponseDto> optionalCoupon =
+                couponTemplateRepository.getCouponTemplate(couponTemplateId);
         if (optionalCoupon.isEmpty()) {
             throw new CouponTemplateNotFoundException();
         }
