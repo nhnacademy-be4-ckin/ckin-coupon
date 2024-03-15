@@ -74,7 +74,7 @@ class CouponServiceTest {
         categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
 
         couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
-        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, bookType);
+        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L,30, Date.valueOf("2023-03-04"), bookType);
         couponService = new CouponServiceImpl(couponRepository, couponTemplateRepository, couponTemplateTypeRepository);
         couponRequestDto = new CreateCouponRequestDto();
         ReflectionTestUtils.setField(couponRequestDto, "memberId", 1L);
