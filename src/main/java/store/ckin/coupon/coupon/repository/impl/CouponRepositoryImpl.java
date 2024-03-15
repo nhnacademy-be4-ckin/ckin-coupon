@@ -1,5 +1,8 @@
 package store.ckin.coupon.coupon.repository.impl;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -105,6 +108,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId))
                 .where(coupon.usedDate.isNull())
+                .where(coupon.expirationDate.after(Calendar.getInstance().getTime()))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
