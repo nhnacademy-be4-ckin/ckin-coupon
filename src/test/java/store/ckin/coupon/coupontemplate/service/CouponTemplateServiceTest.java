@@ -1,6 +1,7 @@
 package store.ckin.coupon.coupontemplate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,10 +70,10 @@ class CouponTemplateServiceTest {
         categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
 
         couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
-        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, bookType);
+        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, 30, Date.valueOf("2023-03-04"), bookType);
         couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponTemplateTypeRepository, couponPolicyRepository);
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
-        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L);
+        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L, 30, Date.valueOf("2023-03-04"));
     }
 
     @Test
@@ -234,7 +235,7 @@ class CouponTemplateServiceTest {
     @Test
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void testDeleteCouponTemplate() {
-        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate(1L, 1L, 1L, null, "template", 30L, new CouponTemplateType(1L, "생일 쿠폰"))));
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate(1L, 1L, 1L, null, "template", 30L, 30, Date.valueOf("2023-03-04"), new CouponTemplateType(1L, "생일 쿠폰"))));
 
         couponTemplateService.deleteCouponTemplate(1L);
 
