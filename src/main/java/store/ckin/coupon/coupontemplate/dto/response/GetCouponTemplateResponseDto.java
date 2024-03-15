@@ -1,6 +1,7 @@
 package store.ckin.coupon.coupontemplate.dto.response;
 
-import lombok.AllArgsConstructor;
+import com.querydsl.core.annotations.QueryProjection;
+import java.sql.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +13,6 @@ import lombok.NoArgsConstructor;
  */
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class GetCouponTemplateResponseDto {
     private Long id;
     private Long policyId;
@@ -25,4 +25,25 @@ public class GetCouponTemplateResponseDto {
     private String name;
     private Long amount;
     private Long typeId;
+    private Integer duration;
+    private Date expirationDate;
+
+    @QueryProjection
+    public GetCouponTemplateResponseDto(Long id, Long policyId, Integer minOrderPrice, Integer discountPrice,
+                                        Integer discountRate, Integer maxDiscountPrice, Long bookId, Long categoryId,
+                                        String name, Long amount, Long typeId, Integer duration, Date expirationDate) {
+        this.id = id;
+        this.policyId = policyId;
+        this.minOrderPrice = minOrderPrice;
+        this.discountPrice = discountPrice;
+        this.discountRate = discountRate;
+        this.maxDiscountPrice = maxDiscountPrice;
+        this.bookId = bookId;
+        this.categoryId = categoryId;
+        this.name = name;
+        this.amount = amount;
+        this.typeId = typeId;
+        this.duration = duration;
+        this.expirationDate = expirationDate;
+    }
 }

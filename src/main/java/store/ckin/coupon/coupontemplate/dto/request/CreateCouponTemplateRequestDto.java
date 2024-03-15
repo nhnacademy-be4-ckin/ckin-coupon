@@ -1,11 +1,11 @@
 package store.ckin.coupon.coupontemplate.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
+import java.sql.Date;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 쿠폰 템플릿을 생성할 때 사용하는 dto 입니다.
@@ -30,4 +30,7 @@ public class CreateCouponTemplateRequestDto {
     private String name;
     @PositiveOrZero(message = "0보다 큰 값을 입력해주세요")
     private Long amount;
+    @PositiveOrZero(message = "0보다 큰 값을 입력해주세요")
+    private Integer duration;
+    private Date expirationDate;
 }

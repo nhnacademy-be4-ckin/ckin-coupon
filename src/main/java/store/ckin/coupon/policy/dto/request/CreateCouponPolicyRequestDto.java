@@ -1,10 +1,9 @@
 package store.ckin.coupon.policy.dto.request;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * 쿠폰 정책을 생성하는 dto 입니다.

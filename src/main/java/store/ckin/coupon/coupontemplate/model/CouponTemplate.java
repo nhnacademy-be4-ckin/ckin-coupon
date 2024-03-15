@@ -1,10 +1,20 @@
 package store.ckin.coupon.coupontemplate.model;
 
-import lombok.*;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
-
-import javax.persistence.*;
+import java.sql.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 
 /**
  * CouponTemplate
@@ -35,6 +45,10 @@ public class CouponTemplate {
     @NotNull
     @Column(name = "coupontemplate_amount")
     private Long amount;
+    @Column(name = "expiration_duration")
+    private Integer duration;
+    @Column(name = "expiration_date")
+    private Date expirationDate;
     @NotNull
     @ManyToOne
     @JoinColumn(name = "template_type_id")
@@ -46,6 +60,8 @@ public class CouponTemplate {
         this.categoryId = couponTemplateRequestDto.getCategoryId();
         this.name = couponTemplateRequestDto.getName();
         this.amount = couponTemplateRequestDto.getAmount();
+        this.duration = couponTemplateRequestDto.getDuration();
+        this.expirationDate = couponTemplateRequestDto.getExpirationDate();
     }
 
 }

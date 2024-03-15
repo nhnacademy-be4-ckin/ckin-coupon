@@ -1,11 +1,10 @@
 package store.ckin.coupon.config;
 
+import java.time.Duration;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
-
-import java.time.Duration;
 
 /**
  * Rest Template 설정 클래스입니다.

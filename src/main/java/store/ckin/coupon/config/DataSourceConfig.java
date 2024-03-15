@@ -1,13 +1,12 @@
 package store.ckin.coupon.config;
 
+import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import store.ckin.coupon.config.properties.DbProperties;
 import store.ckin.coupon.keymanager.KeyManager;
-
-import javax.sql.DataSource;
 
 /**
  * description:

@@ -1,11 +1,10 @@
 package store.ckin.coupon.coupon.service;
 
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
-
-import java.util.List;
 
 /**
  * CouponService
