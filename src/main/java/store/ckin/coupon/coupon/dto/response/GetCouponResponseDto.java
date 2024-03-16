@@ -4,7 +4,6 @@ import com.querydsl.core.annotations.QueryProjection;
 import java.util.Date;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 /**
  * 쿠폰 반환시 사용하는 dto 입니다.

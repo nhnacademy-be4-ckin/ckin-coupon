@@ -1,7 +1,5 @@
 package store.ckin.coupon.coupon.repository.impl;
 
-import java.text.DateFormat;
-import java.text.Format;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.data.domain.Page;

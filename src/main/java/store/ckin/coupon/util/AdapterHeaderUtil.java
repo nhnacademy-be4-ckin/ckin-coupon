@@ -1,7 +1,6 @@
 package store.ckin.coupon.util;
 
 import java.util.List;
-import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
