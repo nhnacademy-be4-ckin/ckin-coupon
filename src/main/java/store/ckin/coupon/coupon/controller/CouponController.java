@@ -157,9 +157,12 @@ public class CouponController {
     }
 
     /**
+     * 회원이 쿠폰을 적용하고자 할 때,
      * 도서에 해당하는 쿠폰 리스트를 반환하는 메소드입니다.
      *
-     * @param
+     * @param memberId 회원 아이디
+     * @param bookIdList 도서 아이디 목록
+     * @return 사용가능한 쿠폰 목록
      */
     @GetMapping("/sale")
     public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,

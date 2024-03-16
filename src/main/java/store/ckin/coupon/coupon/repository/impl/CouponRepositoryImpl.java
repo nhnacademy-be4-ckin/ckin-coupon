@@ -317,8 +317,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.issueDate,
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId)
-                        .and((couponTemplate.type().id.eq(1L))
-                                .or(couponTemplate.bookId.in(bookIdList))
+                        .and((couponTemplate.bookId.in(bookIdList))
                                 .or(couponTemplate.categoryId.in(categoryIdList))))
                 .fetch();
 

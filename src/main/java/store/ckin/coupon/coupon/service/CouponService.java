@@ -82,7 +82,7 @@ public interface CouponService {
      *
      * @param memberId   회원 ID
      * @param bookIdList 도서 리스트
-     * @return
+     * @return 사용 가능한 쿠폰 목록
      */
     List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList);
 
