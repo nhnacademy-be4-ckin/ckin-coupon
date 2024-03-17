@@ -27,11 +27,12 @@ public class GetCouponTemplateResponseDto {
     private Long typeId;
     private Integer duration;
     private Date expirationDate;
+    private Boolean isBirthPolicy;
 
     @QueryProjection
     public GetCouponTemplateResponseDto(Long id, Long policyId, Integer minOrderPrice, Integer discountPrice,
                                         Integer discountRate, Integer maxDiscountPrice, Long bookId, Long categoryId,
-                                        String name, Long amount, Long typeId, Integer duration, Date expirationDate) {
+                                        String name, Long amount, Long typeId, Integer duration, Date expirationDate, Boolean isBirthPolicy) {
         this.id = id;
         this.policyId = policyId;
         this.minOrderPrice = minOrderPrice;
@@ -45,5 +46,6 @@ public class GetCouponTemplateResponseDto {
         this.typeId = typeId;
         this.duration = duration;
         this.expirationDate = expirationDate;
+        this.isBirthPolicy = isBirthPolicy;
     }
 }

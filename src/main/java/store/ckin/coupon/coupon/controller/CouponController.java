@@ -120,7 +120,7 @@ public class CouponController {
      */
     @GetMapping("/members/used/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUsedCouponByMember(
-            @PageableDefault(page = 0, size = 5) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUsedCouponByMember(pageable, memberId);
 
@@ -136,7 +136,7 @@ public class CouponController {
      */
     @GetMapping("/members/unUsed/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUnUsedCouponByMember(
-            @PageableDefault(page = 0, size = 5) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUnUsedCouponByMember(pageable, memberId);
 
