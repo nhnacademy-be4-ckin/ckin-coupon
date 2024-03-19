@@ -43,7 +43,7 @@ public class CouponTemplateController {
      */
     @GetMapping
     public ResponseEntity<Page<GetCouponTemplateResponseDto>> getAllCouponTemplate(
-            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            @PageableDefault(size = 10) Pageable pageable,
             @RequestParam("type") Long typeId) {
         Page<GetCouponTemplateResponseDto> content = couponTemplateService.getCouponTemplateList(pageable, typeId);
         return ResponseEntity.ok().body(content);
