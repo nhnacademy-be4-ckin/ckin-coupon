@@ -15,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 
 /**
  * CouponTemplate
