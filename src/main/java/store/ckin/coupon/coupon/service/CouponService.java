@@ -103,4 +103,11 @@ public interface CouponService {
      * @return
      */
     boolean createCouponByIds(Long memberId, Long couponTemplateId);
+
+    /**
+     * Welcome 쿠폰을 생성하는 메서드 입니다.
+     *
+     * @param memberId 회원 아이디
+     */
+    void createWelcomeCoupon(Long memberId);
 }

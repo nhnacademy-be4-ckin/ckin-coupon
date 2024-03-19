@@ -48,6 +48,18 @@ public class CouponController {
     }
 
     /**
+     * Welcome 쿠폰을 생성하는 메서드 입니다.
+     *
+     * @param memberId 회원 아이디
+     */
+    @PostMapping("/welcome")
+    public ResponseEntity<Void> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
+        couponService.createWelcomeCoupon(memberId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
      * 회원이 해당 쿠폰을 발급받은 기록이 있는지 확인하고 등록합니다.
      *
      * @param memberId         회원ID

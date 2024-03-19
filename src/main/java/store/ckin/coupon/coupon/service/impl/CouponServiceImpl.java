@@ -15,6 +15,7 @@ import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
+import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
@@ -33,6 +34,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponTemplateTypeRepository couponTemplateTypeRepository;
     private final CouponAdapter couponAdapter;
+    private static final long WELCOME_TYPE_ID = 4L;
 
     /**
      * {@inheritDoc}
@@ -192,6 +194,23 @@ public class CouponServiceImpl implements CouponService {
                 .usedDate(null)
                 .build());
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void createWelcomeCoupon(Long memberId) {
+        GetCouponTemplateResponseDto couponTemplateResponseDto = couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID);
+
+        couponRepository.save(Coupon.builder()
+                .memberId(memberId)
+                .couponTemplateId(couponTemplateResponseDto.getId())
+                .expirationDate(couponTemplateResponseDto.getExpirationDate())
+                .issueDate(Date.valueOf(LocalDate.now()))
+                .usedDate(null)
+                .build());
+
     }
 
 
