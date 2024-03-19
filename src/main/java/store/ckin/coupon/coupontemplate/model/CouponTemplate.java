@@ -51,8 +51,8 @@ public class CouponTemplate {
     private Integer duration;
     @Column(name = "expiration_date")
     private Date expirationDate;
-    @Column(name = "is_birth_policy")
-    private Boolean isBirthPolicy = false;
+    @Column(name = "state")
+    private Boolean state = false;
     @NotNull
     @ManyToOne
     @JoinColumn(name = "template_type_id")
@@ -61,9 +61,9 @@ public class CouponTemplate {
     /**
      * 쿠폰 템플릿의 사용여부를 변경하는 메소드 입니다.
      *
-     * @param isBirthPolicy
+     * @param state
      */
-    public void updateTemplateStatus(Boolean isBirthPolicy) {
-        this.isBirthPolicy = isBirthPolicy;
+    public void updateTemplateStatus(Boolean state) {
+        this.state = state;
     }
 }

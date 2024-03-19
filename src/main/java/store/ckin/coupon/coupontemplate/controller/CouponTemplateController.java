@@ -92,13 +92,13 @@ public class CouponTemplateController {
      * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
      *
      * @param templateId    템플릿 아이디
-     * @param isBirthPolicy 사용여부
+     * @param state 사용여부
      * @return 200 OK
      */
     @PutMapping("/{templateId}")
     public ResponseEntity<Void> updateTemplateStatus(@PathVariable("templateId") Long templateId,
-                                                     @RequestParam("isBirthPolicy") Boolean isBirthPolicy) {
-        couponTemplateService.updateCouponTemplateStatus(templateId, isBirthPolicy);
+                                                     @RequestParam("state") Boolean state) {
+        couponTemplateService.updateCouponTemplateStatus(templateId, state);
 
         return ResponseEntity.ok().build();
     }

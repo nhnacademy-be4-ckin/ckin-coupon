@@ -57,7 +57,7 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
                 .type(templateType)
                 .duration(couponTemplateRequestDto.getDuration())
                 .expirationDate(couponTemplateRequestDto.getExpirationDate())
-                .isBirthPolicy(couponTemplateRequestDto.getIsBirthPolicy())
+                .state(couponTemplateRequestDto.getState())
                 .build());
 
     }
@@ -104,11 +104,11 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
      * {@inheritDoc}
      */
     @Override
-    public void updateCouponTemplateStatus(Long templateId, Boolean isBirthPolicy) {
+    public void updateCouponTemplateStatus(Long templateId, Boolean state) {
         CouponTemplate couponTemplate = couponTemplateRepository.findById(templateId)
                 .orElseThrow(CouponTemplateNotFoundException::new);
 
-        log.debug("isBirthPolicy : {}", isBirthPolicy);
-        couponTemplate.updateTemplateStatus(isBirthPolicy);
+        log.debug("state : {}", state);
+        couponTemplate.updateTemplateStatus(state);
     }
 }

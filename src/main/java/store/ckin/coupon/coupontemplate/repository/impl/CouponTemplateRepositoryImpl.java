@@ -59,7 +59,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.type().id,
                         couponTemplate.duration,
                         couponTemplate.expirationDate,
-                        couponTemplate.isBirthPolicy
+                        couponTemplate.state
                 ))
                 .where(couponTemplateType.id.eq(typeId))
                 .orderBy(couponTemplate.expirationDate.desc())
@@ -104,7 +104,7 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.type().id,
                         couponTemplate.duration,
                         couponTemplate.expirationDate,
-                        couponTemplate.isBirthPolicy
+                        couponTemplate.state
                 ))
                 .where(couponTemplate.id.eq(couponTemplateId))
                 .fetchOne();

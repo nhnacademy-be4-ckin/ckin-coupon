@@ -34,6 +34,6 @@ public class CreateCouponTemplateRequestDto {
     @PositiveOrZero(message = "0보다 큰 값을 입력해주세요")
     private Integer duration;
     private Date expirationDate;
-    private Boolean isBirthPolicy;
+    private Boolean state;
 
 }
