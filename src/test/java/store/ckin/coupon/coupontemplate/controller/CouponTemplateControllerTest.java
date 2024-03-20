@@ -55,7 +55,7 @@ class CouponTemplateControllerTest {
         typeId = 1L;
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
         couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L, 30,
-                Date.valueOf("2023-03-04"));
+                Date.valueOf("2023-03-04"), true);
     }
 
     @Test
