@@ -7,13 +7,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import store.ckin.coupon.coupon.adapter.CouponAdapter;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
+import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
@@ -31,6 +34,8 @@ public class CouponServiceImpl implements CouponService {
     private final CouponRepository couponRepository;
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponTemplateTypeRepository couponTemplateTypeRepository;
+    private final CouponAdapter couponAdapter;
+    private static final long WELCOME_TYPE_ID = 4L;
 
     /**
      * {@inheritDoc}
@@ -40,7 +45,6 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createCoupon(CreateCouponRequestDto couponRequestDto) {
-        //TODO: memberId 있는지 확인
         if (!couponTemplateTypeRepository.existsById(couponRequestDto.getCouponTemplateId())) {
             throw new CouponTemplateTypeNotFoundException();
         }
@@ -150,14 +154,11 @@ public class CouponServiceImpl implements CouponService {
     }
 
     /**
-     * @param memberId   회원 ID
-     * @param bookIdList 도서 리스트
-     * @return
+     * {@inheritDoc}
      */
     @Override
     public List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList) {
-        //TODO: 카테고리 아이디 리스트 받아오기
-        List<Long> categoryIdList = List.of(1L);
+        List<Long> categoryIdList = couponAdapter.getCategoryIds(bookIdList);
         return couponRepository.getCouponForBuyList(memberId, bookIdList, categoryIdList);
     }
 
@@ -177,7 +178,7 @@ public class CouponServiceImpl implements CouponService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean createCouponByIds(Long memberId, Long couponTemplateId) {
         if (!couponTemplateRepository.existsById((couponTemplateId))) {
             return false;
@@ -194,6 +195,25 @@ public class CouponServiceImpl implements CouponService {
                 .usedDate(null)
                 .build());
         return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional
+    public void createWelcomeCoupon(Long memberId) {
+        GetCouponTemplateResponseDto couponTemplateResponseDto
+                = couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID);
+
+        couponRepository.save(Coupon.builder()
+                .memberId(memberId)
+                .couponTemplateId(couponTemplateResponseDto.getId())
+                .expirationDate(couponTemplateResponseDto.getExpirationDate())
+                .issueDate(Date.valueOf(LocalDate.now()))
+                .usedDate(null)
+                .build());
+
     }
 
 

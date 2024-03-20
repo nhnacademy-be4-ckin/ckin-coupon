@@ -82,7 +82,7 @@ public interface CouponService {
      *
      * @param memberId   회원 ID
      * @param bookIdList 도서 리스트
-     * @return
+     * @return 사용 가능한 쿠폰 목록
      */
     List<GetCouponResponseDto> getCouponForBuyList(Long memberId, List<Long> bookIdList);
 
@@ -103,4 +103,11 @@ public interface CouponService {
      * @return
      */
     boolean createCouponByIds(Long memberId, Long couponTemplateId);
+
+    /**
+     * Welcome 쿠폰을 생성하는 메서드 입니다.
+     *
+     * @param memberId 회원 아이디
+     */
+    void createWelcomeCoupon(Long memberId);
 }
