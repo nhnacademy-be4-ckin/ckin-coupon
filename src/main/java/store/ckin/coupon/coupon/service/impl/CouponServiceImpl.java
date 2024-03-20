@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupon.adapter.CouponAdapter;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
@@ -177,7 +178,7 @@ public class CouponServiceImpl implements CouponService {
      * @return
      */
     @Override
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED)
     public boolean createCouponByIds(Long memberId, Long couponTemplateId) {
         if (!couponTemplateRepository.existsById((couponTemplateId))) {
             return false;
@@ -200,8 +201,10 @@ public class CouponServiceImpl implements CouponService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public void createWelcomeCoupon(Long memberId) {
-        GetCouponTemplateResponseDto couponTemplateResponseDto = couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID);
+        GetCouponTemplateResponseDto couponTemplateResponseDto
+                = couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID);
 
         couponRepository.save(Coupon.builder()
                 .memberId(memberId)
