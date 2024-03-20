@@ -88,18 +88,18 @@ public class CouponTemplateController {
         return ResponseEntity.ok().build();
     }
 
-    /**
-     * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
-     *
-     * @param templateId 템플릿 아이디
-     * @param state      사용여부
-     * @return 200 OK
-     */
-    @PutMapping("/{templateId}")
-    public ResponseEntity<Void> updateTemplateStatus(@PathVariable("templateId") Long templateId,
-                                                     @RequestParam("state") Boolean state) {
-        couponTemplateService.updateCouponTemplateStatus(templateId, state);
-
-        return ResponseEntity.ok().build();
-    }
+//    /**
+//     * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
+//     *
+//     * @param templateId 템플릿 아이디
+//     * @param state      사용여부
+//     * @return 200 OK
+//     */
+//    @PutMapping("/{templateId}")
+//    public ResponseEntity<Void> updateTemplateStatus(@PathVariable("templateId") Long templateId,
+//                                                     @RequestParam("state") Boolean state) {
+//        couponTemplateService.updateCouponTemplateStatus(templateId, state);
+//
+//        return ResponseEntity.ok().build();
+//    }
 }

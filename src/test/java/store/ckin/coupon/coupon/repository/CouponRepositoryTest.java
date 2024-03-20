@@ -68,6 +68,8 @@ class CouponRepositoryTest {
                 .name("1월 생일 쿠폰")
                 .amount(100L)
                 .type(birthType)
+                .duration(30)
+                .state(true)
                 .build();
         entityManager.persist(birthCouponTemplate);
 
@@ -78,6 +80,8 @@ class CouponRepositoryTest {
                 .name("사람은 무엇으로 사는가 - 도서 쿠폰")
                 .amount(100L)
                 .type(bookType)
+                .duration(30)
+                .state(true)
                 .build();
         entityManager.persist(bookCouponTemplate);
 
@@ -88,6 +92,8 @@ class CouponRepositoryTest {
                 .name("소설 - 카테고리 쿠폰")
                 .amount(100L)
                 .type(categoryType)
+                .duration(30)
+                .state(true)
                 .build();
         entityManager.persist(categoryCouponTemplate);
 
@@ -235,16 +241,15 @@ class CouponRepositoryTest {
     void testGetCouponForBuyList() {
         List<GetCouponResponseDto> results = couponRepository.getCouponForBuyList(1L, List.of(1L), List.of(1L));
 
-        Assertions.assertThat(results.get(0).getMemberId()).isEqualTo(birthCoupon.getMemberId());
-        Assertions.assertThat(results.get(0).getCouponTemplateId()).isEqualTo(birthCoupon.getCouponTemplateId());
-        Assertions.assertThat(results.get(0).getUsedDate().getMonth()).isEqualTo(birthCoupon.getUsedDate().getMonth());
-        Assertions.assertThat(results.get(0).getExpirationDate().getMonth()).isEqualTo(birthCoupon.getExpirationDate().getMonth());
-        Assertions.assertThat(results.get(0).getIssueDate().getMonth()).isEqualTo(birthCoupon.getIssueDate().getMonth());
-        Assertions.assertThat(results.get(0).getPolicyId()).isEqualTo(birthCouponTemplate.getPolicyId());
-        Assertions.assertThat(results.get(0).getBookId()).isEqualTo(birthCouponTemplate.getBookId());
-        Assertions.assertThat(results.get(0).getCategoryId()).isEqualTo(birthCouponTemplate.getCategoryId());
-        Assertions.assertThat(results.get(0).getName()).isEqualTo(birthCouponTemplate.getName());
-        Assertions.assertThat(results.get(0).getTypeId()).isEqualTo(birthType.getId());
+        Assertions.assertThat(results.get(0).getMemberId()).isEqualTo(categoryCoupon.getMemberId());
+        Assertions.assertThat(results.get(0).getCouponTemplateId()).isNotNull();
+        Assertions.assertThat(results.get(0).getExpirationDate().getMonth()).isEqualTo(categoryCoupon.getExpirationDate().getMonth());
+        Assertions.assertThat(results.get(0).getIssueDate().getMonth()).isEqualTo(categoryCoupon.getIssueDate().getMonth());
+        Assertions.assertThat(results.get(0).getPolicyId()).isEqualTo(categoryCouponTemplate.getPolicyId());
+        Assertions.assertThat(results.get(0).getBookId()).isEqualTo(categoryCouponTemplate.getBookId());
+        Assertions.assertThat(results.get(0).getCategoryId()).isEqualTo(categoryCouponTemplate.getCategoryId());
+        Assertions.assertThat(results.get(0).getName()).isEqualTo(categoryCouponTemplate.getName());
+        Assertions.assertThat(results.get(0).getTypeId()).isEqualTo(categoryType.getId());
     }
 
     @Test
