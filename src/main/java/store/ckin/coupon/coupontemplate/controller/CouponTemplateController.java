@@ -43,7 +43,7 @@ public class CouponTemplateController {
      */
     @GetMapping
     public ResponseEntity<Page<GetCouponTemplateResponseDto>> getAllCouponTemplate(
-            @PageableDefault(page = 0, size = 10) Pageable pageable,
+            @PageableDefault(size = 10) Pageable pageable,
             @RequestParam("type") Long typeId) {
         Page<GetCouponTemplateResponseDto> content = couponTemplateService.getCouponTemplateList(pageable, typeId);
         return ResponseEntity.ok().body(content);
@@ -77,21 +77,6 @@ public class CouponTemplateController {
     }
 
     /**
-     * 쿠폰 템플릿을 수정하는 메서드 입니다.
-     *
-     * @param couponTemplateId 쿠폰 템플릿 ID
-     * @param couponRequestDto 쿠폰 템플릿 요청 DTO
-     */
-    @PutMapping("/{couponTemplateId}")
-    public ResponseEntity<Void> updateCouponTemplate(@PathVariable("couponTemplateId") Long couponTemplateId,
-                                                     @Valid @RequestBody
-                                                     CreateCouponTemplateRequestDto couponRequestDto) {
-        couponTemplateService.updateCouponTemplate(couponTemplateId, couponRequestDto);
-
-        return ResponseEntity.ok().build();
-    }
-
-    /**
      * 쿠폰 템플릿을 삭제하는 메서드 입니다.
      *
      * @param couponTemplateId 쿠폰 템플릿 ID
@@ -99,6 +84,21 @@ public class CouponTemplateController {
     @DeleteMapping("/{couponTemplateId}")
     public ResponseEntity<Void> deleteCouponTemplate(@PathVariable("couponTemplateId") Long couponTemplateId) {
         couponTemplateService.deleteCouponTemplate(couponTemplateId);
+
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
+     *
+     * @param templateId 템플릿 아이디
+     * @param state      사용여부
+     * @return 200 OK
+     */
+    @PutMapping("/{templateId}")
+    public ResponseEntity<Void> updateTemplateStatus(@PathVariable("templateId") Long templateId,
+                                                     @RequestParam("state") Boolean state) {
+        couponTemplateService.updateCouponTemplateStatus(templateId, state);
 
         return ResponseEntity.ok().build();
     }

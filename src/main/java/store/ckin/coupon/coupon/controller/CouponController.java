@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,6 +44,18 @@ public class CouponController {
     @PostMapping
     public ResponseEntity<Void> createCoupon(@Valid @RequestBody CreateCouponRequestDto couponRequestDto) {
         couponService.createCoupon(couponRequestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    /**
+     * Welcome 쿠폰을 생성하는 메서드 입니다.
+     *
+     * @param memberId 회원 아이디
+     */
+    @PostMapping("/welcome")
+    public ResponseEntity<Void> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
+        couponService.createWelcomeCoupon(memberId);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -120,7 +133,7 @@ public class CouponController {
      */
     @GetMapping("/members/used/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUsedCouponByMember(
-            @PageableDefault(page = 0, size = 5) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUsedCouponByMember(pageable, memberId);
 
@@ -136,7 +149,7 @@ public class CouponController {
      */
     @GetMapping("/members/unUsed/{memberId}")
     public ResponseEntity<Page<GetCouponResponseDto>> getUnUsedCouponByMember(
-            @PageableDefault(page = 0, size = 5) Pageable pageable,
+            @PageableDefault(size = 5) Pageable pageable,
             @PathVariable("memberId") Long memberId) {
         Page<GetCouponResponseDto> content = couponService.getUnUsedCouponByMember(pageable, memberId);
 
@@ -157,9 +170,12 @@ public class CouponController {
     }
 
     /**
+     * 회원이 쿠폰을 적용하고자 할 때,
      * 도서에 해당하는 쿠폰 리스트를 반환하는 메소드입니다.
      *
-     * @param
+     * @param memberId   회원 아이디
+     * @param bookIdList 도서 아이디 목록
+     * @return 사용가능한 쿠폰 목록
      */
     @GetMapping("/sale")
     public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,

@@ -38,17 +38,18 @@ public interface CouponTemplateService {
     GetCouponTemplateResponseDto getCouponTemplate(Long couponTemplateId);
 
     /**
-     * 쿠폰 템플릿을 수정하는 메서드 입니다.
-     *
-     * @param couponTemplateId 쿠폰 템플릿 ID
-     * @param couponRequestDto 쿠폰 템플릿 요청 DTO
-     */
-    void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto);
-
-    /**
      * 쿠폰 템플릿을 삭제하는 메서드 입니다.
      *
      * @param couponTemplateId 쿠폰 템플릿 ID
      */
     void deleteCouponTemplate(Long couponTemplateId);
+
+    /**
+     * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
+     *
+     * @param templateId 템플릿 아이디
+     * @param state      사용여부
+     * @return 200 OK
+     */
+    void updateCouponTemplateStatus(Long templateId, Boolean state);
 }

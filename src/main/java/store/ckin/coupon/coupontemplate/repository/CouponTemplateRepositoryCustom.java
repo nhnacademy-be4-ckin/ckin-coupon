@@ -31,4 +31,12 @@ public interface CouponTemplateRepositoryCustom {
      */
     Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponTemplateId);
 
+    /**
+     * 쿠폰 템플릿의 타입별로 현재 사용중인 템플릿을 가져오는 메소드 입니다.
+     * (정책을 한 가지만 사용하는 타입만 해당)
+     *
+     * @param typeId 템플릿 타입 아이디
+     */
+    GetCouponTemplateResponseDto getCouponTemplateByTypeId(Long typeId);
+
 }

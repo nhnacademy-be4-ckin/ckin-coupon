@@ -14,7 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
+import lombok.ToString;
 
 /**
  * CouponTemplate
@@ -25,6 +25,7 @@ import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestD
 @Entity
 @Getter
 @Builder
+@ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CouponTemplate {
@@ -49,19 +50,19 @@ public class CouponTemplate {
     private Integer duration;
     @Column(name = "expiration_date")
     private Date expirationDate;
+    @Column(name = "state")
+    private Boolean state = false;
     @NotNull
     @ManyToOne
     @JoinColumn(name = "template_type_id")
     private CouponTemplateType type;
 
-    public void update(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
-        this.policyId = couponTemplateRequestDto.getPolicyId();
-        this.bookId = couponTemplateRequestDto.getBookId();
-        this.categoryId = couponTemplateRequestDto.getCategoryId();
-        this.name = couponTemplateRequestDto.getName();
-        this.amount = couponTemplateRequestDto.getAmount();
-        this.duration = couponTemplateRequestDto.getDuration();
-        this.expirationDate = couponTemplateRequestDto.getExpirationDate();
+    /**
+     * 쿠폰 템플릿의 사용여부를 변경하는 메소드 입니다.
+     *
+     * @param state
+     */
+    public void updateTemplateStatus(Boolean state) {
+        this.state = state;
     }
-
 }

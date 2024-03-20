@@ -33,10 +33,6 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
 
     /**
      * {@inheritDoc}
-     *
-     * @param pageable 페이지 정보
-     * @param typeId   쿠폰 템플릿 타입 ID
-     * @return
      */
     @Override
     public Page<GetCouponTemplateResponseDto> getCouponTemplateList(Pageable pageable, Long typeId) {
@@ -58,7 +54,8 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.amount,
                         couponTemplate.type().id,
                         couponTemplate.duration,
-                        couponTemplate.expirationDate
+                        couponTemplate.expirationDate,
+                        couponTemplate.state
                 ))
                 .where(couponTemplateType.id.eq(typeId))
                 .orderBy(couponTemplate.expirationDate.desc())
@@ -80,9 +77,6 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
 
     /**
      * {@inheritDoc}
-     *
-     * @param couponTemplateId 쿠폰 템플릿 ID
-     * @return
      */
     @Override
     public Optional<GetCouponTemplateResponseDto> getCouponTemplate(Long couponTemplateId) {
@@ -102,10 +96,38 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
                         couponTemplate.amount,
                         couponTemplate.type().id,
                         couponTemplate.duration,
-                        couponTemplate.expirationDate
+                        couponTemplate.expirationDate,
+                        couponTemplate.state
                 ))
                 .where(couponTemplate.id.eq(couponTemplateId))
                 .fetchOne();
         return Optional.of(results);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public GetCouponTemplateResponseDto getCouponTemplateByTypeId(Long typeId) {
+        return from(couponTemplate)
+                .select(new QGetCouponTemplateResponseDto(
+                        couponTemplate.id,
+                        couponTemplate.policyId,
+                        couponPolicy.minOrderPrice,
+                        couponPolicy.discountPrice,
+                        couponPolicy.discountRate,
+                        couponPolicy.maxDiscountPrice,
+                        couponTemplate.bookId,
+                        couponTemplate.categoryId,
+                        couponTemplate.name,
+                        couponTemplate.amount,
+                        couponTemplate.type().id,
+                        couponTemplate.duration,
+                        couponTemplate.expirationDate,
+                        couponTemplate.state
+                ))
+                .where(couponTemplate.type().id.eq(typeId))
+                .where(couponTemplate.state.eq(true))
+                .fetchOne();
     }
 }

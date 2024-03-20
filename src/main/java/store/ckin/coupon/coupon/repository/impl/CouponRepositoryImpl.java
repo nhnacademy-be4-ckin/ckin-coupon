@@ -1,5 +1,6 @@
 package store.ckin.coupon.coupon.repository.impl;
 
+import java.util.Calendar;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -59,6 +60,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId))
                 .where(coupon.usedDate.isNotNull())
+                .orderBy(coupon.issueDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -105,6 +107,8 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId))
                 .where(coupon.usedDate.isNull())
+                .where(coupon.expirationDate.after(Calendar.getInstance().getTime()))
+                .orderBy(coupon.expirationDate.asc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -313,8 +317,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                         coupon.issueDate,
                         coupon.usedDate))
                 .where(coupon.memberId.eq(memberId)
-                        .and((couponTemplate.type().id.eq(1L))
-                                .or(couponTemplate.bookId.in(bookIdList))
+                        .and((couponTemplate.bookId.in(bookIdList))
                                 .or(couponTemplate.categoryId.in(categoryIdList))))
                 .fetch();
 

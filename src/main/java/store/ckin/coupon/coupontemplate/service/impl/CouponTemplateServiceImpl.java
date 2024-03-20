@@ -2,6 +2,7 @@ package store.ckin.coupon.coupontemplate.service.impl;
 
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ import store.ckin.coupon.policy.repository.CouponPolicyRepository;
  * @version : 2024. 02. 15
  */
 @Transactional
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CouponTemplateServiceImpl implements CouponTemplateService {
@@ -34,11 +36,10 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
 
     /**
      * {@inheritDoc}
-     *
-     * @param couponTemplateRequestDto 쿠폰 템플릿 요청 DTO
      */
     @Override
     public void createCouponTemplate(CreateCouponTemplateRequestDto couponTemplateRequestDto) {
+        log.debug(couponTemplateRequestDto.toString());
         CouponTemplateType templateType =
                 couponTemplateTypeRepository.findById(couponTemplateRequestDto.getTypeId())
                         .orElseThrow(CouponTemplateTypeNotFoundException::new);
@@ -56,16 +57,13 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
                 .type(templateType)
                 .duration(couponTemplateRequestDto.getDuration())
                 .expirationDate(couponTemplateRequestDto.getExpirationDate())
+                .state(couponTemplateRequestDto.getState())
                 .build());
 
     }
 
     /**
      * {@inheritDoc}
-     *
-     * @param pageable 페이지 정보
-     * @param typeId   쿠폰 템플릿 타입 ID
-     * @return
      */
     @Transactional(readOnly = true)
     @Override
@@ -78,9 +76,6 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
 
     /**
      * {@inheritDoc}
-     *
-     * @param couponTemplateId 쿠폰 템플릿 ID
-     * @return
      */
     @Transactional(readOnly = true)
     @Override
@@ -96,26 +91,6 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
 
     /**
      * {@inheritDoc}
-     *
-     * @param couponTemplateId 쿠폰 템플릿 ID
-     * @param couponRequestDto 쿠폰 템플릿 요청 DTO
-     */
-    @Override
-    public void updateCouponTemplate(Long couponTemplateId, CreateCouponTemplateRequestDto couponRequestDto) {
-        CouponTemplate couponTemplate = couponTemplateRepository.findById(couponTemplateId)
-                .orElseThrow(CouponTemplateNotFoundException::new);
-        if (!couponPolicyRepository.existsById(couponRequestDto.getPolicyId())) {
-            throw new CouponPolicyNotFoundException();
-        }
-
-        //TODO: bookId, categoryId 검수
-        couponTemplate.update(couponRequestDto);
-    }
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param couponTemplateId 쿠폰 템플릿 ID
      */
     @Override
     public void deleteCouponTemplate(Long couponTemplateId) {
@@ -123,5 +98,17 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
                 .orElseThrow(CouponTemplateNotFoundException::new);
 
         couponTemplateRepository.delete(couponTemplate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateCouponTemplateStatus(Long templateId, Boolean state) {
+        CouponTemplate couponTemplate = couponTemplateRepository.findById(templateId)
+                .orElseThrow(CouponTemplateNotFoundException::new);
+
+        log.debug("state : {}", state);
+        couponTemplate.updateTemplateStatus(state);
     }
 }
