@@ -178,7 +178,7 @@ public class CouponServiceImpl implements CouponService {
      * @return
      */
     @Override
-    @Transactional(propagation = Propagation.REQUIRED)
+    @Transactional
     public boolean createCouponByIds(Long memberId, Long couponTemplateId) {
         if (!couponTemplateRepository.existsById((couponTemplateId))) {
             return false;

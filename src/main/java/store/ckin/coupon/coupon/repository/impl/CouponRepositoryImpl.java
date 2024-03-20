@@ -121,6 +121,7 @@ public class CouponRepositoryImpl extends QuerydslRepositorySupport implements C
                 .select(coupon.count())
                 .where(coupon.memberId.eq(memberId))
                 .where(coupon.usedDate.isNull())
+                .where(coupon.expirationDate.after(Calendar.getInstance().getTime()))
                 .fetchOne();
 
         return new PageImpl<>(results, pageable, count);
