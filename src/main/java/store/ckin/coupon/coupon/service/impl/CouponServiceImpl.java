@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupon.adapter.CouponAdapter;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
@@ -183,8 +182,7 @@ public class CouponServiceImpl implements CouponService {
         if (!couponTemplateRepository.existsById((couponTemplateId))) {
             return false;
         }
-
-        if (isExistCoupon(memberId, couponTemplateId)) {
+        if (Boolean.TRUE.equals(isExistCoupon(memberId, couponTemplateId))) {
             return false;
         }
         couponRepository.save(Coupon.builder()
