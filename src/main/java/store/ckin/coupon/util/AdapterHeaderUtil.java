@@ -10,7 +10,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 /**
  * Adapter 에서 사용할 헤더를 만드는 클래스입니다.
  *
- * @author 정승조
+ * @author 이가은
  * @version 2024. 02. 15.
  */
 public class AdapterHeaderUtil {

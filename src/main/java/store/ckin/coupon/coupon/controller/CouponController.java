@@ -54,10 +54,10 @@ public class CouponController {
      * @param memberId 회원 아이디
      */
     @PostMapping("/welcome")
-    public ResponseEntity<Void> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
+    public ResponseEntity<Boolean> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
         couponService.createWelcomeCoupon(memberId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(true);
     }
 
     /**
@@ -70,7 +70,6 @@ public class CouponController {
     public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
                                                      @PathVariable("couponTemplateId") Long couponTemplateId) {
         boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
-        log.debug("content: {}", content);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
