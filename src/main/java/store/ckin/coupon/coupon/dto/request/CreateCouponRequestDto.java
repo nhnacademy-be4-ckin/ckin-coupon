@@ -3,7 +3,6 @@ package store.ckin.coupon.coupon.dto.request;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -27,14 +26,4 @@ public class CreateCouponRequestDto {
     @NotNull(message = "쿠폰 발급일을 입력해주세요.")
     private Date issueDate;
     private Date usedDate;
-
-    @Builder
-    public CreateCouponRequestDto(Long memberId, Long couponTemplateId, Date expirationDate, Date issueDate,
-                                  Date usedDate) {
-        this.memberId = memberId;
-        this.couponTemplateId = couponTemplateId;
-        this.expirationDate = expirationDate;
-        this.issueDate = issueDate;
-        this.usedDate = usedDate;
-    }
 }

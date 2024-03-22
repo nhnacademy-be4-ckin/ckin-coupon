@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,10 +53,10 @@ public class CouponController {
      * @param memberId 회원 아이디
      */
     @PostMapping("/welcome")
-    public ResponseEntity<Void> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
+    public ResponseEntity<Boolean> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
         couponService.createWelcomeCoupon(memberId);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(true);
     }
 
     /**
@@ -70,7 +69,6 @@ public class CouponController {
     public ResponseEntity<Boolean> createCouponByIds(@PathVariable("memberId") Long memberId,
                                                      @PathVariable("couponTemplateId") Long couponTemplateId) {
         boolean content = couponService.createCouponByIds(memberId, couponTemplateId);
-        log.debug("content: {}", content);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(content);
     }
@@ -179,8 +177,7 @@ public class CouponController {
      */
     @GetMapping("/sale")
     public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,
-                                                                          @RequestParam("bookId")
-                                                                          List<Long> bookIdList) {
+                                                                          @RequestParam("bookId") List<Long> bookIdList) {
 
         List<GetCouponResponseDto> content = couponService.getCouponForBuyList(memberId, bookIdList);
 

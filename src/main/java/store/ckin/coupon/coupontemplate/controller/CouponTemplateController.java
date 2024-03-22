@@ -2,7 +2,6 @@ package store.ckin.coupon.coupontemplate.controller;
 
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -27,7 +26,6 @@ import store.ckin.coupon.coupontemplate.service.CouponTemplateService;
  * @author : gaeun
  * @version : 2024. 02. 15
  */
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/coupon/couponTemplate")
@@ -88,18 +86,18 @@ public class CouponTemplateController {
         return ResponseEntity.ok().build();
     }
 
-//    /**
-//     * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
-//     *
-//     * @param templateId 템플릿 아이디
-//     * @param state      사용여부
-//     * @return 200 OK
-//     */
-//    @PutMapping("/{templateId}")
-//    public ResponseEntity<Void> updateTemplateStatus(@PathVariable("templateId") Long templateId,
-//                                                     @RequestParam("state") Boolean state) {
-//        couponTemplateService.updateCouponTemplateStatus(templateId, state);
-//
-//        return ResponseEntity.ok().build();
-//    }
+    /**
+     * 쿠폰 템플릿 사용여부를 변경하는 메서드 입니다.
+     *
+     * @param templateId 템플릿 아이디
+     * @param state      사용여부
+     * @return 200 OK
+     */
+    @PutMapping("/{templateId}")
+    public ResponseEntity<Void> updateTemplateStatus(@PathVariable("templateId") Long templateId,
+                                                     @RequestParam("state") Boolean state) {
+        couponTemplateService.updateCouponTemplateStatus(templateId, state);
+
+        return ResponseEntity.ok().build();
+    }
 }
