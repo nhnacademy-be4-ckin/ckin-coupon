@@ -110,6 +110,8 @@ public class CouponTemplateRepositoryImpl extends QuerydslRepositorySupport impl
     @Override
     public GetCouponTemplateResponseDto getCouponTemplateByTypeId(Long typeId) {
         return from(couponTemplate)
+                .leftJoin(couponPolicy)
+                .on(couponTemplate.policyId.eq(couponPolicy.id))
                 .select(new QGetCouponTemplateResponseDto(
                         couponTemplate.id,
                         couponTemplate.policyId,

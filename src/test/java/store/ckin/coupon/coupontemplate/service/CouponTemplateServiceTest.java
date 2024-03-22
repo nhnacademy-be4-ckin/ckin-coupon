@@ -2,6 +2,7 @@ package store.ckin.coupon.coupontemplate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Date;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -179,59 +180,6 @@ class CouponTemplateServiceTest {
         assertThrows(CouponTemplateNotFoundException.class, () -> couponTemplateService.getCouponTemplate(1L));
     }
 
-//    @Test
-//    @DisplayName("쿠폰 템플릿 수정 테스트")
-//    void testUpdateCouponTemplate() {
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
-//
-//        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
-//        when(couponPolicyRepository.existsById(anyLong())).thenReturn(true);
-//
-//        couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto);
-//
-//        verify(couponTemplateRepository, times(1))
-//                .findById(anyLong());
-//        verify(couponPolicyRepository, times(1))
-//                .existsById(anyLong());
-//    }
-//
-//
-//    @Test
-//    @DisplayName("쿠폰 템플릿 수정 테스트: 실패")
-//    void testUpdateCouponTemplate_X() {
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
-//
-//        when(couponTemplateRepository.existsById(anyLong())).thenReturn(false);
-//
-//        assertThrows(CouponTemplateNotFoundException.class, () -> couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto));
-//    }
-//
-//    @Test
-//    @DisplayName("쿠폰 템플릿 수정 테스트: 실패 : 존재하지 않는 정책 아이디")
-//    void testUpdateCouponTemplate_XP() {
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "policyId", 1L);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "bookId", 1L);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "categoryId", null);
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "typeId", bookType.getId());
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "name", "사람은 무엇으로 사는가 - 도서 쿠폰");
-//        ReflectionTestUtils.setField(couponTemplateRequestDto, "amount", 100L);
-//
-//        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
-//        when(couponPolicyRepository.existsById(anyLong())).thenReturn(false);
-//
-//        assertThrows(CouponPolicyNotFoundException.class, () -> couponTemplateService.updateCouponTemplate(1L, couponTemplateRequestDto));
-//    }
-
     @Test
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void testDeleteCouponTemplate() {
@@ -241,6 +189,25 @@ class CouponTemplateServiceTest {
 
         verify(couponTemplateRepository, times(1))
                 .delete(any());
+    }
+
+    @Test
+    @DisplayName("쿠폰 템플릿 단일 조회")
+    void updateCouponTemplateStatus() {
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
+
+        couponTemplateService.updateCouponTemplateStatus(1L, true);
+
+        verify(couponTemplateRepository, times(1))
+                .findById(anyLong());
+    }
+
+    @Test
+    @DisplayName("쿠폰 템플릿 단일 조회: 실패")
+    void updateCouponTemplateStatus_X() {
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(CouponTemplateNotFoundException.class, () -> couponTemplateService.updateCouponTemplateStatus(1L, true));
     }
 
     @Test

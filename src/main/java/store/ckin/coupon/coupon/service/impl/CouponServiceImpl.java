@@ -209,7 +209,7 @@ public class CouponServiceImpl implements CouponService {
         couponRepository.save(Coupon.builder()
                 .memberId(memberId)
                 .couponTemplateId(couponTemplateResponseDto.getId())
-                .expirationDate(couponTemplateResponseDto.getExpirationDate())
+                .expirationDate(Date.valueOf(LocalDate.now().plusDays(30)))
                 .issueDate(Date.valueOf(LocalDate.now()))
                 .usedDate(null)
                 .build());

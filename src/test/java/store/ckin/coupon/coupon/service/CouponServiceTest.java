@@ -1,6 +1,7 @@
 package store.ckin.coupon.coupon.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,8 @@ import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.impl.CouponServiceImpl;
+import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
+import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
@@ -68,6 +71,8 @@ class CouponServiceTest {
     Pageable pageable;
     PageImpl<GetCouponResponseDto> page;
     List<GetCouponResponseDto> couponList;
+    GetCouponTemplateResponseDto couponTemplateResponseDto;
+    CreateCouponTemplateRequestDto couponTemplateRequestDto;
 
     @BeforeEach
     void setUp() {
@@ -99,6 +104,22 @@ class CouponServiceTest {
         ReflectionTestUtils.setField(couponResponseDto, "issueDate", Date.valueOf("2024-02-28"));
         ReflectionTestUtils.setField(couponResponseDto, "usedDate", null);
 
+        couponTemplateResponseDto = new GetCouponTemplateResponseDto();
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "id", 1L);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "policyId", 1L);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "minOrderPrice", 50000);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "discountPrice", 10000);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "discountRate", null);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "maxDiscountPrice", null);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "bookId", null);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "categoryId", null);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "name", "Welcome 쿠폰");
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "amount", null);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "typeId", 1L);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "duration", 30);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "expirationDate", null);
+        ReflectionTestUtils.setField(couponTemplateResponseDto, "state", true);
+
         pageable = PageRequest.of(0, 5);
         page = new PageImpl<>(List.of(couponResponseDto));
 
@@ -125,6 +146,14 @@ class CouponServiceTest {
                 .existsById(anyLong());
         verify(couponRepository, times(1))
                 .save(any());
+    }
+
+    @Test
+    @DisplayName("쿠폰 생성 테스트 : 템플릿 타입이 없는 경우")
+    void testCreateCoupon_X() {
+        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(false);
+
+        Assertions.assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponService.createCoupon(couponRequestDto));
     }
 
     @Test
@@ -286,5 +315,17 @@ class CouponServiceTest {
                 .existsById(anyLong());
         verify(couponRepository, times(1))
                 .isExistCoupon(anyLong(), anyLong());
+    }
+    @Test
+    @DisplayName("웰컴 쿠폰 생성 테스트")
+    void testCreateWelcomeCoupon() {
+        when(couponTemplateRepository.getCouponTemplateByTypeId(anyLong())).thenReturn(couponTemplateResponseDto);
+
+        couponService.createWelcomeCoupon(1L);
+
+        verify(couponTemplateRepository, times(1))
+                .getCouponTemplateByTypeId(anyLong());
+        verify(couponRepository, times(1))
+                .save(any());
     }
 }

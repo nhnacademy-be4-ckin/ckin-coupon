@@ -27,14 +27,4 @@ public class CreateCouponRequestDto {
     @NotNull(message = "쿠폰 발급일을 입력해주세요.")
     private Date issueDate;
     private Date usedDate;
-
-    @Builder
-    public CreateCouponRequestDto(Long memberId, Long couponTemplateId, Date expirationDate, Date issueDate,
-                                  Date usedDate) {
-        this.memberId = memberId;
-        this.couponTemplateId = couponTemplateId;
-        this.expirationDate = expirationDate;
-        this.issueDate = issueDate;
-        this.usedDate = usedDate;
-    }
 }

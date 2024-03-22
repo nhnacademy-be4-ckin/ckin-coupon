@@ -108,7 +108,6 @@ public class CouponTemplateServiceImpl implements CouponTemplateService {
         CouponTemplate couponTemplate = couponTemplateRepository.findById(templateId)
                 .orElseThrow(CouponTemplateNotFoundException::new);
 
-        log.debug("state : {}", state);
         couponTemplate.updateTemplateStatus(state);
     }
 }
