@@ -1,6 +1,17 @@
 package store.ckin.coupon.coupon.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyList;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -22,6 +33,7 @@ import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.impl.CouponServiceImpl;
 import store.ckin.coupon.coupontemplate.dto.request.CreateCouponTemplateRequestDto;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
+import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.model.CouponTemplateType;
@@ -29,14 +41,6 @@ import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
-
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 
 /**
  * CouponServiceTest
@@ -82,8 +86,11 @@ class CouponServiceTest {
         categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
 
         couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
-        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L,30, Date.valueOf("2023-03-04"), true, bookType);
-        couponService = new CouponServiceImpl(couponRepository, couponTemplateRepository, couponTemplateTypeRepository, couponAdapter);
+        bookCouponTemplate =
+                new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, 30, Date.valueOf("2023-03-04"), true,
+                        bookType);
+        couponService = new CouponServiceImpl(couponRepository, couponTemplateRepository, couponTemplateTypeRepository,
+                couponAdapter);
         couponRequestDto = new CreateCouponRequestDto();
         ReflectionTestUtils.setField(couponRequestDto, "memberId", 1L);
         ReflectionTestUtils.setField(couponRequestDto, "couponTemplateId", 1L);
@@ -153,7 +160,8 @@ class CouponServiceTest {
     void testCreateCoupon_X() {
         when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(false);
 
-        Assertions.assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponService.createCoupon(couponRequestDto));
+        Assertions.assertThrows(CouponTemplateTypeNotFoundException.class,
+                () -> couponService.createCoupon(couponRequestDto));
     }
 
     @Test
@@ -196,7 +204,8 @@ class CouponServiceTest {
     void testGetCouponList_X() {
         when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponService.getCouponList(pageable, bookType.getId()));
+        assertThrows(CouponTemplateTypeNotFoundException.class,
+                () -> couponService.getCouponList(pageable, bookType.getId()));
     }
 
     @Test
@@ -316,6 +325,7 @@ class CouponServiceTest {
         verify(couponRepository, times(1))
                 .isExistCoupon(anyLong(), anyLong());
     }
+
     @Test
     @DisplayName("웰컴 쿠폰 생성 테스트")
     void testCreateWelcomeCoupon() {
@@ -327,5 +337,14 @@ class CouponServiceTest {
                 .getCouponTemplateByTypeId(anyLong());
         verify(couponRepository, times(1))
                 .save(any());
+    }
+
+    @Test
+    @DisplayName("웰컴 쿠폰 생성 테스트: 웰컴쿠폰 템플릿이 없어서 실패")
+    void testCreateWelcomeCoupon_X() {
+        when(couponTemplateRepository.getCouponTemplateByTypeId(anyLong())).thenReturn(null);
+
+        Assertions.assertThrows(CouponTemplateNotFoundException.class,
+                () -> couponService.createWelcomeCoupon(1L));
     }
 }
