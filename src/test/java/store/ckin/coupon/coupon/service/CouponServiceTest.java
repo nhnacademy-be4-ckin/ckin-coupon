@@ -158,9 +158,9 @@ class CouponServiceTest {
     @Test
     @DisplayName("쿠폰 생성 테스트 : 템플릿 타입이 없는 경우")
     void testCreateCoupon_X() {
-        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(false);
+        when(couponTemplateRepository.existsById(anyLong())).thenReturn(false);
 
-        Assertions.assertThrows(CouponTemplateTypeNotFoundException.class,
+        Assertions.assertThrows(CouponTemplateNotFoundException.class,
                 () -> couponService.createCoupon(couponRequestDto));
     }
 
