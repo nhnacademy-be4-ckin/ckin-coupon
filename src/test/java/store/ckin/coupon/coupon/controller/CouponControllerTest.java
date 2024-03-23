@@ -174,15 +174,20 @@ class CouponControllerTest {
                 .andExpect(jsonPath("$.content[0].couponTemplateId", is(couponResponseDto.getPolicyId()), Long.class))
                 .andExpect(jsonPath("$.content[0].policyId", is(couponResponseDto.getPolicyId()), Long.class))
                 .andExpect(jsonPath("$.content[0].couponCodeId", is(couponResponseDto.getCouponCodeId()), Long.class))
-                .andExpect(jsonPath("$.content[0].minOrderPrice", is(couponResponseDto.getMinOrderPrice()), Integer.class))
-                .andExpect(jsonPath("$.content[0].discountPrice", is(couponResponseDto.getDiscountPrice()), Integer.class))
-                .andExpect(jsonPath("$.content[0].discountRate", is(couponResponseDto.getDiscountRate()), Integer.class))
-                .andExpect(jsonPath("$.content[0].maxDiscountPrice", is(couponResponseDto.getMaxDiscountPrice()), Integer.class))
+                .andExpect(
+                        jsonPath("$.content[0].minOrderPrice", is(couponResponseDto.getMinOrderPrice()), Integer.class))
+                .andExpect(
+                        jsonPath("$.content[0].discountPrice", is(couponResponseDto.getDiscountPrice()), Integer.class))
+                .andExpect(
+                        jsonPath("$.content[0].discountRate", is(couponResponseDto.getDiscountRate()), Integer.class))
+                .andExpect(jsonPath("$.content[0].maxDiscountPrice", is(couponResponseDto.getMaxDiscountPrice()),
+                        Integer.class))
                 .andExpect(jsonPath("$.content[0].bookId", is(couponResponseDto.getBookId()), Long.class))
                 .andExpect(jsonPath("$.content[0].categoryId", is(couponResponseDto.getCategoryId()), Long.class))
                 .andExpect(jsonPath("$.content[0].typeId", is(couponResponseDto.getTypeId()), Long.class))
                 .andExpect(jsonPath("$.content[0].name", equalTo(couponResponseDto.getName())))
-                .andExpect(jsonPath("$.content[0].expirationDate", equalTo(couponResponseDto.getExpirationDate().toString())))
+                .andExpect(jsonPath("$.content[0].expirationDate",
+                        equalTo(couponResponseDto.getExpirationDate().toString())))
                 .andExpect(jsonPath("$.content[0].issueDate", is(couponResponseDto.getIssueDate().toString())))
                 .andExpect(jsonPath("$.content[0].usedDate", is(couponResponseDto.getUsedDate())))
                 .andDo(document("coupon/getAllCouponList/success",

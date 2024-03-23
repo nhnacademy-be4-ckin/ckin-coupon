@@ -16,7 +16,6 @@ import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
-import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
@@ -203,7 +202,7 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createWelcomeCoupon(Long memberId) {
-        if(Objects.isNull(couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID))) {
+        if (Objects.isNull(couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID))) {
             throw new CouponTemplateNotFoundException();
         }
         if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
