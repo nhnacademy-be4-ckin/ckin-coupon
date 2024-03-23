@@ -37,7 +37,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponTemplateTypeRepository couponTemplateTypeRepository;
     private final CouponAdapter couponAdapter;
-    private static final long WELCOME_TYPE_ID = 4;
+    private static final long WELCOME_TYPE_ID = 4L;
 
     /**
      * {@inheritDoc}
@@ -47,8 +47,8 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createCoupon(CreateCouponRequestDto couponRequestDto) {
-        if (!couponTemplateTypeRepository.existsById(couponRequestDto.getCouponTemplateId())) {
-            throw new CouponTemplateTypeNotFoundException();
+        if (!couponTemplateRepository.existsById(couponRequestDto.getCouponTemplateId())) {
+            throw new CouponTemplateNotFoundException();
         }
 
         couponRepository.save(Coupon.builder()
