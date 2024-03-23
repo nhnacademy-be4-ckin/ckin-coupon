@@ -3,7 +3,6 @@ package store.ckin.coupon.coupon.service.impl;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -207,7 +206,7 @@ public class CouponServiceImpl implements CouponService {
     public void createWelcomeCoupon(Long memberId) {
         log.debug("Enter Create Welcome Coupon Service");
         couponTemplateRepository.findById(WELCOME_TYPE_ID)
-                        .orElseThrow(CouponTemplateNotFoundException::new);
+                .orElseThrow(CouponTemplateNotFoundException::new);
         log.debug("Coupon Template Validation Clear: ", WELCOME_TYPE_ID);
 
         if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
