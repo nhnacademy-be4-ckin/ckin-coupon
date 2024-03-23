@@ -329,12 +329,12 @@ class CouponServiceTest {
     @Test
     @DisplayName("웰컴 쿠폰 생성 테스트")
     void testCreateWelcomeCoupon() {
-        when(couponTemplateRepository.getCouponTemplateByTypeId(anyLong())).thenReturn(couponTemplateResponseDto);
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookCouponTemplate));
 
         couponService.createWelcomeCoupon(1L);
 
         verify(couponTemplateRepository, times(1))
-                .getCouponTemplateByTypeId(anyLong());
+                .findById(anyLong());
         verify(couponRepository, times(1))
                 .save(any());
     }
