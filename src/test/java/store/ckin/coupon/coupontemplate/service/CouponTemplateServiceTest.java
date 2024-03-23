@@ -1,7 +1,16 @@
 package store.ckin.coupon.coupontemplate.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,13 +36,6 @@ import store.ckin.coupon.coupontemplate.service.impl.CouponTemplateServiceImpl;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 
 /**
  * description:
@@ -71,10 +73,15 @@ class CouponTemplateServiceTest {
         categoryType = new CouponTemplateType(3L, "카테고리 쿠폰");
 
         couponPolicy = new CouponPolicy(1L, new CouponCode("정액"), 10000, 3000, null, 10000, true);
-        bookCouponTemplate = new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, 30, Date.valueOf("2023-03-04"), true, bookType);
-        couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponTemplateTypeRepository, couponPolicyRepository);
+        bookCouponTemplate =
+                new CouponTemplate(1L, 1L, 1L, null, "사람은 무엇으로 사는가 - 도서 쿠폰", 100L, 30, Date.valueOf("2023-03-04"), true,
+                        bookType);
+        couponTemplateService = new CouponTemplateServiceImpl(couponTemplateRepository, couponTemplateTypeRepository,
+                couponPolicyRepository);
         couponTemplateRequestDto = new CreateCouponTemplateRequestDto();
-        couponTemplateResponseDto = new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰", 100L, 2L, 30, Date.valueOf("2023-03-04"), true);
+        couponTemplateResponseDto =
+                new GetCouponTemplateResponseDto(1L, 1L, 3000, 3000, 10000, null, 1L, null, "사람은 무엇으로 사는가  - 도서 쿠폰",
+                        100L, 2L, 30, Date.valueOf("2023-03-04"), true);
     }
 
     @Test
@@ -113,7 +120,8 @@ class CouponTemplateServiceTest {
         when(couponPolicyRepository.findById(anyLong())).thenThrow(new CouponPolicyNotFoundException());
         when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.ofNullable(bookType));
 
-        assertThrows(CouponPolicyNotFoundException.class, () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
+        assertThrows(CouponPolicyNotFoundException.class,
+                () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
     }
 
     @Test
@@ -129,7 +137,8 @@ class CouponTemplateServiceTest {
         when(couponPolicyRepository.findById(anyLong())).thenReturn(Optional.ofNullable(couponPolicy));
         when(couponTemplateTypeRepository.findById(anyLong())).thenThrow(new CouponTemplateTypeNotFoundException());
 
-        assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
+        assertThrows(CouponTemplateTypeNotFoundException.class,
+                () -> couponTemplateService.createCouponTemplate(couponTemplateRequestDto));
     }
 
     @Test
@@ -158,13 +167,15 @@ class CouponTemplateServiceTest {
         when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(false);
         when(couponTemplateRepository.getCouponTemplateList(any(), anyLong())).thenReturn(page);
 
-        assertThrows(CouponTemplateTypeNotFoundException.class, () -> couponTemplateService.getCouponTemplateList(pageable, typeId));
+        assertThrows(CouponTemplateTypeNotFoundException.class,
+                () -> couponTemplateService.getCouponTemplateList(pageable, typeId));
     }
 
     @Test
     @DisplayName("쿠폰 템플릿 단일 조회 테스트")
     void testGetCouponTemplate() {
-        when(couponTemplateRepository.getCouponTemplate(anyLong())).thenReturn(Optional.ofNullable(couponTemplateResponseDto));
+        when(couponTemplateRepository.getCouponTemplate(anyLong())).thenReturn(
+                Optional.ofNullable(couponTemplateResponseDto));
 
         couponTemplateService.getCouponTemplate(1L);
 
@@ -183,7 +194,9 @@ class CouponTemplateServiceTest {
     @Test
     @DisplayName("쿠폰 템플릿 삭제 테스트")
     void testDeleteCouponTemplate() {
-        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(new CouponTemplate(1L, 1L, 1L, null, "template", 30L, 30, Date.valueOf("2023-03-04"), true, new CouponTemplateType(1L, "생일 쿠폰"))));
+        when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.of(
+                new CouponTemplate(1L, 1L, 1L, null, "template", 30L, 30, Date.valueOf("2023-03-04"), true,
+                        new CouponTemplateType(1L, "생일 쿠폰"))));
 
         couponTemplateService.deleteCouponTemplate(1L);
 
@@ -207,7 +220,8 @@ class CouponTemplateServiceTest {
     void updateCouponTemplateStatus_X() {
         when(couponTemplateRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(CouponTemplateNotFoundException.class, () -> couponTemplateService.updateCouponTemplateStatus(1L, true));
+        Assertions.assertThrows(CouponTemplateNotFoundException.class,
+                () -> couponTemplateService.updateCouponTemplateStatus(1L, true));
     }
 
     @Test

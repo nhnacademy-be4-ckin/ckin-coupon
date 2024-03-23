@@ -1,5 +1,7 @@
 package store.ckin.coupon.policy.repository;
 
+import java.util.List;
+import javax.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,9 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.policy.dto.response.GetCouponPolicyResponseDto;
 import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.model.CouponPolicy;
-
-import javax.persistence.EntityManager;
-import java.util.List;
 
 /**
  * description:

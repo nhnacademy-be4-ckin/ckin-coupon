@@ -1,6 +1,15 @@
 package store.ckin.coupon.policy.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,13 +25,6 @@ import store.ckin.coupon.policy.model.CouponCode;
 import store.ckin.coupon.policy.repository.CouponCodeRepository;
 import store.ckin.coupon.policy.repository.CouponPolicyRepository;
 import store.ckin.coupon.policy.service.impl.CouponPolicyServiceImpl;
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 
 /**
  * description:
@@ -84,7 +86,8 @@ class CouponPolicyServiceTest {
 
         when(couponCodeRepository.findById(anyLong())).thenThrow(new CouponCodeNotFoundException());
 
-        assertThrows(CouponCodeNotFoundException.class, () -> couponPolicyService.createCouponPolicy(couponPolicyRequestDto));
+        assertThrows(CouponCodeNotFoundException.class,
+                () -> couponPolicyService.createCouponPolicy(couponPolicyRequestDto));
     }
 
     @Test

@@ -177,7 +177,8 @@ public class CouponController {
      */
     @GetMapping("/sale")
     public ResponseEntity<List<GetCouponResponseDto>> getCouponForBuyList(@RequestParam("memberId") Long memberId,
-                                                                          @RequestParam("bookId") List<Long> bookIdList) {
+                                                                          @RequestParam("bookId")
+                                                                          List<Long> bookIdList) {
 
         List<GetCouponResponseDto> content = couponService.getCouponForBuyList(memberId, bookIdList);
 
