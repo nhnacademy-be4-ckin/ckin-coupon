@@ -145,11 +145,11 @@ class CouponServiceTest {
     @Test
     @DisplayName("쿠폰 생성 테스트")
     void testCreateCoupon() {
-        when(couponTemplateTypeRepository.existsById(anyLong())).thenReturn(true);
+        when(couponTemplateRepository.existsById(anyLong())).thenReturn(true);
 
         couponService.createCoupon(couponRequestDto);
 
-        verify(couponTemplateTypeRepository, times(1))
+        verify(couponTemplateRepository, times(1))
                 .existsById(anyLong());
         verify(couponRepository, times(1))
                 .save(any());
