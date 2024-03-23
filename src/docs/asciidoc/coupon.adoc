@@ -1,0 +1,177 @@
+{empty} +
+
+== 쿠폰
+
+=== 쿠폰 생성
+
+==== Request
+
+include::{snippets}/coupon/createCoupon/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/createCoupon/success/request-parameters.adoc[]
+
+include::{snippets}/coupon/createCoupon/success/request-fields.adoc[]
+==== Response
+
+include::{snippets}/coupon/createCoupon/success/http-response.adoc[]
+
+{empty} +
+
+=== Welcome 쿠폰 생성
+
+==== Request
+
+include::{snippets}/coupon/createWelcomeCoupon/success/http-request.adoc[]
+
+==== Parameters
+include::{snippets}/coupon/createWelcomeCoupon/success/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/createWelcomeCoupon/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 발급: 중복 여부 검사 후 발급
+
+==== Request
+
+include::{snippets}/coupon/createCouponByIds/success/http-request.adoc[]
+
+==== Parameters
+include::{snippets}/coupon/createCouponByIds/success/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/createCouponByIds/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 목록 조회 : typeId가 있는 경우
+
+==== Request
+
+include::{snippets}/coupon/getAllCouponList/success/http-request.adoc[]
+
+==== Parameters
+include::{snippets}/coupon/getAllCouponList/success/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/getAllCouponList/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 목록 조회 : typeId가 없는 경우
+
+==== Request
+
+include::{snippets}/coupon/getAllCouponList/miss-parameter-failed/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/getAllCouponList/miss-parameter-failed/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 조회 : 쿠폰 아이디
+
+==== Request
+
+include::{snippets}/coupon/getCouponByCouponId/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/getCouponByCouponId/success/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/getCouponByCouponId/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 조회 : 회원 아이디
+
+==== Request
+
+include::{snippets}/coupon/getAllCouponByMember/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/getAllCouponByMember/success/path-parameters.adoc[]
+
+include::{snippets}/coupon/getAllCouponByMember/success/request-parameters.adoc[]
+==== Response
+
+include::{snippets}/coupon/getAllCouponByMember/success/http-response.adoc[]
+
+{empty} +
+
+=== 사용된 쿠폰 조회 : 회원 아이디
+
+==== Request
+
+include::{snippets}/coupon/getUsedCouponByMember/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/getUsedCouponByMember/success/path-parameters.adoc[]
+
+include::{snippets}/coupon/getUsedCouponByMember/success/request-parameters.adoc[]
+==== Response
+
+include::{snippets}/coupon/getUsedCouponByMember/success/http-response.adoc[]
+
+{empty} +
+
+=== 미사용인 쿠폰 조회 : 회원 아이디
+
+==== Request
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/path-parameters.adoc[]
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 수정
+
+==== Request
+
+include::{snippets}/coupon/updateCouponUsedDate/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/updateCouponUsedDate/success/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/updateCouponUsedDate/success/http-response.adoc[]
+
+{empty} +
+
+=== 도서에 해당하는 쿠폰 리스트 반환
+
+==== Request
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/coupon/getUnUsedCouponByMember/success/http-response.adoc[]
+
+
