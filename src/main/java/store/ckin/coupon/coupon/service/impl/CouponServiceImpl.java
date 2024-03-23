@@ -170,6 +170,7 @@ public class CouponServiceImpl implements CouponService {
      * @return
      */
     @Override
+    @Transactional
     public Boolean isExistCoupon(Long memberId, Long couponTemplateId) {
         return couponRepository.isExistCoupon(memberId, couponTemplateId);
     }
@@ -205,9 +206,8 @@ public class CouponServiceImpl implements CouponService {
     @Transactional
     public void createWelcomeCoupon(Long memberId) {
         log.debug("Enter Create Welcome Coupon Service");
-        if (Objects.isNull(couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID))) {
-            throw new CouponTemplateNotFoundException();
-        }
+        couponTemplateRepository.findById(WELCOME_TYPE_ID)
+                        .orElseThrow(CouponTemplateNotFoundException::new);
         log.debug("Coupon Template Validation Clear: ", WELCOME_TYPE_ID);
 
         if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
