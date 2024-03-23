@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
  * @author : gaeun
  * @version : 2024. 02. 15
  */
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -202,12 +204,17 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createWelcomeCoupon(Long memberId) {
+        log.debug("Enter Create Welcome Coupon Service");
         if (Objects.isNull(couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID))) {
             throw new CouponTemplateNotFoundException();
         }
+        log.debug("Coupon Template Validation Clear: ", WELCOME_TYPE_ID);
+
         if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
             return;
         }
+        log.debug("All Validation Clear: ", memberId);
+
         couponRepository.save(Coupon.builder()
                 .memberId(memberId)
                 .couponTemplateId(WELCOME_TYPE_ID)
