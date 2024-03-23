@@ -202,10 +202,12 @@ class CouponServiceTest {
     @Test
     @DisplayName("쿠폰 목록 조회 테스트 : 타입별 (실패)")
     void testGetCouponList_X() {
+        Long typeId = bookType.getId();
+
         when(couponTemplateTypeRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(CouponTemplateTypeNotFoundException.class,
-                () -> couponService.getCouponList(pageable, bookType.getId()));
+                () -> couponService.getCouponList(pageable, typeId));
     }
 
     @Test

@@ -1,0 +1,73 @@
+{empty} +
+
+== 쿠폰 템플릿
+
+=== 쿠폰 템플릿 생성
+
+==== Request
+
+include::{snippets}/couponTemplate/getAllCouponTemplate/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/couponTemplate/getAllCouponTemplate/success/request-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/couponTemplate/getAllCouponTemplate/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 템플릿 단일 조회
+
+==== Request
+
+include::{snippets}/couponTemplate/getCouponTemplateById/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/couponTemplate/getCouponTemplateById/success/path-parameters.adoc[]
+
+==== Response
+
+include::{snippets}/couponTemplate/getCouponTemplateById/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 템플릿 등록: 성공
+
+==== Request
+
+include::{snippets}/couponTemplate/createCouponTemplate/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/couponTemplate/createCouponTemplate/success/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/couponTemplate/createCouponTemplate/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 템플릿 등록: 실패
+
+==== Request
+
+include::{snippets}/couponTemplate/createCouponTemplate/miss-parameter-failed/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/couponTemplate/createCouponTemplate/miss-parameter-failed/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 템플릿 삭제
+
+==== Request
+
+include::{snippets}/couponTemplate/deleteCouponTemplate/success/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/couponTemplate/deleteCouponTemplate/success/http-response.adoc[]

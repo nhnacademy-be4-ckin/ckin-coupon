@@ -18,6 +18,7 @@ import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
+import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 
@@ -204,19 +205,16 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createWelcomeCoupon(Long memberId) {
-        log.debug("Enter Create Welcome Coupon Service");
-        couponTemplateRepository.findById(WELCOME_TYPE_ID)
+        CouponTemplate couponTemplate = couponTemplateRepository.findById(WELCOME_TYPE_ID)
                 .orElseThrow(CouponTemplateNotFoundException::new);
-        log.debug("Coupon Template Validation Clear: ", WELCOME_TYPE_ID);
 
         if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
             return;
         }
-        log.debug("All Validation Clear: ", memberId);
 
         couponRepository.save(Coupon.builder()
                 .memberId(memberId)
-                .couponTemplateId(WELCOME_TYPE_ID)
+                .couponTemplateId(couponTemplate.getId())
                 .expirationDate(Date.valueOf(LocalDate.now().plusDays(30)))
                 .issueDate(Date.valueOf(LocalDate.now()))
                 .usedDate(null)
