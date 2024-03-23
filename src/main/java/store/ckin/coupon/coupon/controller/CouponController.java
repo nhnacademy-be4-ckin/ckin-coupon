@@ -54,6 +54,7 @@ public class CouponController {
      */
     @PostMapping("/welcome")
     public ResponseEntity<Boolean> createWelcomeCoupon(@RequestParam("memberId") Long memberId) {
+        log.debug("Enter Create Welcome Coupon");
         couponService.createWelcomeCoupon(memberId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(true);
