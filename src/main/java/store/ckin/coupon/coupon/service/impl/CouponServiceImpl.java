@@ -3,6 +3,7 @@ package store.ckin.coupon.coupon.service.impl;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,7 @@ import store.ckin.coupon.coupon.model.Coupon;
 import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
 import store.ckin.coupon.coupontemplate.dto.response.GetCouponTemplateResponseDto;
+import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
@@ -34,7 +36,7 @@ public class CouponServiceImpl implements CouponService {
     private final CouponTemplateRepository couponTemplateRepository;
     private final CouponTemplateTypeRepository couponTemplateTypeRepository;
     private final CouponAdapter couponAdapter;
-    private static final long WELCOME_TYPE_ID = 4L;
+    private static final long WELCOME_TYPE_ID = 4;
 
     /**
      * {@inheritDoc}
@@ -201,12 +203,15 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createWelcomeCoupon(Long memberId) {
-        GetCouponTemplateResponseDto couponTemplateResponseDto
-                = couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID);
-
+        if(Objects.isNull(couponTemplateRepository.getCouponTemplateByTypeId(WELCOME_TYPE_ID))) {
+            throw new CouponTemplateNotFoundException();
+        }
+        if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
+            return;
+        }
         couponRepository.save(Coupon.builder()
                 .memberId(memberId)
-                .couponTemplateId(couponTemplateResponseDto.getId())
+                .couponTemplateId(WELCOME_TYPE_ID)
                 .expirationDate(Date.valueOf(LocalDate.now().plusDays(30)))
                 .issueDate(Date.valueOf(LocalDate.now()))
                 .usedDate(null)
