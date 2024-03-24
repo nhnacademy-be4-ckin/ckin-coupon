@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 
 /**
@@ -110,4 +111,6 @@ public interface CouponService {
      * @param memberId 회원 아이디
      */
     void createWelcomeCoupon(Long memberId);
+
+    CouponCountResponseDto countByMemberId(Long memberId);
 }

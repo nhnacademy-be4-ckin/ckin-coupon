@@ -10,4 +10,5 @@ import store.ckin.coupon.coupon.model.Coupon;
  * @version : 2024. 02. 08
  */
 public interface CouponRepository extends JpaRepository<Coupon, Long>, CouponRepositoryCustom {
+    long countByMemberId(Long memberId);
 }

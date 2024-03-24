@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupon.adapter.CouponAdapter;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
@@ -222,5 +223,9 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
-
+    @Transactional(readOnly = true)
+    @Override
+    public CouponCountResponseDto countByMemberId(Long memberId) {
+        return new CouponCountResponseDto(couponRepository.countByMemberId(memberId));
+    }
 }

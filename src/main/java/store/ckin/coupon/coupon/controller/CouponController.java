@@ -3,6 +3,8 @@ package store.ckin.coupon.coupon.controller;
 import java.util.List;
 import java.util.Objects;
 import javax.validation.Valid;
+
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
 
@@ -184,5 +187,13 @@ public class CouponController {
         List<GetCouponResponseDto> content = couponService.getCouponForBuyList(memberId, bookIdList);
 
         return ResponseEntity.ok().body(content);
+    }
+
+    @GetMapping("/members/{memberId}/count")
+    public ResponseEntity<CouponCountResponseDto> getCountCouponByMemberId(
+            @PathVariable("memberId") Long memberId) {
+        CouponCountResponseDto responseDto = couponService.countByMemberId(memberId);
+
+        return ResponseEntity.ok().body(responseDto);
     }
 }
