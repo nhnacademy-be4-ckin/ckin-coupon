@@ -40,6 +40,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
 
@@ -562,4 +563,26 @@ class CouponControllerTest {
 
     }
 
+    @Test
+    @DisplayName("멤버가 가지고 있는 쿠폰 개수 조회")
+    void testGetCountCouponByMemberId() throws Exception {
+        when(couponService.countByMemberId(anyLong()))
+                .thenReturn(new CouponCountResponseDto(2L));
+
+        mockMvc.perform(RestDocumentationRequestBuilders
+                .get("/coupon/members/{memberId}/count", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("countCoupon", equalTo(2)))
+                .andDo(document("coupon/getCountCouponByMemberId/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("memberId").description("회원 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("countCoupon").description("쿠폰 갯수")
+                        )
+                ));
+    }
 }

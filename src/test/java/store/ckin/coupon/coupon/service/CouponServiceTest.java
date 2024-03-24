@@ -26,6 +26,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import store.ckin.coupon.coupon.adapter.CouponAdapter;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
@@ -348,5 +349,14 @@ class CouponServiceTest {
 
         Assertions.assertThrows(CouponTemplateNotFoundException.class,
                 () -> couponService.createWelcomeCoupon(1L));
+    }
+
+    @Test
+    @DisplayName("멤버가 가지고 있는 쿠폰 개수 조회")
+    void testCountByMemberId() {
+        when(couponRepository.countByMemberId(1L))
+                .thenReturn(1L);
+
+        Assertions.assertEquals(1L, couponService.countByMemberId(1L).getCountCoupon());
     }
 }
