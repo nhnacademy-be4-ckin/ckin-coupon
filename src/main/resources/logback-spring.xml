@@ -5,7 +5,7 @@
         <property name="LOGS_ABSOLUTE_PATH" value="./logs"/>
     </springProfile>
     <springProfile name="prod">
-        <property name="LOGS_ABSOLUTE_PATH" value="/application/logs"/>
+        <property name="LOGS_ABSOLUTE_PATH" value="/home/coupon/logs"/>
     </springProfile>
     <!--    콘솔 로그에 색상 입히기       -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
