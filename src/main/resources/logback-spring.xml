@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <!--    파일을 저장할 위치 지정       -->
-    <property name="LOGS_ABSOLUTE_PATH" value="./logs"/>
+    <springProfile name="dev">
+        <property name="LOGS_ABSOLUTE_PATH" value="./logs"/>
+    </springProfile>
+    <springProfile name="prod">
+        <property name="LOGS_ABSOLUTE_PATH" value="/home/coupon/logs"/>
+    </springProfile>
     <!--    콘솔 로그에 색상 입히기       -->
     <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
 
@@ -41,6 +46,8 @@
     <springProfile name="dev">
         <root level="DEBUG">
             <appender-ref ref="STDOUT"/>
+            <appender-ref ref="LOG"/>
+
         </root>
         <!--  쿼리문 로그에 출력되어 있는 파라미터에 바인딩 되는 값을 알 수 있음  -->
         <logger name="org.hibernate.type.descriptor.sql" additivity="false">

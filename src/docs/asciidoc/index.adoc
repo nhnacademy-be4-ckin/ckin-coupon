@@ -1,4 +1,4 @@
-= CKIN REST-API docs
+= CKIN Coupon API docs
 :doctype: book
 :icons: font
 :source-highlighter: highlightjs
@@ -7,14 +7,14 @@
 :toclevels: 5
 
 = 1. 개요
-이 API 문서는 CKIN(체크인) 팀의 API 문서를 유용하게 볼수 있게 도와줍니다.
+이 API 문서는 CKIN(체크인) 팀의 Coupon 문서를 유용하게 볼수 있게 도와줍니다.
 
 NOTE: 기본적인 구성은 다음과 같습니다
 
 ### 1.1 API 구성
 
 ```
-/api/**
+/coupon/**
 ```
 
 ### 1.2 Domain Name 구성
