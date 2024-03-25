@@ -38,7 +38,9 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.service.CouponService;
 
@@ -146,6 +148,7 @@ class CouponControllerTest {
 
         mockMvc.perform(RestDocumentationRequestBuilders.post("/coupon/members/{memberId}/{couponTemplateId}", 1L, 1L))
                 .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().string("true"))
                 .andDo(document("coupon/createCouponByIds/success",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
@@ -154,7 +157,7 @@ class CouponControllerTest {
                                 parameterWithName("couponTemplateId").description("지급할 쿠폰의 템플릿 번호")
                         )));
 //                        responseFields(
-//                                fieldWithPath(".").description("쿠폰이 성공적으로 발급되었는지 여부")
+//                                fieldWithPath("success").description("쿠폰이 성공적으로 발급되었는지 여부")
 //                        )));
     }
 
@@ -560,4 +563,26 @@ class CouponControllerTest {
 
     }
 
+    @Test
+    @DisplayName("멤버가 가지고 있는 쿠폰 개수 조회")
+    void testGetCountCouponByMemberId() throws Exception {
+        when(couponService.countByMemberId(anyLong()))
+                .thenReturn(new CouponCountResponseDto(2L));
+
+        mockMvc.perform(RestDocumentationRequestBuilders
+                .get("/coupon/members/{memberId}/count", 1L)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("countCoupon", equalTo(2)))
+                .andDo(document("coupon/getCountCouponByMemberId/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("memberId").description("회원 아이디")
+                        ),
+                        responseFields(
+                                fieldWithPath("countCoupon").description("쿠폰 갯수")
+                        )
+                ));
+    }
 }

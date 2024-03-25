@@ -1,0 +1,41 @@
+{empty} +
+
+== 쿠폰 정책
+
+=== 쿠폰 정책 목록 조회
+
+==== Request
+
+include::{snippets}/couponPolicy/getAllCouponPolicy/success/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/couponPolicy/getAllCouponPolicy/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 정책 등록
+
+==== Request
+
+include::{snippets}/couponPolicy/createCouponPolicy/success/http-request.adoc[]
+
+==== Parameters
+
+include::{snippets}/couponPolicy/createCouponPolicy/success/request-fields.adoc[]
+
+==== Response
+
+include::{snippets}/couponPolicy/createCouponPolicy/success/http-response.adoc[]
+
+{empty} +
+
+=== 쿠폰 정책 등록: 실패
+
+==== Request
+
+include::{snippets}/couponPolicy/createCouponPolicy/miss-parameter-failed/http-request.adoc[]
+
+==== Response
+
+include::{snippets}/couponPolicy/createCouponPolicy/miss-parameter-failed/http-response.adoc[]

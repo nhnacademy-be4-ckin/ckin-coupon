@@ -284,4 +284,11 @@ class CouponRepositoryTest {
 
         Assertions.assertThat(result).isTrue();
     }
+
+    @Test
+    @DisplayName("멤버가 가지고 있는 쿠폰 개수 조회")
+    void testCountByMemberId() {
+        Assertions.assertThat(couponRepository.countByMemberId(1L))
+                .isEqualTo(2L);
+    }
 }

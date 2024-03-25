@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import store.ckin.coupon.coupon.adapter.CouponAdapter;
 import store.ckin.coupon.coupon.dto.request.CreateCouponRequestDto;
+import store.ckin.coupon.coupon.dto.response.CouponCountResponseDto;
 import store.ckin.coupon.coupon.dto.response.GetCouponResponseDto;
 import store.ckin.coupon.coupon.exception.CouponNotFoundException;
 import store.ckin.coupon.coupon.model.Coupon;
@@ -18,6 +19,7 @@ import store.ckin.coupon.coupon.repository.CouponRepository;
 import store.ckin.coupon.coupon.service.CouponService;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateNotFoundException;
 import store.ckin.coupon.coupontemplate.exception.CouponTemplateTypeNotFoundException;
+import store.ckin.coupon.coupontemplate.model.CouponTemplate;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateRepository;
 import store.ckin.coupon.coupontemplate.repository.CouponTemplateTypeRepository;
 
@@ -204,19 +206,16 @@ public class CouponServiceImpl implements CouponService {
     @Override
     @Transactional
     public void createWelcomeCoupon(Long memberId) {
-        log.debug("Enter Create Welcome Coupon Service");
-        couponTemplateRepository.findById(WELCOME_TYPE_ID)
+        CouponTemplate couponTemplate = couponTemplateRepository.findById(WELCOME_TYPE_ID)
                 .orElseThrow(CouponTemplateNotFoundException::new);
-        log.debug("Coupon Template Validation Clear: ", WELCOME_TYPE_ID);
 
         if (Boolean.TRUE.equals(isExistCoupon(memberId, WELCOME_TYPE_ID))) {
             return;
         }
-        log.debug("All Validation Clear: ", memberId);
 
         couponRepository.save(Coupon.builder()
                 .memberId(memberId)
-                .couponTemplateId(WELCOME_TYPE_ID)
+                .couponTemplateId(couponTemplate.getId())
                 .expirationDate(Date.valueOf(LocalDate.now().plusDays(30)))
                 .issueDate(Date.valueOf(LocalDate.now()))
                 .usedDate(null)
@@ -224,5 +223,9 @@ public class CouponServiceImpl implements CouponService {
 
     }
 
-
+    @Transactional(readOnly = true)
+    @Override
+    public CouponCountResponseDto countByMemberId(Long memberId) {
+        return new CouponCountResponseDto(couponRepository.countByMemberId(memberId));
+    }
 }

@@ -3,9 +3,14 @@ package store.ckin.coupon.policy.controller;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -15,9 +20,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
 import store.ckin.coupon.policy.dto.request.CreateCouponPolicyRequestDto;
@@ -31,6 +38,7 @@ import store.ckin.coupon.policy.service.CouponPolicyService;
  * @version : 2024. 02. 10
  */
 
+@AutoConfigureRestDocs
 @WebMvcTest(CouponPolicyController.class)
 class CouponPolicyControllerTest {
     @Autowired
@@ -56,14 +64,23 @@ class CouponPolicyControllerTest {
 
         given(couponPolicyService.getCouponPolicyList()).willReturn(List.of(dto, dto2));
 
-        mockMvc.perform(get("/coupon/couponPolicy"))
+        mockMvc.perform(RestDocumentationRequestBuilders.get("/coupon/couponPolicy"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(dto.getId()), Long.class))
                 .andExpect(jsonPath("$[0].minOrderPrice", equalTo(dto.getMinOrderPrice())))
                 .andExpect(jsonPath("$[0].discountPrice", equalTo(dto.getDiscountPrice())))
                 .andExpect(jsonPath("$[0].discountRate", equalTo(dto.getDiscountRate())))
                 .andExpect(jsonPath("$[0].maxDiscountPrice", equalTo(dto.getMaxDiscountPrice())))
-                .andDo(print());
+                .andDo(document("couponPolicy/getAllCouponPolicy/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].id").description("쿠폰 정책 아이디"),
+                                fieldWithPath("[].minOrderPrice").description("최소 주문 금액"),
+                                fieldWithPath("[].discountPrice").description("할인 금액"),
+                                fieldWithPath("[].discountRate").description("할인율"),
+                                fieldWithPath("[].maxDiscountPrice").description("최대 할인 금액")
+                        )));
     }
 
     @Test
@@ -80,7 +97,16 @@ class CouponPolicyControllerTest {
                         .content(objectMapper.writeValueAsString(couponPolicyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
-                .andDo(print());
+                .andDo(document("couponPolicy/createCouponPolicy/success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("couponCodeId").description("쿠폰 정책 코드 아이디"),
+                                fieldWithPath("minOrderPrice").description("최소 주문 금액"),
+                                fieldWithPath("discountPrice").description("할인 금액"),
+                                fieldWithPath("discountRate").description("할인율"),
+                                fieldWithPath("maxDiscountPrice").description("최대 할인 금액")
+                        )));
     }
 
     @Test
@@ -91,7 +117,10 @@ class CouponPolicyControllerTest {
                         .content(objectMapper.writeValueAsString(couponPolicyRequestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().is4xxClientError())
-                .andDo(print());
+                .andDo(document("couponPolicy/createCouponPolicy/miss-parameter-failed",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
+                ));
     }
 
 }
